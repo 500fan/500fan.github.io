@@ -2220,7 +2220,7 @@ header .go-back i {
 
 .bg-cover:before,
 .bg-cover:after {
-    backgrund-image: url(/medias/banner/7.jpg)!important;
+    backgrund-image: url(/medias/banner/)!important;
     position: absolute;
     z-index: 1;
     width: 100%;
@@ -2230,9 +2230,6 @@ header .go-back i {
     top: 0;
     content: "";
 }
-.bg-cover:after {
-  backgrund-image: url(/medias/banner/6.jpg)!important;
-}
 
 .bg-cover .container {
     position: relative;
@@ -2241,7 +2238,7 @@ header .go-back i {
 }
 
 .bg-cover .title {
-    font-size: 4rem;
+    font-size: 1rem;
     line-height: 1.2em;
     margin-bottom: 20px;
     position: relative;
