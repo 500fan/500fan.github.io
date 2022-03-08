@@ -1319,10 +1319,12 @@
 </div>
 
 
-<script>
-    $('.bg-cover').css('background-image', 'url(/medias/banner/0.jpg)');
-</script>
-
+  <script>
+      // 每天切换 banner 图.  Switch banner image every day.
+      var bannerUrl = "/medias/banner/" + new Date().getDay() + '.jpg';
+      $('.bg-cover').css('background-image', 'url(' + bannerUrl + ')');
+  </script>
+  
 
 
 微信公众号：物解味卜慢识堂
@@ -1648,7 +1650,7 @@
         xAxis: [
             {
                 type: 'category',
-                data: ["相册","群","教程","淘宝店铺卖家","内部群","03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4","图","医疗互动","音乐","好物种草"]
+                data: ["相册","群","教程","探讨讨论","辩论","但是热衷交谈","对话","事实胜于雄辩","不关心","图"]
             }
         ],
         yAxis: [
@@ -1849,20 +1851,38 @@
             
             
             
-            <a href="/tags/%E6%B7%98%E5%AE%9D%E5%BA%97%E9%93%BA%E5%8D%96%E5%AE%B6/">
-                <span class="chip center-align waves-effect waves-light chip-default">淘宝店铺卖家</span>
+            <a href="/tags/%E6%8E%A2%E8%AE%A8%E8%AE%A8%E8%AE%BA/">
+                <span class="chip center-align waves-effect waves-light chip-default">探讨讨论</span>
             </a>
             
             
             
-            <a href="/tags/%E5%86%85%E9%83%A8%E7%BE%A4/">
-                <span class="chip center-align waves-effect waves-light chip-default">内部群</span>
+            <a href="/tags/%E8%BE%A9%E8%AE%BA/">
+                <span class="chip center-align waves-effect waves-light chip-default">辩论</span>
             </a>
             
             
             
-            <a href="/tags/03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4/">
-                <span class="chip center-align waves-effect waves-light chip-default">03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4</span>
+            <a href="/tags/%E4%BD%86%E6%98%AF%E7%83%AD%E8%A1%B7%E4%BA%A4%E8%B0%88/">
+                <span class="chip center-align waves-effect waves-light chip-default">但是热衷交谈</span>
+            </a>
+            
+            
+            
+            <a href="/tags/%E5%AF%B9%E8%AF%9D/">
+                <span class="chip center-align waves-effect waves-light chip-default">对话</span>
+            </a>
+            
+            
+            
+            <a href="/tags/%E4%BA%8B%E5%AE%9E%E8%83%9C%E4%BA%8E%E9%9B%84%E8%BE%A9/">
+                <span class="chip center-align waves-effect waves-light chip-default">事实胜于雄辩</span>
+            </a>
+            
+            
+            
+            <a href="/tags/%E4%B8%8D%E5%85%B3%E5%BF%83/">
+                <span class="chip center-align waves-effect waves-light chip-default">不关心</span>
             </a>
             
             
@@ -1903,44 +1923,26 @@
             
             
             
+            <a href="/tags/%E6%B7%98%E5%AE%9D%E5%BA%97%E9%93%BA%E5%8D%96%E5%AE%B6/">
+                <span class="chip center-align waves-effect waves-light chip-default">淘宝店铺卖家</span>
+            </a>
+            
+            
+            
+            <a href="/tags/%E5%86%85%E9%83%A8%E7%BE%A4/">
+                <span class="chip center-align waves-effect waves-light chip-default">内部群</span>
+            </a>
+            
+            
+            
+            <a href="/tags/03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4/">
+                <span class="chip center-align waves-effect waves-light chip-default">03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4</span>
+            </a>
+            
+            
+            
             <a href="/tags/1234/">
                 <span class="chip center-align waves-effect waves-light chip-default">1234</span>
-            </a>
-            
-            
-            
-            <a href="/tags/%E6%8E%A2%E8%AE%A8%E8%AE%A8%E8%AE%BA/">
-                <span class="chip center-align waves-effect waves-light chip-default">探讨讨论</span>
-            </a>
-            
-            
-            
-            <a href="/tags/%E8%BE%A9%E8%AE%BA/">
-                <span class="chip center-align waves-effect waves-light chip-default">辩论</span>
-            </a>
-            
-            
-            
-            <a href="/tags/%E4%BD%86%E6%98%AF%E7%83%AD%E8%A1%B7%E4%BA%A4%E8%B0%88/">
-                <span class="chip center-align waves-effect waves-light chip-default">但是热衷交谈</span>
-            </a>
-            
-            
-            
-            <a href="/tags/%E5%AF%B9%E8%AF%9D/">
-                <span class="chip center-align waves-effect waves-light chip-default">对话</span>
-            </a>
-            
-            
-            
-            <a href="/tags/%E4%BA%8B%E5%AE%9E%E8%83%9C%E4%BA%8E%E9%9B%84%E8%BE%A9/">
-                <span class="chip center-align waves-effect waves-light chip-default">事实胜于雄辩</span>
-            </a>
-            
-            
-            
-            <a href="/tags/%E4%B8%8D%E5%85%B3%E5%BF%83/">
-                <span class="chip center-align waves-effect waves-light chip-default">不关心</span>
             </a>
             
             
