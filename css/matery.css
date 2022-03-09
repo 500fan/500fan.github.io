@@ -1651,7 +1651,7 @@ img {
 *, *:before, *:after {
     -webkit-box-sizing: inherit;
     box-sizing: inherit;
-    color: #fdbb02;
+    color: #30016e;
 }
 body {
     font-family: myFont,cursive;
