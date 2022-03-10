@@ -1435,6 +1435,7 @@
                 <p><img src="http://imageproxy.chaoxing.com/0x0,q15,jpeg,slEtmWeY6WexS0SaijdY_3as70_MybRg4ZDGoVY7atkM/https://p.ananas.chaoxing.com/star3/origin/b6ccee78bf534263b9699503f1a05b25.png" alt="微信二维码"></p>
 <p><img src="http://imageproxy.chaoxing.com/0x0,q15,jpeg,sSx7GoSLhEvgU5jUdZwqyozG6W91-i_LEghZ2m6schX4/https://p.ananas.chaoxing.com/star3/origin/0473fec0ee33f8e8fc0e5111decb191a.png" alt="微信二维码"></p>
 <p><img src="http://imageproxy.chaoxing.com/0x0,q15,jpeg,sEYxbeucRcJ2Q0CfEKQkU_D3INCr4BWZmzbO0Dz2asc0/https://p.ananas.chaoxing.com/star3/origin/3221eeded507850c4238687cb2380ae6.png" alt="微信二维码"></p>
+<p>082<br><img src="https://img.alicdn.com/imgextra/i4/4251995763/O1CN01VPMUY71sRVGp4SJLc_!!4251995763.jpg" alt="微信二维码"></p>
 
                 
             </div>
@@ -1646,35 +1647,6 @@
             
         </div>
     </div>
-
-    
-        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
-<link rel="stylesheet" href="/css/my-gitalk.css">
-
-<div class="card gitalk-card" data-aos="fade-up">
-    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; padding-left: 20px; top: 15px; padding-bottom: 5px;">
-        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
-        <span>评论</span>
-    </div>
-    <div id="gitalk-container" class="card-content"></div>
-</div>
-<script src="/js/src/md5.min.js"></script>
-<script src="/libs/gitalk/gitalk.min.js"></script>
-<script>
-    let gitalk = new Gitalk({
-        clientID: '96728eae07a721a0dd89',
-        clientSecret: '1b8fa81ca8a1b4d1d17a01a62a35bf5a809700ff',
-        repo: 'shuwanzhi.github.io',
-        owner: 'shuwanzhi',
-        admin: "shuwanzhi",
-        id: '2022-03-08T23-04-43',
-        id: location.pathname,
-        id: md5(location.pathname),
-        distractionFreeMode: false  // Facebook-like distraction free mode
-    });
-
-    gitalk.render('gitalk-container');
-</script>
 
     
 
@@ -3123,12 +3095,42 @@ color="122 103 238" opacity='0.7' zIndex="-2" count="200" src="//cdn.bootcss.com
 
 
 
+        <script src="//code.tidio.co/o3s6l1xsvvxmcgqgmthcvlzy157eqzen.js"></script>
+        <script>
+            $(document).ready(function () {
+                setInterval(change_Tidio, 200);
+                function change_Tidio() {
+                    var tidio=$("#tidio-chat iframe");
+                    if(tidio.css("display")=="block"&& $(window).width()>977 ){
+                        document.getElementById("tidio-chat-iframe").style.bottom= ($("div#backTop.top-scroll").css("display")=="none" &&$(window).width()>977)>0? "-40px" : ($("div.toc-title").length&&$(window).width()>977)>0?"85px":"20px";
+                        document.getElementById("tidio-chat-iframe").style.right="-15px";
+                        document.getElementById("tidio-chat-iframe").style.height=parseInt(tidio.css("height"))>=520?"520px":tidio.css("height");
+                        document.getElementById("tidio-chat-iframe").style.zIndex="997";
+                    }
+                    else if(tidio.css("display")=="block"&&$(window).width()>601 &&$(window).width()<992 ){
+                        document.getElementById("tidio-chat-iframe").style.bottom= ($("div#backTop.top-scroll").css("display")=="none" && 601< $(window).width()<992)>0? "-40px":"20px" ;
+                        document.getElementById("tidio-chat-iframe").style.right="-15px";
+                        document.getElementById("tidio-chat-iframe").style.zIndex="997";
+                    }
+                    else if(tidio.css("display")=="block"&&$(window).width()<601 && parseInt(tidio.css("height"))<230){
+                        document.getElementById("tidio-chat-iframe").style.bottom= ($("div#backTop.top-scroll").css("display")=="none" && $(window).width()<601)>0? "-10px":"45px" ;
+                        document.getElementById("tidio-chat-iframe").style.zIndex="997";
+                    }
+                    if( tidio.css("display")=="block"&&$(window).width()<601 && parseInt(tidio.css("height"))>=230){
+                        document.getElementById("tidio-chat-iframe").style.zIndex="998";
+                    }
+                }
+            });
+        </script>
+    
 
  
 
 
     
 
+    
+    <script type="text/javascript" src="/libs/background/ribbon-dynamic.js" async="async"></script>
     
 
     
