@@ -185,9 +185,9 @@
     };
     loaded();
 })()
- </script><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="舒万知" type="application/atom+xml">
-<link rel="stylesheet" href="\assets\css\APlayer.min.css" class="aplayer-style-marker">
+ </script><meta name="generator" content="Hexo 6.0.0"><link rel="stylesheet" href="\assets\css\APlayer.min.css" class="aplayer-style-marker">
 <script src="\assets\js\APlayer.min.js" class="aplayer-script-marker"></script>
+<link rel="alternate" href="/atom.xml" title="舒万知" type="application/atom+xml">
 </head>
 
 
@@ -1731,6 +1731,33 @@ lrctype= 0
     gitalk.render('gitalk-container');
 </script>
     
+
+    
+        <link rel="stylesheet" href="/libs/gitment/gitment-default.css">
+<link rel="stylesheet" href="/css/gitment.css">
+
+<div class="gitment-card card" data-aos="fade-up">
+    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; padding-left: 20px; top: 15px; padding-bottom: 5px;">
+        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
+        <span>评论</span>
+    </div>
+    <div id="gitment-content" class="card-content"></div>
+</div>
+
+<script src="/libs/gitment/gitment.js"></script>
+<script>
+var gitment = new Gitment({
+    id: 'Wed Mar 02 2022 18:13:19 GMT+0800',
+    owner: 'shuwanzhi',
+    repo: 'shuwanzhi.github.io',
+    oauth: {
+        client_id: '0f7d9ad4ed14aa7f4ade',
+        client_secret: '2812cd38b694aaa923e54e6b73c22e454eb1400c'
+    }
+});
+
+gitment.render('gitment-content');
+</script>
 
     
 
