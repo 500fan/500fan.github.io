@@ -1710,6 +1710,47 @@ gitment.render('gitment-content');
     
 
     
+    <div class="livere-card card" data-aos="fade-up">
+    <!-- 来必力City版安装代码 -->
+    <div id="lv-container" class="card-content" data-id="city" data-uid="MTAyMC81NTcyNS8zMjE5MQ==">
+        <script type="text/javascript">
+            (function (d, s) {
+                let j, e = d.getElementsByTagName(s)[0];
+                if (typeof LivereTower === 'function') {
+                    return;
+                }
+
+                j = d.createElement(s);
+                j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                j.async = true;
+
+                e.parentNode.insertBefore(j, e);
+            })(document, 'script');
+        </script>
+        <noscript>为正常使用来必力评论功能请激活JavaScript。</noscript>
+    </div>
+    <!-- City版安装代码已完成 -->
+</div>
+<!-- 来必力City版安装代码 -->
+<div id="lv-container" data-id="city" data-uid="MTAyMC81NTcyNS8zMjE5MQ==">
+	<script type="text/javascript">
+var refer = "{Permalink}".replace("http://","");
+   (function(d, s) {
+       var j, e = d.getElementsByTagName(s)[0];
+
+       if (typeof LivereTower === 'function') { return; }
+
+       j = d.createElement(s);
+       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+       j.async = true;
+
+       e.parentNode.insertBefore(j, e);
+   })(document, 'script');
+	</script>
+<noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
+</div>
+<!-- City版安装代码已完成 -->
+    
 
     
         <style>
@@ -1999,9 +2040,9 @@ gitment.render('gitment-content');
     </div>
 </div>
 
-<script src="/libs/minivaline/MiniValine.js"></script>
+<script src="https://mini-valine-admin-api-vercel2022.vercel.app"></script>
 <script>
-    new MiniValine(Object.assign({"enable":true,"serverURL":"https://waline100-tiandoo.vercel.app"}, {
+    new MiniValine(Object.assign({"enable":true}, {
 	  el: '#mvcomments',
     }));
 </script>
@@ -2010,65 +2051,22 @@ gitment.render('gitment-content');
 
     
         
-    <div id="SOHUCS"></div>
-    <script type="text/javascript">
-        window.onload = function () {
-            var loadChangYan = function () {
-                var appid = 'cyvvGwRA9';
-                var conf = 'prod_590a2741b1a9b5a34c1f48a24cacb899';
-                var width = window.innerWidth || document.documentElement.clientWidth;
-                if (width < 960) {
-                    var head = document.getElementsByTagName('head')[0] || document.head || document.documentElement;
-                    var script = document.createElement('script');
-                    script.type = 'text/javascript';
-                    script.charset = 'utf-8';
-                    script.id = 'changyan_mobile_js';
-                    script.src = 'https://cy-cdn.kuaizhan.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid +
-                        '&conf=' + conf;
-                    head.appendChild(script);
-                } else {
-                    var loadJs = function (d, a) {
-                        var c = document.getElementsByTagName("head")[0] || document.head || document.documentElement;
-                        var b = document.createElement("script");
-                        b.setAttribute("type", "text/javascript");
-                        b.setAttribute("charset", "UTF-8");
-                        b.setAttribute("src", d);
-                        if (typeof a === "function") {
-                            if (window.attachEvent) {
-                                b.onreadystatechange = function () {
-                                    var e = b.readyState;
-                                    if (e === "loaded" || e === "complete") {
-                                        b.onreadystatechange = null;
-                                        a()
-                                    }
-                                }
-                            } else {
-                                b.onload = a
-                            }
-                        }
-                        c.appendChild(b)
-                    };
-                    loadJs("https://cy-cdn.kuaizhan.com/upload/changyan.js", function () {
-                        window.changyan.api.config({
-                            appid: appid,
-                            conf: conf
-                        })
-                    });
-                }
-            }
-
-            loadChangYan();
-        }
-        <!-- 代码1：放在页面需要展示的位置  -->
-<!-- 如果您配置过sourceid，建议在div标签中配置sourceid、cid(分类id)，没有请忽略  -->
-<div id="cyReward" role="cylabs" data-use="reward"></div>
-<!-- 代码2：用来读取评论框配置，此代码需放置在代码1之后。 -->
-<!-- 如果当前页面有评论框，代码2请勿放置在评论框代码之前。 -->
-<!-- 如果页面同时使用多个实验室项目，以下代码只需要引入一次，只配置上面的div标签即可 -->
-<script type="text/javascript" charset="utf-8" src="https://cy-cdn.kuaizhan.com/js/??lib/jquery.js,changyan.labs.https.js?appid=cyvvGwRA9"></script>
-    </script>
-
-
+<!--PC和WAP自适应版-->
+<div id="SOHUCS" src="https://v1.hitokoto.cn?c=d&c=h&c=j" ></div> <!-- #sid="请将此处替换为配置SourceID的语句" ></div> --PC和WAP自适应版-->
+<script type="text/javascript"> 
+(function(){ 
+var appid = 'cyvvGwRA9'; 
+var conf = 'prod_590a2741b1a9b5a34c1f48a24cacb899'; 
+var width = window.innerWidth || document.documentElement.clientWidth; 
+if (width < 1000) {
+var head = document.getElementsByTagName('head')[0]||document.head||document.documentElement;
+var script = document.createElement('script');
+script.type = 'text/javascript';
+script.charset = 'utf-8';
+script.id = 'changyan_mobile_js';
+script.src = 'https://cy-cdn.kuaizhan.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf;
+head.appendChild(script);
+} else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://cy-cdn.kuaizhan.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
     
 
     
@@ -2328,10 +2326,10 @@ gitment.render('gitment-content');
     </div>
 </div>
 
-<script src="/libs/twikoo/twikoo.all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js"></script>
 <script>
     twikoo.init({
-        envId: 'env-7ganlj2y3edd89ea',
+        envId: 'https://twikoo100-tiandoo.vercel.app',
         el: '#tcomments',
         region: '',
         path: ''
