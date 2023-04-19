@@ -1263,30 +1263,122 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.css">
 <script src="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.js"></script>
 
-    <!-- 添加网易云我喜欢的歌曲模块 -->
-<p>网易云2019年度歌单top10</p>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayedist/APlayer.min.css">
-<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayemin.js"></script>
-<!-- require MetingJS -->
-<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Metinmin.js"></script>
-  <meting-js style="margin-top: 1.5rem;width: auto;height: auto"
-  server="netease"
-  type="playlist"
-  id="3155294100"
-  order= "random"
-  theme="#ad7a86"
-  loop="all"
-  autoplay="false"
-  storageName="aplayer-setting"
-  hideLrc= "false"
-  >
-  </meting-js>
-  <style>
-      .aplayer{
-          margin: 1.5rem 0;
-      }              
-  </style>
+    <style type="text/css">
+    /* don't remove. */
+    .about-cover {
+        height: 75vh;
+    }
+</style>
 
+<div class="bg-cover pd-header about-cover">
+    <div class="container">
+    <div class="row">
+    <div class="col s10 offset-s1 m8 offset-m2 l8 offset-l2">
+        <div class="brand">
+            <div class="title center-align">
+                
+                从这里开始
+                
+            </div>
+            <span id="jinrishici-sentence">正在加载今日诗词....</span>
+            <div class="description center-align">
+                
+                <span id="subtitle"></span>
+                <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11"></script>
+                <script>
+                    var typed = new Typed("#subtitle", {
+                        strings: [ 
+                            
+                                "万物",
+                            
+                                "生长",
+                            
+                                "、、Never really desperate, only",
+                            
+                                "the lost of the soul",
+                            
+                        ],
+                        startDelay: 300,
+                        typeSpeed: 100,
+                        loop: true,
+                        backSpeed: 50,
+                        showCursor: true
+                    });
+                </script>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+
+  <script>
+      // 每天切换 banner 图.  Switch banner image every day.
+      var bannerUrl = "/medias/banner/" + new Date().getDay() + '.jpg';
+      $('.bg-cover').css('background-image', 'url(' + bannerUrl + ')');
+  </script>
+  
+
+
+微信公众号：volio
+<div id="binft"></div>
+  <script>
+    var binft = function (r) {
+      function t() {
+        return b[Math.floor(Math.random() * b.length)]
+      }  
+      function e() {
+        return String.fromCharCode(94 * Math.random() + 33)
+      }
+      function n(r) {
+        for (var n = document.createDocumentFragment(), i = 0; r > i; i++) {
+          var l = document.createElement("span");
+          l.textContent = e(), l.style.color = t(), n.appendChild(l)
+        }
+        return n
+      }
+      function i() {
+        var t = o[c.skillI];
+        c.step ? c.step-- : (c.step = g, c.prefixP < l.length ? (c.prefixP >= 0 && (c.text += l[c.prefixP]), c.prefixP++) : "forward" === c.direction ? c.skillP < t.length ? (c.text += t[c.skillP], c.skillP++) : c.delay ? c.delay-- : (c.direction = "backward", c.delay = a) : c.skillP > 0 ? (c.text = c.text.slice(0, -1), c.skillP--) : (c.skillI = (c.skillI + 1) % o.length, c.direction = "forward")), r.textContent = c.text, r.appendChild(n(c.prefixP < l.length ? Math.min(s, s + c.prefixP) : Math.min(s, t.length - c.skillP))), setTimeout(i, d)
+      }
+      var l = "",
+      o = ["", "微信公众号：volio","","", "","","","",""].map(function (r) {
+      return r + ""
+      }),
+      a = 2,
+      g = 1,
+      s = 5,
+      d = 75,
+      b = ["rgb(110,64,170)", "rgb(150,61,179)", "rgb(191,60,175)", "rgb(228,65,157)", "rgb(254,75,131)", "rgb(255,94,99)", "rgb(255,120,71)", "rgb(251,150,51)", "rgb(226,183,47)", "rgb(198,214,60)", "rgb(175,240,91)", "rgb(127,246,88)", "rgb(82,246,103)", "rgb(48,239,130)", "rgb(29,223,163)", "rgb(26,199,194)", "rgb(35,171,216)", "rgb(54,140,225)", "rgb(76,110,219)", "rgb(96,84,200)"],
+      c = {
+        text: "",
+        prefixP: -s,
+        skillI: 0,
+        skillP: 0,
+        direction: "forward",
+        delay: a,
+        step: g
+      };
+      i()
+      };
+      binft(document.getElementById('binft'));
+  </script>
+
+    </div>
+</div>
+
+
+<main class="content">
+    <div id="aboutme" class="container about-container">
+        <div class="card">
+            <div class="card-content">
+                <div class="music-player">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
     <footer class="page-footer bg-color">
     
         
