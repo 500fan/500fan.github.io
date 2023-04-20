@@ -2237,7 +2237,7 @@ content: "";
 -webkit-animation: rainbow 60s infinite;
 animation: rainbow 60s infinite;
 }
-/*修改主题颜色动态结束 /
+/*修改主题颜色动态结束 ,封面图片修改/
 */
 .bg-cover:before,
 .bg-cover:after {
@@ -2249,6 +2249,8 @@ animation: rainbow 60s infinite;
     left: 0;
     top: 0;
     content: ""; 
+    opacity: 0.1;
+    background-image: url(../medias/banner/richu6.jpeg);
 }
 
 
