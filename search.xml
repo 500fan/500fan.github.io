@@ -20,12 +20,12 @@
 <hr>
 <p><img src="http://imageproxy.chaoxing.com/0x0,q15,jpeg,samd7X0ZrJL6oHlAytD1Nbu9HyggfcanZX83-Ec8kDIk/http://p.ananas.chaoxing.com/star3/origin/3ef8e1bbeb56b0c2cd90df1ce4a3f119.png" alt="今日微信群"></p>
 
-        <div id="aplayer-yFUeaUCQ" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+        <div id="aplayer-iRLIGQiN" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
             <pre class="aplayer-lrc-content"></pre>
         </div>
         <script>
           var ap = new APlayer({
-            element: document.getElementById("aplayer-yFUeaUCQ"),
+            element: document.getElementById("aplayer-iRLIGQiN"),
             narrow: false,
             autoplay: false,
             showlrc: false,
@@ -159,14 +159,14 @@ lrctype= 0
   </entry>
   <entry>
     <title></title>
-    <url>/2023/04/20/%E4%BA%BA%E7%B1%BB%E5%8C%BB%E5%AD%A6%E5%8F%91%E5%B1%95%E5%8E%86%E7%A8%8B/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>1</p>
+    <url>/2023/04/20/%E4%BA%9A%E7%A1%9D%E8%83%BA/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>2</p>
 ]]></content>
   </entry>
   <entry>
     <title></title>
-    <url>/2023/04/20/%E4%BA%9A%E7%A1%9D%E8%83%BA/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>2</p>
+    <url>/2023/04/20/%E4%BA%BA%E7%B1%BB%E5%8C%BB%E5%AD%A6%E5%8F%91%E5%B1%95%E5%8E%86%E7%A8%8B/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>1</p>
 ]]></content>
   </entry>
   <entry>
@@ -280,7 +280,7 @@ lrctype= 0
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p><a href="https://tool.oschina.net/encrypt?type=2">https://tool.oschina.net/encrypt?type=2</a><br>1234<br>SHA256<br>卖家淘宝店铺二维码<br><a href="http://gqrcode.alicdn.com/img?type=hv&amp;w=200&amp;h=200&amp;text=https://shop540513788.m.taobao.com">http://gqrcode.alicdn.com/img?type=hv&amp;w=200&amp;h=200&amp;text=https%3A%2F%2Fshop540513788.m.taobao.com</a><br><img src="http://gqrcode.alicdn.com/img?type=hv&w=200&h=200&text=https://shop540513788.m.taobao.com/%E6%B7%98%E5%AE%9D%E5%BA%97%E9%93%BA/%E6%B7%98%E5%AE%9D%E7%BE%A4/%E6%B7%98%E5%AE%9D%E5%8D%96%E5%AE%B6"><br>店铺直达链接：<a href="https://shop540513788.m.taobao.com/">https://shop540513788.m.taobao.com</a></p>
 ]]></content>
       <categories>
-        <category>商店</category>
+        <category>categories</category>
       </categories>
       <tags>
         <tag>淘宝店铺卖家</tag>
