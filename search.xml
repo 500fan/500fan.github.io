@@ -20,12 +20,12 @@
 <hr>
 <p><img src="http://imageproxy.chaoxing.com/0x0,q15,jpeg,samd7X0ZrJL6oHlAytD1Nbu9HyggfcanZX83-Ec8kDIk/http://p.ananas.chaoxing.com/star3/origin/3ef8e1bbeb56b0c2cd90df1ce4a3f119.png" alt="今日微信群"></p>
 
-        <div id="aplayer-bfgGZath" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+        <div id="aplayer-yFUeaUCQ" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
             <pre class="aplayer-lrc-content"></pre>
         </div>
         <script>
           var ap = new APlayer({
-            element: document.getElementById("aplayer-bfgGZath"),
+            element: document.getElementById("aplayer-yFUeaUCQ"),
             narrow: false,
             autoplay: false,
             showlrc: false,
@@ -159,14 +159,14 @@ lrctype= 0
   </entry>
   <entry>
     <title></title>
-    <url>/2023/04/20/%E4%BA%9A%E7%A1%9D%E8%83%BA/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>2</p>
+    <url>/2023/04/20/%E4%BA%BA%E7%B1%BB%E5%8C%BB%E5%AD%A6%E5%8F%91%E5%B1%95%E5%8E%86%E7%A8%8B/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>1</p>
 ]]></content>
   </entry>
   <entry>
     <title></title>
-    <url>/2023/04/20/%E4%BA%BA%E7%B1%BB%E5%8C%BB%E5%AD%A6%E5%8F%91%E5%B1%95%E5%8E%86%E7%A8%8B/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>1</p>
+    <url>/2023/04/20/%E4%BA%9A%E7%A1%9D%E8%83%BA/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>2</p>
 ]]></content>
   </entry>
   <entry>

@@ -1319,10 +1319,9 @@
 </div>
 
 
+    <!-- 主题banner设置false默认则 -->
   <script>
-      // 每天切换 banner 图.  Switch banner image every day.
-      var bannerUrl = "/medias/banner/" + new Date().getDay() + '.jpg';
-      $('.bg-cover').css('background-image', 'url(' + bannerUrl + ')');
+      $('.bg-cover').css('background-image', 'url(/medias/banner/shuil.jpg)');
   </script>
   
 
@@ -1452,7 +1451,7 @@
                <!-- 隐藏某个文章 -->
               <div class="article col s12 m6 l4" data-aos="zoom-in">
                   <div class="card">
-                      <a href="/2023/04/20/%E4%BA%BA%E7%B1%BB%E5%8C%BB%E5%AD%A6%E5%8F%91%E5%B1%95%E5%8E%86%E7%A8%8B/">
+                      <a href="/2023/04/20/%E4%BA%9A%E7%A1%9D%E8%83%BA/">
                           <div class="card-image">
                               
                               
@@ -1465,7 +1464,7 @@
                       <div class="card-content article-content">
                           <div class="summary block-with-text">
                               
-                                  1
+                                  2
 
                               
                           </div>
@@ -1659,7 +1658,7 @@ https://www.wuzhoutea.com.cn/vodplay/136958-1-1.html
                       <a href="/2019/07/22/%E6%B7%98%E5%AE%9D%E5%BA%97/">
                           <div class="card-image">
                               
-                              <img src="/medias/banner/4.jpg" class="responsive-img" alt="淘宝店">
+                              <img src="/medias/banner/shuil.jpg" class="responsive-img" alt="淘宝店">
                               
                               <span class="card-title">淘宝店</span>
                           </div>
@@ -1814,10 +1813,6 @@ https://www.wuzhoutea.com.cn/vodplay/136958-1-1.html
 
 
 
-
-
-
-</main>
 
 
 <main class="content" style="min-height: 324px;">
@@ -2211,27 +2206,8 @@ https://www.wuzhoutea.com.cn/vodplay/136958-1-1.html
 </main>
 
 
-<main><div class="notice" style="margin-top:60px">
-  <audio id="mymusic" src="https://cdn.jsdelivr.net/gh/cungudafa/cdn@latest/music/lovingstrangers.mp3" loop="loop"></audio>
-  <i class="iconfont icon-notification" onclick="play()">
-  </i>
-  <div class="notice-content">have a nice
-    day
-  </div>
-  <script>
-    function play() {
-      var audio = document.getElementById('music');
-      if (audio.paused) {
-          audio.play();
-      }else{
-          audio.pause();
-          audio.currentTime = 0;//音乐从头播放
-      }
-    }
+<main>
 
-
-  </script>
-</div>
 
 <script>
       //运行主函数
@@ -2384,15 +2360,61 @@ circleMagic();
 </main>
 
 
-  </div>
-  </div>
-
-
-
-
     <footer class="page-footer bg-color">
     
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
         
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="/"></script>
+
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/HCLonely/images@master/others/heartbeat.min.css">
 
