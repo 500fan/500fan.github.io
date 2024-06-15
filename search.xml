@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>笔记</title>
+    <url>/2024/06/15/20240604/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script>]]></content>
+      <categories>
+        <category>read</category>
+      </categories>
+      <tags>
+        <tag>人的</tag>
+        <tag>事g</tag>
+        <tag>世界人</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>CoDesign</title>
     <url>/2022/03/09/CoDesign/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p><img src="http://imageproxy.chaoxing.com/0x0,q15,jpeg,sJaLyZwRFnF3NB2MMdrC0FpqNMdssKrv_kEfKf57TU1c/https://p.ananas.chaoxing.com/star3/origin/0a095458f4662893205afe5d4865ef18.png" alt="CoDesign"></p>
@@ -20,12 +33,12 @@
 <hr>
 <p><img src="http://imageproxy.chaoxing.com/0x0,q15,jpeg,samd7X0ZrJL6oHlAytD1Nbu9HyggfcanZX83-Ec8kDIk/http://p.ananas.chaoxing.com/star3/origin/3ef8e1bbeb56b0c2cd90df1ce4a3f119.png" alt="今日微信群"></p>
 
-        <div id="aplayer-AcZBYIop" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+        <div id="aplayer-jBNCtzSr" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
             <pre class="aplayer-lrc-content"></pre>
         </div>
         <script>
           var ap = new APlayer({
-            element: document.getElementById("aplayer-AcZBYIop"),
+            element: document.getElementById("aplayer-jBNCtzSr"),
             narrow: false,
             autoplay: false,
             showlrc: false,
@@ -186,12 +199,6 @@ lrctype= 0
 ]]></content>
   </entry>
   <entry>
-    <title>二手待售</title>
-    <url>/2021/01/13/%E5%95%86%E5%BA%97/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p><img src="http://pan-yz.chaoxing.com/preview/showpreview_579415739645202432.html?v=1622614798000"></p>
-]]></content>
-  </entry>
-  <entry>
     <title>及时的良药互动</title>
     <url>/2022/03/05/%E5%8F%8A%E6%97%B6%E7%9A%84%E8%89%AF%E8%8D%AF%E4%BA%92%E5%8A%A8/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>你知道么？ 一个成年人日均摄入热量2000千卡, 日行1万步, 相当于消耗维持人体正常生活所需以外的300千卡多余热量，帮助我们保持健康体格；日行1万步，相当于完成7公里的绿色出行，日均减少1.8千克碳排放，帮我们保护大气环境。</p>
@@ -225,6 +232,12 @@ lrctype= 0
         <tag>电影剧场</tag>
         <tag>饮食</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>二手待售</title>
+    <url>/2021/01/13/%E5%95%86%E5%BA%97/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p><img src="http://pan-yz.chaoxing.com/preview/showpreview_579415739645202432.html?v=1622614798000"></p>
+]]></content>
   </entry>
   <entry>
     <title>微信二维码</title>
@@ -275,7 +288,7 @@ lrctype= 0
 ]]></content>
   </entry>
   <entry>
-    <title>567</title>
+    <title>淘宝店铺</title>
     <url>/2019/07/22/%E6%B7%98%E5%AE%9D%E5%BA%97/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p><a href="https://tool.oschina.net/encrypt?type=2">https://tool.oschina.net/encrypt?type=2</a><br>1234<br>SHA256<br>卖家淘宝店铺二维码<br><a href="http://gqrcode.alicdn.com/img?type=hv&amp;w=200&amp;h=200&amp;text=https://shop540513788.m.taobao.com">http://gqrcode.alicdn.com/img?type=hv&amp;w=200&amp;h=200&amp;text=https%3A%2F%2Fshop540513788.m.taobao.com</a><br><img src="http://gqrcode.alicdn.com/img?type=hv&w=200&h=200&text=https://shop540513788.m.taobao.com/%E6%B7%98%E5%AE%9D%E5%BA%97%E9%93%BA/%E6%B7%98%E5%AE%9D%E7%BE%A4/%E6%B7%98%E5%AE%9D%E5%8D%96%E5%AE%B6"><br>店铺直达链接：<a href="https://shop540513788.m.taobao.com/">https://shop540513788.m.taobao.com</a></p>
 ]]></content>
