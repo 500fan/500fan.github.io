@@ -610,8 +610,6 @@
 <style>
     .aplayer .aplayer-lrc p {
         
-        display: none;
-        
         font-size: 12px;
         font-weight: 700;
         line-height: 16px !important;
@@ -619,31 +617,24 @@
 
     .aplayer .aplayer-lrc p.aplayer-lrc-current {
         
-        display: none;
-        
         font-size: 15px;
         color: #42b983;
     }
 
     
-    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
-        left: -66px !important;
-    }
-
-    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
-        left: 0px !important;
-    }
-
-    
 </style>
-<div class="">
+<div class="music-player">
+    
+        <div class="title center-align">
+            <i class="fas fa-music"></i>&nbsp;&nbsp;听听音乐
+        </div>
     
     <div class="row">
         <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
                    server="netease"
                    type="playlist"
                    id="503838841"
-                   fixed='true'
+                   fixed='false'
                    autoplay='false'
                    theme='#42b983'
                    loop='all'
@@ -1383,21 +1374,21 @@
                     <div class="post-statis col l4 hide-on-med-and-down" data-aos="zoom-in-right">
                         
 <div class="statis">
-    <span class="count"><a href="/">18</a></span>
+    <span class="count"><a href="/">19</a></span>
     <span class="name">Posts</span>
 </div>
 
 
 
 <div class="statis">
-    <span class="count"><a href="/categories">3</a></span>
+    <span class="count"><a href="/categories">4</a></span>
     <span class="name">Categories</span>
 </div>
 
 
 
 <div class="statis">
-    <span class="count"><a href="/tags">25</a></span>
+    <span class="count"><a href="/tags">27</a></span>
     <span class="name">Tags</span>
 </div>
 
@@ -1413,21 +1404,21 @@
                                 <div class="post-statis hide-on-large-only" data-aos="zoom-in-right">
                                     
 <div class="statis">
-    <span class="count"><a href="/">18</a></span>
+    <span class="count"><a href="/">19</a></span>
     <span class="name">Posts</span>
 </div>
 
 
 
 <div class="statis">
-    <span class="count"><a href="/categories">3</a></span>
+    <span class="count"><a href="/categories">4</a></span>
     <span class="name">Categories</span>
 </div>
 
 
 
 <div class="statis">
-    <span class="count"><a href="/tags">25</a></span>
+    <span class="count"><a href="/tags">27</a></span>
     <span class="name">Tags</span>
 </div>
 
@@ -1583,7 +1574,7 @@
                 name: 'Number of posts',
                 type: 'line',
                 color: ['#6772e5'],
-                data: [0,0,0,0,0,0,0,0,0,0,0,0,1],
+                data: [0,0,0,0,0,0,0,0,0,0,0,0,2],
                 markPoint: {
                     symbolSize: 45,
                     color: ['#fa755a','#3ecf8e','#82d3f4'],
@@ -1625,7 +1616,7 @@
                 type: 'pie',
                 radius: '50%',
                 color: ['#6772e5', '#ff9e0f', '#fa755a', '#3ecf8e', '#82d3f4', '#ab47bc', '#525f7f', '#f51c47', '#26A69A'],
-                data: [{"name":"read","value":1},{"name":"categories","value":1},{"name":"yy","value":1}],
+                data: [{"name":"read","value":1},{"name":"categories","value":1},{"name":"Markdown","value":1},{"name":"yy","value":1}],
                 itemStyle: {
                     emphasis: {
                         shadowBlur: 10,
@@ -1649,7 +1640,7 @@
         xAxis: [
             {
                 type: 'category',
-                data: ["人的","事g","世界人","探讨讨论","辩论","但是热衷交谈","对话","事实胜于雄辩","不关心","图"]
+                data: ["探讨讨论","辩论","但是热衷交谈","对话","事实胜于雄辩","不关心","人的","事g","世界人","图"]
             }
         ],
         yAxis: [
@@ -1832,24 +1823,6 @@
         <div class="tag-chips center-align">
             
             
-            <a href="/tags/%E4%BA%BA%E7%9A%84/">
-                <span class="chip center-align waves-effect waves-light chip-default">人的</span>
-            </a>
-            
-            
-            
-            <a href="/tags/%E4%BA%8Bg/">
-                <span class="chip center-align waves-effect waves-light chip-default">事g</span>
-            </a>
-            
-            
-            
-            <a href="/tags/%E4%B8%96%E7%95%8C%E4%BA%BA/">
-                <span class="chip center-align waves-effect waves-light chip-default">世界人</span>
-            </a>
-            
-            
-            
             <a href="/tags/%E6%8E%A2%E8%AE%A8%E8%AE%A8%E8%AE%BA/">
                 <span class="chip center-align waves-effect waves-light chip-default">探讨讨论</span>
             </a>
@@ -1882,6 +1855,24 @@
             
             <a href="/tags/%E4%B8%8D%E5%85%B3%E5%BF%83/">
                 <span class="chip center-align waves-effect waves-light chip-default">不关心</span>
+            </a>
+            
+            
+            
+            <a href="/tags/%E4%BA%BA%E7%9A%84/">
+                <span class="chip center-align waves-effect waves-light chip-default">人的</span>
+            </a>
+            
+            
+            
+            <a href="/tags/%E4%BA%8Bg/">
+                <span class="chip center-align waves-effect waves-light chip-default">事g</span>
+            </a>
+            
+            
+            
+            <a href="/tags/%E4%B8%96%E7%95%8C%E4%BA%BA/">
+                <span class="chip center-align waves-effect waves-light chip-default">世界人</span>
             </a>
             
             
@@ -1960,6 +1951,18 @@
             
             <a href="/tags/%E9%95%BF%E7%9F%AD/">
                 <span class="chip center-align waves-effect waves-light chip-default">长短</span>
+            </a>
+            
+            
+            
+            <a href="/tags/Typora/">
+                <span class="chip center-align waves-effect waves-light chip-default">Typora</span>
+            </a>
+            
+            
+            
+            <a href="/tags/Markdown/">
+                <span class="chip center-align waves-effect waves-light chip-default">Markdown</span>
             </a>
             
             
@@ -2059,8 +2062,6 @@
 </main>
 
     <footer class="page-footer bg-color">
-    
-        
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/HCLonely/images@master/others/heartbeat.min.css">
 
