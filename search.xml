@@ -8,8 +8,159 @@
 ]]></content>
   </entry>
   <entry>
+    <title>hexo 部署到腾讯云</title>
+    <url>/2021/04/14/hexo-%E9%83%A8%E7%BD%B2%E5%88%B0%E8%85%BE%E8%AE%AF%E4%BA%91/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><blockquote>
+<p>目前就是部署完了，就等备案通过了。</p>
+</blockquote>
+<h2>一、部署环境与准备</h2>
+
+<h3> 1.环境</h3>
+
+<p>本地：Windows10操作系统</p>
+<p>腾讯云：Cenots7.6服务器</p>
+<h3>2.准备</h3>
+
+<p>Hexo 本地博客</p>
+<p>Xshell 链接到你的服务器</p>
+<h2>二、云服务器配置Git</h2>
+
+<h3>1.安装依赖库</h3>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">yum install curl-devel expat-devel gettext-devel openssl-devel zlib-devel </span><br></pre></td></tr></table></figure>
+
+<h3>2.安装编译工具</h3>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">yum install gcc perl-ExtUtils-MakeMaker package</span><br></pre></td></tr></table></figure>
+
+<h3>3.查看git的版本</h3>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git version</span><br></pre></td></tr></table></figure>
+
+<h3>4.删除git</h3>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">yum remove git -y</span><br></pre></td></tr></table></figure>
+
+<h3>5.下载解压最新版</h3>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd /usr/local/src    #下载的目录</span><br><span class="line">wget https://www.kernel.org/pub/software/scm/git/git-2.31.1.tar.gz    #下载最新版，可以去https://www.kernel.org/pub/software/scm/git/查看最新版本号，后面进行相应修改</span><br><span class="line">tar -zxvf git-2.31.1.tar.gz        #解压到当前文件夹</span><br></pre></td></tr></table></figure>
+
+<h3>6.编辑并安装</h3>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd git-2.31.1    #进入文件夹</span><br><span class="line">make prefix=/usr/local/git all    #编译源码</span><br><span class="line">make prefix=/usr/local/git install    #安装路径</span><br></pre></td></tr></table></figure>
+
+<h3>7.配置git的环境变量</h3>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">echo &#x27;export PATH=$PATH:/usr/local/git/bin&#x27; &gt;&gt; /etc/bashrc</span><br></pre></td></tr></table></figure>
+
+<h3>8.刷新环境变量</h3>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">source /etc/bashrc</span><br></pre></td></tr></table></figure>
+
+<h3>9.查看版本号</h3>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git --version</span><br></pre></td></tr></table></figure>
+
+<h3>10.创建git用户并且修改权限</h3>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">adduser BTMuli #这里的&quot;BTMuli&quot;是用户名</span><br><span class="line">passwd BTMuli #这里的&quot;BTMuli&quot;是用户名</span><br><span class="line">chmod 740 /etc/sudoers</span><br><span class="line">vim /etc/sudoers</span><br><span class="line"><span class="meta"># </span><span class="language-bash">按<span class="string">&quot;i&quot;</span>进入编辑模式，修改为如下代码：</span></span><br><span class="line">root    ALL=(ALL)       ALL</span><br><span class="line">BTMuli  ALL=(ALL)       ALL</span><br><span class="line"><span class="meta"># </span><span class="language-bash">按<span class="string">&quot;Esc&quot;</span>退出编辑，按<span class="string">&quot;:wq&quot;</span>保存</span></span><br></pre></td></tr></table></figure>
+
+<h3>11.本地windows10使用Gitbash创建密钥</h3>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ssh-keygen -t rsa</span><br></pre></td></tr></table></figure>
+
+<h3>12.将本地创建id_rsa.pub中文件复制</h3>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">su BTMuli</span><br><span class="line">mkdir ~/.ssh</span><br><span class="line">vim ~/.ssh/authorized_keys</span><br><span class="line"><span class="meta"># </span><span class="language-bash">按<span class="string">&quot;i&quot;</span>进入编辑模式，把sshkey粘贴进来</span></span><br><span class="line"><span class="meta"># </span><span class="language-bash">按<span class="string">&quot;Esc&quot;</span>退出编辑，按<span class="string">&quot;:wq&quot;</span>保存</span></span><br></pre></td></tr></table></figure>
+
+<h3>13.本地测试</h3>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ssh -v BTMuli@服务器ip</span><br></pre></td></tr></table></figure>
+
+<h2>三、云服务器网站配置</h2>
+
+<h3>1.创建网站目录并且设置权限</h3>
+
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">su root</span><br><span class="line"><span class="built_in">mkdir</span> /home/MyBlog</span><br><span class="line"><span class="built_in">chown</span> BTMuli:BTMuli -R /home/MyBlog</span><br></pre></td></tr></table></figure>
+
+<h3>2.安装Nginx</h3>
+
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">yum install -y nginx</span><br><span class="line">systemctl start nginx.service    <span class="comment">#启动服务</span></span><br></pre></td></tr></table></figure>
+
+<h3>3.修改Nginx配置文件</h3>
+
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">vim</span> /etc/nginx/nginx.conf </span><br><span class="line"><span class="comment"># 按&quot;i&quot;进入编辑模式，修改为如下代码：</span></span><br><span class="line"> <span class="number">38</span>     server &#123;</span><br><span class="line"> 39         <span class="attribute">listen</span>       <span class="number">80</span> default_server;</span><br><span class="line"> 40         <span class="attribute">listen</span>       [::]:<span class="number">80</span> default_server;</span><br><span class="line"> 41         <span class="attribute">server_name</span>  btmuli.site;        <span class="comment">#域名</span></span><br><span class="line"> 42         <span class="attribute">root</span>         /home/MyBlog;        <span class="comment">#网站目录</span></span><br></pre></td></tr></table></figure>
+
+<h3>4.重启服务器</h3>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">systemctl restart nginx.service</span><br></pre></td></tr></table></figure>
+
+<h3>5.建立git仓库</h3>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">su root</span><br><span class="line">cd /home/BTMuli</span><br><span class="line">git init --bare blog.git</span><br><span class="line">chown BTMuli:BTMuli -R blog.git</span><br></pre></td></tr></table></figure>
+
+<h3>6.同步网站根目录</h3>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">vim blog.git/hooks/post-receive</span><br><span class="line"><span class="meta"># </span><span class="language-bash">按<span class="string">&quot;i&quot;</span>进入编辑模式，把sshkey粘贴进来</span></span><br><span class="line"><span class="meta">#</span><span class="language-bash">!/bin/sh</span></span><br><span class="line">git --work-tree=/home/MyBlog --git-dir=/home/BTMuli/blog.git checkout -f</span><br></pre></td></tr></table></figure>
+
+<h3>7.修改权限</h3>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">chmod +x /home/BTMuli/blog.git/hooks/post-receive</span><br></pre></td></tr></table></figure>
+
+<h3>8.在windows10本地hexo目录修改_config.yml文件</h3>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repository: </span><br><span class="line">  	- https://github.com/BTMuli/BTMuli.github.io</span><br><span class="line">  	- BTMuli@81.71.129.119:/home/BTMuli/blog.git    #用户名@服务器Ip:git仓库位置</span><br><span class="line">  branch: main</span><br></pre></td></tr></table></figure>
+
+<h3>9.在本机gitbash部署</h3>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g -d</span><br></pre></td></tr></table></figure>
+
+<h2>四、常见报错</h2>
+
+<h3>1. <code>git-upload-pack</code>: 未找到命令</h3>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">bash: git-upload-pack: command not found</span><br><span class="line">fatal: Could not read from remote repository.</span><br></pre></td></tr></table></figure>
+
+<p>解决方法</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo ln -s  /usr/local/git/bin/git-upload-pack  /usr/bin/git-upload-pack</span><br></pre></td></tr></table></figure>
+
+<h3> 2.<code>git-receive-pack</code>: 未找到命令</h3>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">bash: git-receive-pack: command not found</span><br><span class="line">fatal: Could not read from remote repository.</span><br></pre></td></tr></table></figure>
+
+<p>解决方法</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo ln -s /usr/local/git/bin/git-receive-pack  /usr/bin/git-receive-pack</span><br></pre></td></tr></table></figure>
+
+<h3>3.无法远程连接获取</h3>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">fatal: Could not read from remote repository.</span><br></pre></td></tr></table></figure>
+
+<p>解决方法</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">重试或者 删掉本地ssh公钥重新上传至服务器</span><br></pre></td></tr></table></figure>
+
+<h3>4.key出错</h3>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Host key verification failed.</span><br></pre></td></tr></table></figure>
+
+<p>解决方法</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ssh-keygen -R 你要访问的IP地址</span><br></pre></td></tr></table></figure>
+
+<p>参考文章：</p>
+<ul>
+<li><a href="http://fuchenchenle.cn/2020/08/18/hexo%E9%83%A8%E7%BD%B2%E8%85%BE%E8%AE%AF%E4%BA%91/">Hexo部署到腾讯云</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>帮助文档</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>腾讯云</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>wechat</title>
-    <url>/2022/03/09/wechat/</url>
+    <url>/2024/06/15/wechat/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><hr>
 <p>tags:</p>
 <ul>
@@ -20,12 +171,12 @@
 <hr>
 <p><img src="http://imageproxy.chaoxing.com/0x0,q15,jpeg,samd7X0ZrJL6oHlAytD1Nbu9HyggfcanZX83-Ec8kDIk/http://p.ananas.chaoxing.com/star3/origin/3ef8e1bbeb56b0c2cd90df1ce4a3f119.png" alt="今日微信群"></p>
 
-        <div id="aplayer-GlBneXFE" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+        <div id="aplayer-WSZmrOHO" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
             <pre class="aplayer-lrc-content"></pre>
         </div>
         <script>
           var ap = new APlayer({
-            element: document.getElementById("aplayer-GlBneXFE"),
+            element: document.getElementById("aplayer-WSZmrOHO"),
             narrow: false,
             autoplay: false,
             showlrc: false,
@@ -158,6 +309,12 @@ lrctype= 0
       </tags>
   </entry>
   <entry>
+    <title></title>
+    <url>/2023/04/19/%E4%BA%9A%E7%A1%9D%E8%83%BA/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>2</p>
+]]></content>
+  </entry>
+  <entry>
     <title>关键词</title>
     <url>/2022/03/09/%E5%85%B3%E9%94%AE%E8%AF%8D/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><hr>
@@ -180,54 +337,7 @@ lrctype= 0
 ]]></content>
   </entry>
   <entry>
-    <title></title>
-    <url>/2023/04/19/%E4%BA%9A%E7%A1%9D%E8%83%BA/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>2</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>及时的良药互动</title>
-    <url>/2022/03/05/%E5%8F%8A%E6%97%B6%E7%9A%84%E8%89%AF%E8%8D%AF%E4%BA%92%E5%8A%A8/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>你知道么？ 一个成年人日均摄入热量2000千卡, 日行1万步, 相当于消耗维持人体正常生活所需以外的300千卡多余热量，帮助我们保持健康体格；日行1万步，相当于完成7公里的绿色出行，日均减少1.8千克碳排放，帮我们保护大气环境。</p>
-<p> 待更新</p>
-<ul>
-<li><p>图</p>
-</li>
-<li><p>医疗互动 </p>
-</li>
-<li><p>音乐 </p>
-</li>
-<li><p>好物种草</p>
-</li>
-</ul>
-<p><a href="https://115.com/s/swnj24c3hfd?password=o132&amp;#">https://115.com/s/swnj24c3hfd?password=o132&amp;#</a><br>#美国哈佛大学哈佛燕京图书馆古籍<br>访问码:o132   总共780G，文件7263个，这个算比较全的了，需要的赶快保存</p>
-<ul>
-<li><p>电影剧场 </p>
-</li>
-<li><p>饮食</p>
-</li>
-</ul>
-<p><a href="https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/EqQPeeoRNUVOgT9v9K1wARkBADqDqGZtwC0o5YzIUwPa9Q">https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/EqQPeeoRNUVOgT9v9K1wARkBADqDqGZtwC0o5YzIUwPa9Q</a></p>
-<p><a href="https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/EmEWxjoFxOZFqjMW68KBw7gBplrh9gwwiz043jQIJJui3w">https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/EmEWxjoFxOZFqjMW68KBw7gBplrh9gwwiz043jQIJJui3w</a></p>
-<p><a href="https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/EgZXCrs64G5Bg0FAxw3b8AwBBgXirl21aCBpsSOvPhEWRg">https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/EgZXCrs64G5Bg0FAxw3b8AwBBgXirl21aCBpsSOvPhEWRg</a><br><a href="https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/Ev03Gas72G5LkpxHEwhoUToBdThin_KcHAgwBZYL9AwFjw">https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/Ev03Gas72G5LkpxHEwhoUToBdThin_KcHAgwBZYL9AwFjw</a><br><a href="https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/EphIeS5iJNhMi-Ikx8h6eIABTmTuZfEUwPjfVtHKA6oC7Q">https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/EphIeS5iJNhMi-Ikx8h6eIABTmTuZfEUwPjfVtHKA6oC7Q</a><br><a href="https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/EnRBLTOD5iJHnhtmVbmplV0BSy1RBBd2SH5jhPExnP9JJw">https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/EnRBLTOD5iJHnhtmVbmplV0BSy1RBBd2SH5jhPExnP9JJw</a></p>
-]]></content>
-      <tags>
-        <tag>图</tag>
-        <tag>医疗互动</tag>
-        <tag>音乐</tag>
-        <tag>好物种草</tag>
-        <tag>电影剧场</tag>
-        <tag>饮食</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>二手待售</title>
-    <url>/2021/01/13/%E5%95%86%E5%BA%97/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p><img src="http://pan-yz.chaoxing.com/preview/showpreview_579415739645202432.html?v=1622614798000"></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>笔记</title>
+    <title>医药</title>
     <url>/2024/06/15/%E5%8C%BB%E8%8D%AF/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>raw data 是什么Raw data<br>生命代谢的物质基础有哪些？<br>生命代谢的物质基础主要包括以下几个方面：</p>
 <ol>
@@ -281,6 +391,47 @@ lrctype= 0
       </tags>
   </entry>
   <entry>
+    <title>及时的良药互动</title>
+    <url>/2022/03/05/%E5%8F%8A%E6%97%B6%E7%9A%84%E8%89%AF%E8%8D%AF%E4%BA%92%E5%8A%A8/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>你知道么？ 一个成年人日均摄入热量2000千卡, 日行1万步, 相当于消耗维持人体正常生活所需以外的300千卡多余热量，帮助我们保持健康体格；日行1万步，相当于完成7公里的绿色出行，日均减少1.8千克碳排放，帮我们保护大气环境。</p>
+<p> 待更新</p>
+<ul>
+<li><p>图</p>
+</li>
+<li><p>医疗互动 </p>
+</li>
+<li><p>音乐 </p>
+</li>
+<li><p>好物种草</p>
+</li>
+</ul>
+<p><a href="https://115.com/s/swnj24c3hfd?password=o132&amp;#">https://115.com/s/swnj24c3hfd?password=o132&amp;#</a><br>#美国哈佛大学哈佛燕京图书馆古籍<br>访问码:o132   总共780G，文件7263个，这个算比较全的了，需要的赶快保存</p>
+<ul>
+<li><p>电影剧场 </p>
+</li>
+<li><p>饮食</p>
+</li>
+</ul>
+<p><a href="https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/EqQPeeoRNUVOgT9v9K1wARkBADqDqGZtwC0o5YzIUwPa9Q">https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/EqQPeeoRNUVOgT9v9K1wARkBADqDqGZtwC0o5YzIUwPa9Q</a></p>
+<p><a href="https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/EmEWxjoFxOZFqjMW68KBw7gBplrh9gwwiz043jQIJJui3w">https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/EmEWxjoFxOZFqjMW68KBw7gBplrh9gwwiz043jQIJJui3w</a></p>
+<p><a href="https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/EgZXCrs64G5Bg0FAxw3b8AwBBgXirl21aCBpsSOvPhEWRg">https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/EgZXCrs64G5Bg0FAxw3b8AwBBgXirl21aCBpsSOvPhEWRg</a><br><a href="https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/Ev03Gas72G5LkpxHEwhoUToBdThin_KcHAgwBZYL9AwFjw">https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/Ev03Gas72G5LkpxHEwhoUToBdThin_KcHAgwBZYL9AwFjw</a><br><a href="https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/EphIeS5iJNhMi-Ikx8h6eIABTmTuZfEUwPjfVtHKA6oC7Q">https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/EphIeS5iJNhMi-Ikx8h6eIABTmTuZfEUwPjfVtHKA6oC7Q</a><br><a href="https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/EnRBLTOD5iJHnhtmVbmplV0BSy1RBBd2SH5jhPExnP9JJw">https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/EnRBLTOD5iJHnhtmVbmplV0BSy1RBBd2SH5jhPExnP9JJw</a></p>
+]]></content>
+      <tags>
+        <tag>图</tag>
+        <tag>医疗互动</tag>
+        <tag>音乐</tag>
+        <tag>好物种草</tag>
+        <tag>电影剧场</tag>
+        <tag>饮食</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>二手待售</title>
+    <url>/2021/01/13/%E5%95%86%E5%BA%97/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p><img src="http://pan-yz.chaoxing.com/preview/showpreview_579415739645202432.html?v=1622614798000"></p>
+]]></content>
+  </entry>
+  <entry>
     <title>微信二维码</title>
     <url>/2022/03/10/%E5%BE%AE%E4%BF%A1%E4%BA%8C%E7%BB%B4%E7%A0%81/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p><img src="http://imageproxy.chaoxing.com/0x0,q15,jpeg,slEtmWeY6WexS0SaijdY_3as70_MybRg4ZDGoVY7atkM/https://p.ananas.chaoxing.com/star3/origin/b6ccee78bf534263b9699503f1a05b25.png" alt="微信二维码"></p>
@@ -315,20 +466,18 @@ lrctype= 0
 ]]></content>
   </entry>
   <entry>
-    <title>淘宝店铺</title>
-    <url>/2019/07/22/%E6%B7%98%E5%AE%9D%E5%BA%97/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p><a href="https://tool.oschina.net/encrypt?type=2">https://tool.oschina.net/encrypt?type=2</a><br>1234<br>SHA256<br>卖家淘宝店铺二维码<br><a href="http://gqrcode.alicdn.com/img?type=hv&amp;w=200&amp;h=200&amp;text=https://shop540513788.m.taobao.com">http://gqrcode.alicdn.com/img?type=hv&amp;w=200&amp;h=200&amp;text=https%3A%2F%2Fshop540513788.m.taobao.com</a><br><img src="http://gqrcode.alicdn.com/img?type=hv&w=200&h=200&text=https://shop540513788.m.taobao.com/%E6%B7%98%E5%AE%9D%E5%BA%97%E9%93%BA/%E6%B7%98%E5%AE%9D%E7%BE%A4/%E6%B7%98%E5%AE%9D%E5%8D%96%E5%AE%B6"><br>店铺直达链接：<a href="https://shop540513788.m.taobao.com/">https://shop540513788.m.taobao.com</a></p>
+    <title>日语</title>
+    <url>/2024/06/20/%E6%97%A5%E8%AF%AD%E4%B8%AD%EF%BC%8C%E2%80%9COmakase%E2%80%9D/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>答：”Omakase” 的日语读音为 &#x2F;oʊməˈkɑːseɪ&#x2F;<br>问：不是&#x2F;omə’keɪs&#x2F;吗￼我记得元辅e是开音节来着<br>答：在日语中，“Omakase” 的标准发音与英语的发音规则不同。你的问题涉及到不同语言的发音区别。让我们区分一下：</p>
+<p>1.日语发音：<br>•日语中的 “おまかせ” (Omakase) 发音是逐个音节发出来的，音标为 &#x2F;o̞.ma.ka.se&#x2F;。其中的 “e” 发音更接近于英语中的短音 [ɛ]，类似于 “set” 中的 “e”。日语中的 “おお其中的 “e”发音更接近于英语中的短音 []，类似于 “set” 中的 “e”。<br>2.英语借词发音：<br>•如果在英语中，“Omakase” 有时会按英语发音规则进行近似发音。你提到的 &#x2F;omə’keɪs&#x2F; 属于英语化的发音，其中的 &#x2F;keɪ&#x2F; 部分反映了英语中 “e” 在开音节中的发音（类似 “say” 中的发音）。<br>•这个发音 (&#x2F;omə’keɪs&#x2F;) 不是标准日语发音，而是英语母语者对日语词汇的一种适应性发音。</p>
+<p>总结：在日语中，“Omakase” 的 “e” 并不发长音 &#x2F;eɪ&#x2F;，而是短音 &#x2F;e&#x2F;。如果是在英语语境中借用这个词，可能会被发成 &#x2F;omə’keɪs&#x2F;。</p>
 ]]></content>
       <categories>
-        <category>categories</category>
+        <category>122</category>
       </categories>
       <tags>
-        <tag>淘宝店铺卖家</tag>
-        <tag>相册</tag>
-        <tag>内部群</tag>
-        <tag>03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4</tag>
-        <tag>1234</tag>
-        <tag>SHA256</tag>
+        <tag>Typora</tag>
+        <tag>Markdown</tag>
       </tags>
   </entry>
   <entry>
@@ -346,19 +495,26 @@ lrctype= 0
 ]]></content>
   </entry>
   <entry>
-    <title>社会的最小单位是何？</title>
-    <url>/2022/03/09/%E7%A4%BE%E4%BC%9A%E7%9A%84%E6%9C%80%E5%B0%8F%E5%8D%95%E4%BD%8D%E6%98%AF%E4%BD%95%EF%BC%9F/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>世界<br>guojia<br>医院<br>还是什么</p>
-<p>你对自我有哪些偏见呢？为什么要辩论呢？你热爱生活吗？社会的最小单位是何？你知道yyds吗？我生从何来死往何处，我为何要出现在这个世界上，我的出现对这个世界来说意味着什么，是世界选择了我，还是我选择了世界？我和宇宙之间有必然的联系吗，宇宙是否有尽头，时间是否有长短，过去的时间在哪里消失，未来的时间又在何处停止，我在这一刻提出的问题，还是你刚才听到的问题吗？还是..</p>
+    <title>淘宝店铺</title>
+    <url>/2019/07/22/%E6%B7%98%E5%AE%9D%E5%BA%97/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p><a href="https://tool.oschina.net/encrypt?type=2">https://tool.oschina.net/encrypt?type=2</a><br>1234<br>SHA256<br>卖家淘宝店铺二维码<br><a href="http://gqrcode.alicdn.com/img?type=hv&amp;w=200&amp;h=200&amp;text=https://shop540513788.m.taobao.com">http://gqrcode.alicdn.com/img?type=hv&amp;w=200&amp;h=200&amp;text=https%3A%2F%2Fshop540513788.m.taobao.com</a><br><img src="http://gqrcode.alicdn.com/img?type=hv&w=200&h=200&text=https://shop540513788.m.taobao.com/%E6%B7%98%E5%AE%9D%E5%BA%97%E9%93%BA/%E6%B7%98%E5%AE%9D%E7%BE%A4/%E6%B7%98%E5%AE%9D%E5%8D%96%E5%AE%B6"><br>店铺直达链接：<a href="https://shop540513788.m.taobao.com/">https://shop540513788.m.taobao.com</a></p>
 ]]></content>
+      <categories>
+        <category>categories</category>
+      </categories>
       <tags>
-        <tag>长短</tag>
+        <tag>淘宝店铺卖家</tag>
+        <tag>相册</tag>
+        <tag>内部群</tag>
+        <tag>03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4</tag>
+        <tag>1234</tag>
+        <tag>SHA256</tag>
       </tags>
   </entry>
   <entry>
-    <title>笔记</title>
-    <url>/2024/06/20/%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>你</p>
+    <title>语录</title>
+    <url>/2024/06/20/%E8%AF%AD%E5%BD%95/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>作家张雪峰却提醒着我们：若不给自己设限，则人生中就没有限制你发挥的藩篱。</p>
 ]]></content>
       <categories>
         <category>Markdown</category>
@@ -366,6 +522,16 @@ lrctype= 0
       <tags>
         <tag>Typora</tag>
         <tag>Markdown</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>社会的最小单位是何？</title>
+    <url>/2022/03/09/%E7%A4%BE%E4%BC%9A%E7%9A%84%E6%9C%80%E5%B0%8F%E5%8D%95%E4%BD%8D%E6%98%AF%E4%BD%95%EF%BC%9F/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>世界<br>guojia<br>医院<br>还是什么</p>
+<p>你对自我有哪些偏见呢？为什么要辩论呢？你热爱生活吗？社会的最小单位是何？你知道yyds吗？我生从何来死往何处，我为何要出现在这个世界上，我的出现对这个世界来说意味着什么，是世界选择了我，还是我选择了世界？我和宇宙之间有必然的联系吗，宇宙是否有尽头，时间是否有长短，过去的时间在哪里消失，未来的时间又在何处停止，我在这一刻提出的问题，还是你刚才听到的问题吗？还是..</p>
+]]></content>
+      <tags>
+        <tag>长短</tag>
       </tags>
   </entry>
   <entry>
