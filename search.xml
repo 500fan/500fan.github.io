@@ -171,12 +171,12 @@
 <hr>
 <p><img src="http://imageproxy.chaoxing.com/0x0,q15,jpeg,samd7X0ZrJL6oHlAytD1Nbu9HyggfcanZX83-Ec8kDIk/http://p.ananas.chaoxing.com/star3/origin/3ef8e1bbeb56b0c2cd90df1ce4a3f119.png" alt="今日微信群"></p>
 
-        <div id="aplayer-mdMIRrgl" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+        <div id="aplayer-dVtiKDXE" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
             <pre class="aplayer-lrc-content"></pre>
         </div>
         <script>
           var ap = new APlayer({
-            element: document.getElementById("aplayer-mdMIRrgl"),
+            element: document.getElementById("aplayer-dVtiKDXE"),
             narrow: false,
             autoplay: false,
             showlrc: false,
@@ -291,17 +291,6 @@ lrctype= 0
 ]]></content>
   </entry>
   <entry>
-    <title>亚硝胺</title>
-    <url>/2024/09/30/%E4%BA%9A%E7%A1%9D%E8%83%BA/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>亚硝胺是一类强烈的化学致癌物质，被视为四大食品污染物之一。它是由硝酸盐、亚硝酸盐及胺类在一定条件下生成的。亚硝胺主要存在于腌制食品、霉变食品、烟熏制品中，如腌菜、熏肉、腐乳、罐头、剁椒酱、辣酱等。此外，香烟、酒精、化妆品、啤酒以及某些不新鲜的食品，如过夜的剩菜、腐烂的蔬菜等，也可能含有亚硝胺。</p>
-<p>亚硝胺在人体内可转化为亚硝酸，进而与血红蛋白中的血红蛋白氧化为高铁血红蛋白，导致血红蛋白失去携氧能力，引起组织缺氧。长期大量摄入含有亚硝胺的食物，可能会增加患上消化系统肿瘤的风险，如胃癌、食管癌等。</p>
-<p>虽然亚硝酸盐并不一定会转化为亚硝胺产生致癌作用，但为了避免潜在的健康风险，建议在日常生活中保持饮食清洁卫生，避免吃过夜的剩菜或腐烂的蔬菜，减少腌制、熏制食品的摄入，并避免长期大量饮酒和吸烟。</p>
-]]></content>
-      <tags>
-        <tag>致癌物质</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>关于体力锻炼，午睡</title>
     <url>/2024/09/30/%E5%85%B3%E4%BA%8E%E4%BD%93%E5%8A%9B%E9%94%BB%E7%82%BC/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h3 id="午睡黄金时间"><a href="#午睡黄金时间" class="headerlink" title="午睡黄金时间"></a>午睡黄金时间</h3><p>科学研究表明，<strong>午睡的最佳时间</strong>通常为<strong>10到20分钟</strong>。这个时间段足够让你恢复精力，而不会进入深度睡眠，避免醒来时的疲惫感。更长的午睡可能导致睡眠惯性，反而让你感到更加疲惫。<br>上午11点到下午1点半：午餐后身体自然产生困倦感，这时候有助于短暂休息，也是身体自然进入休息状态的好时机。短暂的午睡可以帮助恢复精力，提高下午的工作效率和学习效果。</p>
@@ -381,6 +370,17 @@ lrctype= 0
       </tags>
   </entry>
   <entry>
+    <title>亚硝胺</title>
+    <url>/2024/09/30/%E4%BA%9A%E7%A1%9D%E8%83%BA/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>亚硝胺是一类强烈的化学致癌物质，被视为四大食品污染物之一。它是由硝酸盐、亚硝酸盐及胺类在一定条件下生成的。亚硝胺主要存在于腌制食品、霉变食品、烟熏制品中，如腌菜、熏肉、腐乳、罐头、剁椒酱、辣酱等。此外，香烟、酒精、化妆品、啤酒以及某些不新鲜的食品，如过夜的剩菜、腐烂的蔬菜等，也可能含有亚硝胺。</p>
+<p>亚硝胺在人体内可转化为亚硝酸，进而与血红蛋白中的血红蛋白氧化为高铁血红蛋白，导致血红蛋白失去携氧能力，引起组织缺氧。长期大量摄入含有亚硝胺的食物，可能会增加患上消化系统肿瘤的风险，如胃癌、食管癌等。</p>
+<p>虽然亚硝酸盐并不一定会转化为亚硝胺产生致癌作用，但为了避免潜在的健康风险，建议在日常生活中保持饮食清洁卫生，避免吃过夜的剩菜或腐烂的蔬菜，减少腌制、熏制食品的摄入，并避免长期大量饮酒和吸烟。</p>
+]]></content>
+      <tags>
+        <tag>致癌物质</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>关于辩论</title>
     <url>/2024/09/30/%E5%85%B3%E4%BA%8E%E8%BE%A9%E8%AE%BA/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>A苏格拉底就没有留下一部自己亲手写的著作。将他与雅典的人们，特别是与年轻人的辩论进行整理，然后把其哲学主张写成著作留存后世的是其弟子柏拉图。而阿德勒也是一位毫不关心著述活动，而是热衷于在维也纳的咖啡馆里与人交谈或者是在讨论小组里与人辩论的人物。他们都不是那种只知道闭门造车的知识分子。</p>
@@ -397,6 +397,31 @@ lrctype= 0
         <tag>事实胜于雄辩</tag>
         <tag>不关心</tag>
         <tag>争议</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>关键词</title>
+    <url>/2022/03/09/%E5%85%B3%E9%94%AE%E8%AF%8D/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><hr>
+<p>tags:</p>
+<ul>
+<li>SVM</li>
+<li>Have a nice day<br>categories:</li>
+<li>Machine_Learning</li>
+<li>关键词<br>author: 解决你的问题</li>
+<li>流行语</li>
+</ul>
+<hr>
+<p>yyds</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>医药</title>
+    <url>/2024/09/30/%E5%8C%BB%E5%AD%A6%E5%8E%86%E7%A8%8B/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>待更新</p>
+]]></content>
+      <tags>
+        <tag>探讨讨论</tag>
       </tags>
   </entry>
   <entry>
@@ -444,31 +469,6 @@ lrctype= 0
         <tag>被否定</tag>
         <tag>失败的过去</tag>
         <tag>自我肯定感的教科书</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>关键词</title>
-    <url>/2022/03/09/%E5%85%B3%E9%94%AE%E8%AF%8D/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><hr>
-<p>tags:</p>
-<ul>
-<li>SVM</li>
-<li>Have a nice day<br>categories:</li>
-<li>Machine_Learning</li>
-<li>关键词<br>author: 解决你的问题</li>
-<li>流行语</li>
-</ul>
-<hr>
-<p>yyds</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>医药</title>
-    <url>/2024/09/30/%E5%8C%BB%E5%AD%A6%E5%8E%86%E7%A8%8B/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>待更新</p>
-]]></content>
-      <tags>
-        <tag>探讨讨论</tag>
       </tags>
   </entry>
   <entry>
@@ -601,21 +601,6 @@ lrctype= 0
 ]]></content>
   </entry>
   <entry>
-    <title>日语</title>
-    <url>/2024/06/20/%E6%97%A5%E8%AF%AD%E4%B8%AD%EF%BC%8C%E2%80%9COmakase%E2%80%9D/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>答：”Omakase” 的日语读音为 &#x2F;oʊməˈkɑːseɪ&#x2F;<br>问：不是&#x2F;omə’keɪs&#x2F;吗￼我记得元辅e是开音节来着<br>答：在日语中，“Omakase” 的标准发音与英语的发音规则不同。你的问题涉及到不同语言的发音区别。让我们区分一下：</p>
-<p>1.日语发音：<br>•日语中的 “おまかせ” (Omakase) 发音是逐个音节发出来的，音标为 &#x2F;o̞.ma.ka.se&#x2F;。其中的 “e” 发音更接近于英语中的短音 [ɛ]，类似于 “set” 中的 “e”。日语中的 “おお其中的 “e”发音更接近于英语中的短音 []，类似于 “set” 中的 “e”。<br>2.英语借词发音：<br>•如果在英语中，“Omakase” 有时会按英语发音规则进行近似发音。你提到的 &#x2F;omə’keɪs&#x2F; 属于英语化的发音，其中的 &#x2F;keɪ&#x2F; 部分反映了英语中 “e” 在开音节中的发音（类似 “say” 中的发音）。<br>•这个发音 (&#x2F;omə’keɪs&#x2F;) 不是标准日语发音，而是英语母语者对日语词汇的一种适应性发音。</p>
-<p>总结：在日语中，“Omakase” 的 “e” 并不发长音 &#x2F;eɪ&#x2F;，而是短音 &#x2F;e&#x2F;。如果是在英语语境中借用这个词，可能会被发成 &#x2F;omə’keɪs&#x2F;。</p>
-]]></content>
-      <categories>
-        <category>122</category>
-      </categories>
-      <tags>
-        <tag>Typora</tag>
-        <tag>Markdown</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>淘宝咸鱼</title>
     <url>/2021/07/09/%E6%B7%98%E5%AE%9D%E5%92%B8%E9%B1%BC/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p><a href="https://mp.weixin.qq.com/s?__biz=MzUzOTEyOTI1MQ==&mid=2247486687&idx=1&sn=3f6b33fcaa524f67c09d223eb2731d68&chksm=facc6813cdbbe1050f35208100edac26144a44f6053e4771b76d199e29480fdb13a52547316c&token=784632264&lang=zh_CN#rd" title="咸鱼">咸鱼&#x2F;二手&#x2F;资料</a><br><a href="https://mp.weixin.qq.com/s?__biz=MzUzOTEyOTI1MQ==&mid=2247486672&idx=1&sn=b97ae19c11ebf24c28c4384238adb86b&chksm=facc681ccdbbe10a918c7fa6604d240f8cead40e8e0b983ad12587c096109ca78593b2079310&token=784632264&lang=zh_CN#rd/" title="微信小商店/便宜">微信小商店</a></p>
@@ -628,23 +613,6 @@ lrctype= 0
 <p><img src="https://img-blog.csdnimg.cn/202101161254413.png#pic_center" alt="系统对话"></p>
 <p><img src="https://img-blog.csdnimg.cn/20210116125533198.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0Nzc3MjUx,size_16,color_FFFFFF,t_70#pic_center" alt="咸鱼"></p>
 ]]></content>
-  </entry>
-  <entry>
-    <title>淘宝店铺</title>
-    <url>/2019/07/22/%E6%B7%98%E5%AE%9D%E5%BA%97/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p><a href="https://tool.oschina.net/encrypt?type=2">https://tool.oschina.net/encrypt?type=2</a><br>1234<br>SHA256<br>卖家淘宝店铺二维码<br><a href="http://gqrcode.alicdn.com/img?type=hv&amp;w=200&amp;h=200&amp;text=https://shop540513788.m.taobao.com">http://gqrcode.alicdn.com/img?type=hv&amp;w=200&amp;h=200&amp;text=https%3A%2F%2Fshop540513788.m.taobao.com</a><br><img src="http://gqrcode.alicdn.com/img?type=hv&w=200&h=200&text=https://shop540513788.m.taobao.com/%E6%B7%98%E5%AE%9D%E5%BA%97%E9%93%BA/%E6%B7%98%E5%AE%9D%E7%BE%A4/%E6%B7%98%E5%AE%9D%E5%8D%96%E5%AE%B6"><br>店铺直达链接：<a href="https://shop540513788.m.taobao.com/">https://shop540513788.m.taobao.com</a></p>
-]]></content>
-      <categories>
-        <category>categories</category>
-      </categories>
-      <tags>
-        <tag>淘宝店铺卖家</tag>
-        <tag>相册</tag>
-        <tag>内部群</tag>
-        <tag>03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4</tag>
-        <tag>1234</tag>
-        <tag>SHA256</tag>
-      </tags>
   </entry>
   <entry>
     <title>社会的最小单位是何？</title>
@@ -670,6 +638,21 @@ lrctype= 0
       </tags>
   </entry>
   <entry>
+    <title>日语</title>
+    <url>/2024/06/20/%E6%97%A5%E8%AF%AD%E4%B8%AD%EF%BC%8C%E2%80%9COmakase%E2%80%9D/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>答：”Omakase” 的日语读音为 &#x2F;oʊməˈkɑːseɪ&#x2F;<br>问：不是&#x2F;omə’keɪs&#x2F;吗￼我记得元辅e是开音节来着<br>答：在日语中，“Omakase” 的标准发音与英语的发音规则不同。你的问题涉及到不同语言的发音区别。让我们区分一下：</p>
+<p>1.日语发音：<br>•日语中的 “おまかせ” (Omakase) 发音是逐个音节发出来的，音标为 &#x2F;o̞.ma.ka.se&#x2F;。其中的 “e” 发音更接近于英语中的短音 [ɛ]，类似于 “set” 中的 “e”。日语中的 “おお其中的 “e”发音更接近于英语中的短音 []，类似于 “set” 中的 “e”。<br>2.英语借词发音：<br>•如果在英语中，“Omakase” 有时会按英语发音规则进行近似发音。你提到的 &#x2F;omə’keɪs&#x2F; 属于英语化的发音，其中的 &#x2F;keɪ&#x2F; 部分反映了英语中 “e” 在开音节中的发音（类似 “say” 中的发音）。<br>•这个发音 (&#x2F;omə’keɪs&#x2F;) 不是标准日语发音，而是英语母语者对日语词汇的一种适应性发音。</p>
+<p>总结：在日语中，“Omakase” 的 “e” 并不发长音 &#x2F;eɪ&#x2F;，而是短音 &#x2F;e&#x2F;。如果是在英语语境中借用这个词，可能会被发成 &#x2F;omə’keɪs&#x2F;。</p>
+]]></content>
+      <categories>
+        <category>122</category>
+      </categories>
+      <tags>
+        <tag>Typora</tag>
+        <tag>Markdown</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>路上</title>
     <url>/2019/07/22/%E8%B7%AF%E4%B8%8A/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p> 未来楼市如村</p>
@@ -681,6 +664,23 @@ lrctype= 0
         <tag>人</tag>
         <tag>事物</tag>
         <tag>世界</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>淘宝店铺</title>
+    <url>/2019/07/22/%E6%B7%98%E5%AE%9D%E5%BA%97/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p><a href="https://tool.oschina.net/encrypt?type=2">https://tool.oschina.net/encrypt?type=2</a><br>1234<br>SHA256<br>卖家淘宝店铺二维码<br><a href="http://gqrcode.alicdn.com/img?type=hv&amp;w=200&amp;h=200&amp;text=https://shop540513788.m.taobao.com">http://gqrcode.alicdn.com/img?type=hv&amp;w=200&amp;h=200&amp;text=https%3A%2F%2Fshop540513788.m.taobao.com</a><br><img src="http://gqrcode.alicdn.com/img?type=hv&w=200&h=200&text=https://shop540513788.m.taobao.com/%E6%B7%98%E5%AE%9D%E5%BA%97%E9%93%BA/%E6%B7%98%E5%AE%9D%E7%BE%A4/%E6%B7%98%E5%AE%9D%E5%8D%96%E5%AE%B6"><br>店铺直达链接：<a href="https://shop540513788.m.taobao.com/">https://shop540513788.m.taobao.com</a></p>
+]]></content>
+      <categories>
+        <category>categories</category>
+      </categories>
+      <tags>
+        <tag>淘宝店铺卖家</tag>
+        <tag>相册</tag>
+        <tag>内部群</tag>
+        <tag>03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4</tag>
+        <tag>1234</tag>
+        <tag>SHA256</tag>
       </tags>
   </entry>
   <entry>
