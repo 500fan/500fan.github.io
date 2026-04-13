@@ -1,13 +1,9 @@
 <!DOCTYPE HTML>
 <html lang="en">
- <!--电脑页面站点logo，001-->
- <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
- <!-- or，苹果手机展示logo，01 -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!--电脑页面站点logo，002-->
-  <link rel="shortcut icon" href="./medias/images/kuanzuiyu.png">
-  <!-- or，苹果手机展示logo ，02-->
-  <link rel="apple-touch-icon" href="./medias/images/shuixiahetang.png" type="image/png">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <link rel="shortcut icon" href="/medias/banner/kuanzuiyu.png" type="image/x-icon">
+ <link rel="apple-touch-icon" href="/medias/images/shuixiahetang.png" type="image/png">
 
 
 
@@ -44,7 +40,7 @@
     <title>微信二维码 | iniunai</title>
 
     <link rel="stylesheet" type="text/css" href="/libs/artitalk/artitalk.min.css">
-    <link rel="icon" type="image/png" href="/medias/images/kuanzuiyu.png">
+    <link rel="icon" type="image/png" href="/medias/banner/kuanzuiyu.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
     <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
@@ -54,20 +50,11 @@
     <link rel="stylesheet" type="text/css" href="/css/matery.css">
     <link rel="stylesheet" type="text/css" href="/css/my.css">
     <link rel="stylesheet" type="text/css" href="/libs/artitalk/artitalk.min.css">
-<!--电脑页面站点logo，002-->
-<link rel="shortcut icon" href="/medias/images/kuanzuiyu.png">
-<!-- or，苹果手机展示logo ，02,20241028手机微信页面logo起作用-->
-<link rel="apple-touch-icon" href="/medias/images/shuixiahetang.png" type="image/png">
-  <!--电脑页面站点logo，002-->
-  <link rel="shortcut icon" href="/medias/images/kuanzuiyu.png">
-  <!-- or，苹果手机展示logo ，02-->
-  <link rel="apple-touch-icon" href="/medias/images/kuanzuiyu.png" type="image/png">
-
-  <!-- 如果使用PNG格式的favicon -->
-  <link rel="icon" href="/medias/images/kuanzuiyu.png" type="image/png">
-  <!-- 指定favicon -->
-  <link rel="icon" href="/medias/images/kuanzuiyu.png" type="image/x-icon">
-  <link rel="shortcut icon" href="/medias/images/kuanzuiyu.png" type="image/x-icon"> <!-- 兼容旧版浏览器 -->
+<!--电脑页面站点logo，读取_config.yml中的favicon配置-->
+  <link rel="icon" href="/medias/banner/kuanzuiyu.png" type="image/png">
+  <link rel="shortcut icon" href="/medias/banner/kuanzuiyu.png" type="image/x-icon">
+  <!-- 苹果手机展示logo -->
+  <link rel="apple-touch-icon" href="/medias/images/shuixiahetang.png" type="image/png">
 
 
     <script src="/libs/jquery/jquery.min.js"></script>
@@ -258,7 +245,7 @@
             </use>
         </svg>
     </a>
-    <a onclick="SiderMenu()" target="_self">
+    <a href="javascript:void(0)" onclick="SiderMenu()" target="_self">
         <svg style=" width: 1.5em;height: 1.5em;" class="icon" aria-hidden="true">
             <use xlink:href="#icon-caidanfenlei">
                 <svg id="icon-caidanfenlei" viewBox="0 0 1024 1024">
@@ -281,7 +268,7 @@
             </use>
         </svg>
     </a>
-    <a id="say" href="#vcomments" target="_self">
+    <a id="say" href="/contact/#vcomments" target="_self">
         <svg style=" width: 1.5em;height: 1.5em;" class="icon" aria-hidden="true">
             <use xlink:href="#icon-ketangtaolun">
                 <svg id="icon-ketangtaolun" viewBox="0 0 1234 1024">
@@ -306,7 +293,7 @@
     </a>
     <a onclick="switchNightMode()">
         <svg style=" width: 1.5em;height: 1.5em;" class="icon" aria-hidden="true">
-            <use id="modeicon" xlink:href="#icon-_moon">
+            <use xlink:href="#icon-_moon">
             </use>
         </svg>
     </a>
@@ -371,20 +358,19 @@
                 d="M446.481067 735.914667a129.706667 129.706667 0 0 1 52.599466-99.6352 52.906667 52.906667 0 0 1 65.928534-51.080534 102.997333 102.997333 0 0 1 166.6048-22.442666 69.973333 69.973333 0 0 1 54.408533 5.7856 69.973333 69.973333 0 0 0-81.476267-32.853334 102.997333 102.997333 0 0 0-166.656 22.4256 52.906667 52.906667 0 0 0-65.928533 51.0976 129.706667 129.706667 0 0 0-52.599467 99.6352c0 10.478933 9.864533 20.309333 27.170134 28.859734a17.408 17.408 0 0 1-0.0512-1.792z"
                 fill="#E8E9EC"></path>
         </symbol>
+        <symbol id="icon-icon-music" viewBox="0 0 1024 1024">
+            <path
+                d="M997.45185173 512A485.45185173 485.45185173 0 1 1 26.54814827 512a485.45185173 485.45185173 0 0 1 970.90370346 0"
+                fill="#9025FC"></path>
+            <path
+                d="M478.56450347 602.59745173S403.9869632 545.19277013 369.03442987 537.78962987c-82.1020448-17.41558507-136.47265173 35.8020736-133.37789654 106.192592 4.36906667 100.42785173 127.37042987 123.85090347 194.66619307 111.3505184 67.3564448-12.37902187 101.09534827-57.04059307 108.86257707-111.83597014 7.76722987-54.79537813 46.84610347-263.9037632 46.84610346-263.9037632s66.26417813 61.28829653 85.2574816 82.3447712c26.4571264 29.3698368-0.1820448 79.85682987-0.18204373 79.8568288s72.39300693-12.07561493 90.23336213-104.97896213c12.31834027-64.1403264-23.36237013-76.64071147-65.71804373-110.37961493-82.76954027-65.7787264-121.2416-90.2940448-145.63555627-95.45197014-24.27259307-5.0972448-45.02565973 4.42974827-45.8145184 81.4952288-0.84954027 77.0654816-25.60758507 290.1181632-25.60758506 290.1181632"
+                fill="#FFFFFF"></path>
+        </symbol>
     </svg>
 
-    <a onclick="stylesheet;" id="aplayer">
+    <a href="javascript:void(0)" onclick="music_on();" id="aplayer">
         <svg style=" width: 1.5em;height: 1.5em;" class="icon" aria-hidden="true">
-            <use id="modeicon" xlink:href="#icon-icon-music">
-                <svg id="icon-icon-music" viewBox="0 0 1024 1024">
-                    <path
-                        d="M997.45185173 512A485.45185173 485.45185173 0 1 1 26.54814827 512a485.45185173 485.45185173 0 0 1 970.90370346 0"
-                        fill="#9025FC"></path>
-                    <path
-                        d="M478.56450347 602.59745173S403.9869632 545.19277013 369.03442987 537.78962987c-82.1020448-17.41558507-136.47265173 35.8020736-133.37789654 106.192592 4.36906667 100.42785173 127.37042987 123.85090347 194.66619307 111.3505184 67.3564448-12.37902187 101.09534827-57.04059307 108.86257707-111.83597014 7.76722987-54.79537813 46.84610347-263.9037632 46.84610346-263.9037632s66.26417813 61.28829653 85.2574816 82.3447712c26.4571264 29.3698368-0.1820448 79.85682987-0.18204373 79.8568288s72.39300693-12.07561493 90.23336213-104.97896213c12.31834027-64.1403264-23.36237013-76.64071147-65.71804373-110.37961493-82.76954027-65.7787264-121.2416-90.2940448-145.63555627-95.45197014-24.27259307-5.0972448-45.02565973 4.42974827-45.8145184 81.4952288-0.84954027 77.0654816-25.60758507 290.1181632-25.60758506 290.1181632"
-                        fill="#FFFFFF"></path>
-                </svg>
-            </use>
+            <use id="modeicon" xlink:href="#icon-icon-music"></use>
         </svg>
     </a>
     <audio id="bg_music" src="//music.163.com/outchain/player?type=2&id=1417558380&auto=1&height=66" loop="loop"></audio>
@@ -392,12 +378,52 @@
 
 <script>
     function music_on() {
+        var panel = document.getElementById('global-musics-player');
+        var miniBar = document.getElementById('musics-mini-bar');
+        var meting = panel ? panel.querySelector('meting-js') : null;
+
+        // 面板未显示 → 展开并播放
+        if (panel && panel.style.display === 'none') {
+            panel.style.display = 'block';
+            if (miniBar) miniBar.style.display = 'none';
+            if (meting && meting.aplayer) {
+                if (meting.aplayer.audio.paused) meting.aplayer.play();
+            } else if (meting) {
+                var retryCount = 0;
+                var timer = setInterval(function() {
+                    retryCount++;
+                    if (meting.aplayer) {
+                        clearInterval(timer);
+                        if (meting.aplayer.audio.paused) meting.aplayer.play();
+                    } else if (retryCount > 20) {
+                        clearInterval(timer);
+                    }
+                }, 200);
+            }
+            return;
+        }
+
+        // 面板已显示 → 暂停并收起
+        if (panel && panel.style.display !== 'none') {
+            if (meting && meting.aplayer) {
+                meting.aplayer.pause();
+            }
+            panel.style.display = 'none';
+            if (miniBar) miniBar.style.display = 'none';
+            return;
+        }
+
+        playBgMusic();
+    }
+    function playBgMusic() {
         var audio1 = document.getElementById('bg_music');
-        if (audio1.paused) {
-            audio1.play();
-        }else{
-            audio1.pause();
-            audio1.currentTime = 0;//音乐从头播放
+        if (audio1) {
+            if (audio1.paused) {
+                audio1.play();
+            } else {
+                audio1.pause();
+                audio1.currentTime = 0;
+            }
         }
     }
     function BackTOP() {
@@ -434,26 +460,39 @@
         })
         
     function SiderMenu() {
-        $('#main-container').toggleClass('open');
-        $('.iconflat').css('width', '50px').css('height', '50px');
-        $('.openNav').css('height', '50px');
-        $('#main-container,#mo-nav,.openNav').toggleClass('open')
+        var sidenav = document.querySelector('#mobile-nav');
+        if (sidenav) {
+            var instance = M.Sidenav.getInstance(sidenav);
+            if (instance) {
+                instance.isOpen ? instance.close() : instance.open();
+            } else {
+                M.Sidenav.init(sidenav);
+                M.Sidenav.getInstance(sidenav).open();
+            }
+        }
     }
 
     function switchNightMode() {
-        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($("body")), setTimeout(
-            function () {
-                /*var DarkMode = document.cookie.replace(/(?:(?:^|.*;\s*)DarkMode\s*\=\s*([^;]*).*$)|^.*$/, "$1") ||
-                    '0';
-                (DarkMode == '0') ? ($("html").addClass("DarkMode"), document.cookie = "DarkMode=1;path=/", console
-                    .log('夜间模式开启')*/, $('#modeicon').attr("xlink:href", "#icon-sun")) : ($("html").removeClass(
-                        "DarkMode"), document.cookie = "DarkMode=0;path=/", console.log('夜间模式关闭'), $('#modeicon')
-                    .attr("xlink:href", "#icon-_moon")), setTimeout(function () {
-                    $(".Cuteen_DarkSky").fadeOut(1e3, function () {
-                        $(this).remove()
-                    })
-                }, 2e3)
-            }), 50
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($("body"));
+        setTimeout(function () {
+            var DarkMode = document.cookie.replace(/(?:(?:^|.*;\s*)DarkMode\s*\=\s*([^;]*).*$)|^.*$/, "$1") || '0';
+            if (DarkMode == '0') {
+                $("html").addClass("DarkMode");
+                document.cookie = "DarkMode=1;path=/";
+                console.log('夜间模式开启');
+                $('#modeicon').attr("xlink:href", "#icon-sun");
+            } else {
+                $("html").removeClass("DarkMode");
+                document.cookie = "DarkMode=0;path=/";
+                console.log('夜间模式关闭');
+                $('#modeicon').attr("xlink:href", "#icon-_moon");
+            }
+            setTimeout(function () {
+                $(".Cuteen_DarkSky").fadeOut(1000, function () {
+                    $(this).remove();
+                });
+            }, 2000);
+        }, 50);
     }
 
     function checkNightMode() {
@@ -635,44 +674,6 @@
 <!-- left side bar.end -->
 
 
-<link rel="stylesheet" href="/">
-<style>
-    .aplayer .aplayer-lrc p {
-        
-        font-size: 12px;
-        font-weight: 700;
-        line-height: 16px !important;
-    }
-
-    .aplayer .aplayer-lrc p.aplayer-lrc-current {
-        
-        font-size: 15px;
-        color: #42b983;
-    }
-
-    
-</style>
-<div class="">
-    
-    <div class="row">
-        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
-                   server="netease"
-                   type="playlist"
-                   id="503838841"
-                   fixed='true'
-                   autoplay='false'
-                   theme='#42b983'
-                   loop='all'
-                   order='random'
-                   preload='auto'
-                   volume='0.7'
-                   list-folded='true'
-        >
-        </meting-js>
-    </div>
-</div>
-
-
     <header class="navbar-fixed">
     <nav id="headNav" class="bg-color nav-transparent">
         <div id="navContainer" class="nav-wrapper container">
@@ -680,7 +681,7 @@
                 <a href="/" class="waves-effect waves-light">
 
                     
-                    <img src="/medias/09logo.png" class="logo-img" alt="LOGO">
+                    <img src="/medias/images/shuixiahetang.png" class="logo-img" alt="LOGO">
                     
                     <span class="logo-span mytitle">iniunai</span>
 
@@ -873,7 +874,7 @@
 
     <div class="mobile-head bg-color">
         
-        <img src="/medias/09logo.png" class="logo-img circle responsive-img">
+        <img src="/medias/images/shuixiahetang.png" class="logo-img circle responsive-img">
         
         <div class="logo-name">iniunai</div>
         <div class="logo-desc">
@@ -2635,9 +2636,6 @@ head.appendChild(script);
 
 
     <footer class="page-footer bg-color">
-    
-        
-    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/HCLonely/images@master/others/heartbeat.min.css">
 
     <div class="container row center-align"
@@ -2645,7 +2643,7 @@ head.appendChild(script);
         <div class="col s12 m8 l8 copy-right">
             Copyright&nbsp;&copy;
             
-                <span id="year">2019-2024</span>
+                <span id="year">2019-2026</span>
             
             <span id="year">2019</span>
             <a href="/about" target="_blank"><i id="heartbeat" class="fa fas fa-heartbeat"></i>500饭<i id="heartbeat" class="fa fas fa-heartbeat"></i></a>
@@ -2678,7 +2676,7 @@ head.appendChild(script);
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
                 class="white-color">197k</span>&nbsp;字
 
-            <a target="_blank" rel="noopener" href="https://travellings.now.sh/" title="开往-友链接力" style="width: 120px;"><img src="https://cdn.jsdelivr.net/gh/volfclub/travellings/assets/logo.gif" alt="开往-友链接力" width="120px"></a>
+            <a target="_blank" rel="noopener" href="https://travellings.now.sh/" title="开往-友链接力" style="width: 120px;"><img src="/medias/images/logo-3.png" alt="开往-友链接力" width="120px"></a>
             <!-- 运行天数提醒. -->
             <br>
             <span id="sitetime">载入运行时间...</span>
@@ -2775,7 +2773,6 @@ head.appendChild(script);
     </div>
     
 <div class="progress-bar"></div>
-<script src="https://cdn.jsdelivr.net/npm/meting@1.1.0/dist/Meting.min.js"></script>
 
 </footer>
 
@@ -2888,6 +2885,113 @@ $(function () {
     <a class="btn-floating btn-large waves-effect waves-light" href="#!">
         <i class="fas fa-arrow-up"></i>
     </a>
+</div>
+
+
+
+
+
+    
+<!-- 脚本放在面板外面，确保执行 -->
+<link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+</style>
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script>var meting_api='https://api.injahow.cn/meting/?server=:server&type=:type&id=:id&r=:r';</script>
+<script src="/js/Meting.min.js"></script>
+
+<!-- 吸底浮动面板 -->
+<div id="global-musics-player" style="display:none;position:fixed;right:0;bottom:80px;z-index:999;width:280px;max-height:400px;overflow-y:auto;box-shadow:-2px 0 8px rgba(0,0,0,.15);border-radius:8px 0 0 8px;background:#fff;">
+    <div id="musics-toggle-bar" style="cursor:pointer;text-align:center;padding:6px 0;background:#f5f5f5;border-radius:8px 0 0 0;font-size:13px;color:#666;user-select:none;">
+        <i class="fas fa-chevron-down"></i> 收起播放器
+    </div>
+    <div id="musics-content">
+        <meting-js
+                   server="tencent"
+                   type="playlist"
+                   id="1776127550"
+                   fixed="false"
+                   autoplay="true"
+                   theme="#42b983"
+                   order="random"
+                   preload="auto"
+                   volume="0.7"
+                   list-folded="false"
+                   list-max-height="525px"
+        >
+        </meting-js>
+    </div>
+</div>
+
+<!-- 迷你展开条 -->
+<div id="musics-mini-bar" onclick="toggleMusicsPanel()" style="display:none;position:fixed;right:0;bottom:320px;z-index:999;cursor:pointer;background:#fff;box-shadow:-2px 0 8px rgba(0,0,0,.15);border-radius:8px 0 0 8px;padding:8px 12px;font-size:13px;color:#666;">
+    <i class="fas fa-chevron-up"></i> 展开播放器
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var toggleBar = document.getElementById('musics-toggle-bar');
+        if (toggleBar) {
+            toggleBar.addEventListener('click', function() {
+                toggleMusicsPanel();
+            });
+        }
+
+        
+        // autoplay 时自动展开面板
+        setTimeout(function() {
+            var panel = document.getElementById('global-musics-player');
+            if (panel) panel.style.display = 'block';
+        }, 1000);
+        
+    });
+
+    function toggleMusicsPanel() {
+        var panel = document.getElementById('global-musics-player');
+        var miniBar = document.getElementById('musics-mini-bar');
+        if (!panel) return;
+        if (panel.style.display === 'none') {
+            panel.style.display = 'block';
+            if (miniBar) miniBar.style.display = 'none';
+        } else {
+            panel.style.display = 'none';
+            if (miniBar) miniBar.style.display = 'block';
+        }
+    }
+</script>
+
+
+
+
+
+<div class="">
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
 </div>
 
 
