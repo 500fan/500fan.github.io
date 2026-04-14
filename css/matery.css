@@ -2850,22 +2850,81 @@ article .article-tags .chip {
     font-weight: 500;
 }
 
+/*
+ * ============================================
+ * 文章正文内容区域(#articleContent)全局文字样式
+ * ============================================
+ * 路径: themes/hexo-theme-matery/source/css/matery.css
+ * 作用: 控制每一篇博客文章正文的文字透明度和颜色
+ * opacity: 1.5 — 设置文字透明度（注意：CSS规范中opacity最大值为1，
+ *                 浏览器会将超过1的值按1处理，即完全不透明）
+ * color: #000000 — 将文字颜色设置为纯黑色，提升阅读清晰度
+ */
+
+/* 文章段落(p标签)样式：设置外边距、字体大小和行高 */
 #articleContent p {
     margin: 2px 2px 10px;
-    font-size: 1.05rem;
-    line-height: 1.85rem;
+    font-size: 2.05rem;
+    letter-spacing: 1px; /* 文字间距：每个字符之间增加1px的间距 */
+    color: #000000; 
+    line-height: 4.85rem;
 }
 
 #articleContent blockquote p {
     text-indent: 0.2rem;
-}
+    }
+    
+    #articleContent code {
+      display: inline-block;
+      padding: 2px 6px;
+      margin: 0 2px;
+      font-size: 0.9rem;
+      color: #e96900;
+      background-color: #f8f8f8;
+      border-radius: 3px;
+      font-family: "Consolas", "Monaco", "Courier New", monospace;
+    }
 
-#articleContent a {
-    padding: 0 2px;
-    color: #42b983;
+    /* 文章内容中点击解答文字，样式，代码块(pre)样式：设置背景色、圆角和溢出隐藏 */
+    #articleContent pre {
+      position: relative;
+      margin: 15px 0;
+      padding: 0;
+      background-color: #282c34;
+      border-radius: 5px;
+      overflow: hidden;
+      opacity: 1.5;
+    }
+    
+    #articleContent pre code {
+      display: block;
+      padding: 15px 20px;
+      margin: 0;
+      color: #abb2bf;
+      background-color: transparent;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      border-radius: 0;
+    }
+    
+    #articleContent a {    padding: 0 2px;
+    color: #024326;
     font-weight: 500;
+    font-size: 1rem;    /* 文章内链接(a标签)字体大小 */
     text-decoration: underline;
     word-wrap: break-word;
+}
+
+/*
+ * 卡片内容区域段落(.card .card-content p)字体大小
+ * 路径: themes/hexo-theme-matery/source/css/matery.css
+ * 作用: 控制首页文章卡片摘要等卡片内段落的字体大小
+ */
+.card .card-content p {
+    color: #024326;
+    font-size: 2.5rem;    /* 卡片内段落字体大小 */
+    letter-spacing: 1px; /* 文字间距：每个字符之间增加1px的间距 */
+    line-height: 1.8;    /* 行高：控制每行文字的上下间距 */
 }
 
 #articleContent .img-item {
