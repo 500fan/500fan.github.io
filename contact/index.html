@@ -1289,6 +1289,7 @@
 
     <link rel="stylesheet" type="text/css" href="/css/style.css" />
 <link rel="stylesheet" type="text/css" href="/css/barrager.css">
+<!-- av-min.js 只在这里加载一次，供弹幕和 Valine 评论共用 -->
 <script src="/libs/valine/av-min.js"></script>
 <script src="/libs/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="/js/jquery.barrager.js"></script>
@@ -1408,9 +1409,9 @@
 </style>
 <main class="content">
     <div id="contact" class="container chip-container">
-        <div id="smarts" id="smarts" class="card">
-            <div id="smarts" class="card-content">
-                <div id="smarts" class="tag-title center-align">
+        <div id="smarts" class="card">
+            <div class="card-content">
+                <div class="tag-title center-align">
                     <i class="fas fa-comments"></i>&nbsp;&nbsp;Contact
                 </div>
                 
@@ -1428,10 +1429,10 @@
                     <b>···</b>
                     <b></b>
                 </p>
-                <div id="smarts" class="container">
+                <div class="container barrage-container">
                     <section id="custom" class="bb-section">
-                        <div id="smarts" class="row">
-                            <div id="smarts" class="col-md-5">
+                        <div class="row">
+                            <div class="col-md-5">
                                 <form class="form-inline">
                                     <div class="form-group">
                                         文字：<input class="form-control" name="info" type="text" placeholder="这里输入展示的样式为弹幕,留言内容会同步在弹屏"/>
@@ -1493,7 +1494,7 @@
                         let info = $('input[name=info]').val();
                         (info === '' ) ?  info='hello world' : info=info;
                         let href = $('input[name=href]').val();
-                        (href === '' ) ?  href='https://github.shuwanzhi.io' : href=href;
+                        (href === '' ) ?  href='https://github.500fan.io' : href=href;
                         let speed = parseInt($('input[name=speed]').val());
                         if(speed > 20 || speed < 5)
                             speed = Math.floor(Math.random() * 10) + 5;
@@ -1503,9 +1504,20 @@
                         barrager.set('info', info);
                         barrager.set('speed', speed);
                         barrager.save().then((todo) => {
+                            // 保存成功后立即在页面显示弹幕
+                            $('body').barrager({
+                                'img': '/medias/barrager/' + Math.floor(Math.random() * 3) + ".png",
+                                'href': href,
+                                'info': info,
+                                'speed': speed
+                            });
+                            // 清空输入框
                             $(" input[ name='info' ] ").val("")
                             $(" input[ name='href' ] ").val("")
                             $(" input[ name='speed' ] ").val("")
+                        }).catch((err) => {
+                            alert('留言发送失败，请检查网络或稍后再试');
+                            console.error('弹幕保存失败:', err);
                         });
                     }
 
@@ -1545,7 +1557,7 @@
         clientSecret: '1b8fa81ca8a1b4d1d17a01a62a35bf5a809700ff',
         repo: '500fan.github.io',
         owner: '500fan',
-        admin: "shuwanzhi",
+        admin: ["500fan","shuwanzhi"],
         id: '2019-07-20T21-25-30',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
@@ -2193,8 +2205,8 @@ head.appendChild(script);
     }
 </style>
 
-<div id="smarts" class="card valine-card" data-aos="fade-up">
-    <div id="smarts" class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; padding-left: 20px; top: 15px; padding-bottom: 5px;">
+<div class="card valine-card" data-aos="fade-up">
+    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; padding-left: 20px; top: 15px; padding-bottom: 5px;">
         <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
         <span>评论</span>
     </div>
@@ -2202,7 +2214,7 @@ head.appendChild(script);
     </div>
 </div>
 
-<script src="/libs/valine/av-min.js"></script>
+<!-- 删除重复的 av-min.js 加载，已在页面顶部加载过 -->
 <script src="https://unpkg.com/valine/dist/Valine.min.js"></script>
 <script>
     new Valine({
