@@ -781,11 +781,11 @@
     <ul class="sub-nav menus_item_child ">
       
       <li>
-        <a href="/musics">
+        <a href="/liuyan">
           
           <i class="fas fa-music" style="margin-top: -20px; zoom: 0.6;"></i>
           
-          <span>Musics</span>
+          <span>liuyan</span>
         </a>
       </li>
       
@@ -979,11 +979,11 @@
               
                 <li>
 
-                  <a href="/musics " style="margin-left:75px">
+                  <a href="/liuyan " style="margin-left:75px">
 				  
 				   <i class="fa fas fa-music" style="position: absolute;left:50px" ></i>
 			      
-		          <span>Musics</span>
+		          <span>liuyan</span>
                   </a>
                 </li>
               
@@ -1304,7 +1304,7 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/6.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/6.jpg'); position: relative; overflow: hidden;">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -1314,6 +1314,40 @@
             </div>
         </div>
     </div>
+    <style>
+    .post-cover .bubbles-cover > .particle {
+        opacity: 0;
+        position: absolute;
+        background-color: rgba(128,255,0,0.7);
+        animation: bubblesCover 60s ease-in infinite;
+        border-radius: 100%;
+    }
+    @keyframes bubblesCover {
+        0% { opacity: 0; }
+        5% { opacity: 1; transform: translate(0, -20%); }
+        100% { opacity: 0; transform: translate(0, -80000%); }
+    }
+    </style>
+    <div style="width: 100%; height: 100%; position: absolute; bottom: 0; left: 0;" class="particletext bubbles-cover"></div>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script>
+      $(function(){
+        $.each($(".particletext.bubbles-cover"), function(){
+          var bubblecount = ($(this).width()/50)*10;
+          for(var i = 0; i <= bubblecount; i++) {
+            var size = ($.rnd(40,80)/10);
+            $(this).append('<span class="particle" style="top:' + $.rnd(20,80) + '%; left:' + $.rnd(0,95) + '%;width:' + size + 'px; height:' + size + 'px;animation-delay: ' + ($.rnd(0,180)/10) + 's;"></span>');
+          }
+        });
+      });
+      if(!jQuery.rnd) {
+        jQuery.rnd = function(m,n) {
+          m = parseInt(m);
+          n = parseInt(n);
+          return Math.floor(Math.random() * (n - m + 1)) + m;
+        }
+      }
+    </script>
 </div>
 
 
@@ -2609,6 +2643,48 @@ head.appendChild(script);
 </script>
 
     
+
+    <style>
+    .bubbles > .particle {
+        opacity: 0;
+        position: absolute;
+        background-color: rgba(128,255,0,0.7);
+        animation: bubbles 60s ease-in infinite;
+        border-radius: 100%;
+    }
+    @keyframes bubbles {
+        0% {
+            opacity: 0;
+        }
+        5% {
+            opacity: 1;
+            transform: translate(0, -20%);
+        }
+        100% {
+            opacity: 0;
+            transform: translate(0, -80000%);
+        }
+    }
+    </style>
+    <div style="width: 100%; height: 100%; position: relative; bottom: 0px;" class="particletext bubbles"></div>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script>
+      function bubbles() {
+         $.each($(".particletext.bubbles"), function(){
+            var bubblecount = ($(this).width()/50)*10;
+            for(var i = 0; i <= bubblecount; i++) {
+               var size = ($.rnd(40,80)/10);
+               $(this).append('<span class="particle" style="top:' + $.rnd(20,80) + '%; left:' + $.rnd(0,95) + '%;width:' + size + 'px; height:' + size + 'px;animation-delay: ' + ($.rnd(0,180)/10) + 's;"></span>');
+            }
+         });
+      }
+      jQuery.rnd = function(m,n) {
+          m = parseInt(m);
+          n = parseInt(n);
+          return Math.floor( Math.random() * (n - m + 1) ) + m;
+      }
+      bubbles();
+    </script>
 
 </main>
 

@@ -781,11 +781,11 @@
     <ul class="sub-nav menus_item_child ">
       
       <li>
-        <a href="/musics">
+        <a href="/liuyan">
           
           <i class="fas fa-music" style="margin-top: -20px; zoom: 0.6;"></i>
           
-          <span>Musics</span>
+          <span>liuyan</span>
         </a>
       </li>
       
@@ -979,11 +979,11 @@
               
                 <li>
 
-                  <a href="/musics " style="margin-left:75px">
+                  <a href="/liuyan " style="margin-left:75px">
 				  
 				   <i class="fa fas fa-music" style="position: absolute;left:50px" ></i>
 			      
-		          <span>Musics</span>
+		          <span>liuyan</span>
                   </a>
                 </li>
               
@@ -1288,7 +1288,7 @@
 <script src="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.js"></script>
 
     
-      <div class="bg-cover pd-header about-cover">
+      <div class="bg-cover pd-header about-cover" style="position: relative; overflow: hidden;">
     <div class="container">
     <div class="row">
     <div class="col s10 offset-s1 m8 offset-m2 l8 offset-l2">
@@ -1382,6 +1382,40 @@
   </script>
 
     </div>
+    <style>
+    .about-cover .bubbles-bg > .particle {
+        opacity: 0;
+        position: absolute;
+        background-color: rgba(128,255,0,0.7);
+        animation: bubblesBg 60s ease-in infinite;
+        border-radius: 100%;
+    }
+    @keyframes bubblesBg {
+        0% { opacity: 0; }
+        5% { opacity: 1; transform: translate(0, -20%); }
+        100% { opacity: 0; transform: translate(0, -80000%); }
+    }
+    </style>
+    <div style="width: 100%; height: 100%; position: absolute; bottom: 0; left: 0;" class="particletext bubbles-bg"></div>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script>
+      $(function(){
+        if(!jQuery.rnd) {
+          jQuery.rnd = function(m,n) {
+            m = parseInt(m);
+            n = parseInt(n);
+            return Math.floor(Math.random() * (n - m + 1)) + m;
+          }
+        }
+        $.each($(".particletext.bubbles-bg"), function(){
+          var bubblecount = ($(this).width()/50)*10;
+          for(var i = 0; i <= bubblecount; i++) {
+            var size = ($.rnd(40,80)/10);
+            $(this).append('<span class="particle" style="top:' + $.rnd(20,80) + '%; left:' + $.rnd(0,95) + '%;width:' + size + 'px; height:' + size + 'px;animation-delay: ' + ($.rnd(0,180)/10) + 's;"></span>');
+          }
+        });
+      });
+    </script>
 </div>
 
   
@@ -1458,6 +1492,317 @@
       <!-- 所有文章卡片 -->
       <article id="articles" class="container articles">
           <div class="row article-row">
+              
+               <!-- 隐藏某个文章 -->
+              <div class="article col s12 m6 l4" data-aos="zoom-in">
+                  <div class="card">
+                      <a href="/2022/03/09/CoDesign/">
+                          <div class="card-image">
+                              
+                              
+                              <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="CoDesign">
+                              
+                              <span class="card-title">CoDesign</span>
+                          </div>
+                      </a>
+  
+                      <div class="card-content article-content">
+                          <div class="summary block-with-text">
+                              
+                                  
+CoDesign 是腾讯自研的一站式产品设计协作平台，支持在线导入和预览设计稿，可以帮助互联网产品设计团队提升协作效率，让产品设计更加高效。加入地址https://wechat.design/standard/download/brand
+                              
+                          </div>
+                          <div class="publish-info">
+                              <span class="publish-date">
+                                  <i class="far fa-clock fa-fw icon-date"></i>2022-03-09
+                              </span>
+                              <span class="publish-author">
+                                  
+                                  <i class="fas fa-user fa-fw"></i>
+                                  500饭
+                                  
+                              </span>
+                          </div>
+                      </div>
+  
+                      
+                  </div>
+              </div>
+                <!-- 隐藏某个文章 -->
+              
+               <!-- 隐藏某个文章 -->
+              <div class="article col s12 m6 l4" data-aos="zoom-in">
+                  <div class="card">
+                      <a href="/2022/03/09/%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7%EF%BC%8CCSDN/">
+                          <div class="card-image">
+                              
+                              
+                              <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="微信公众号">
+                              
+                              <span class="card-title">微信公众号</span>
+                          </div>
+                      </a>
+  
+                      <div class="card-content article-content">
+                          <div class="summary block-with-text">
+                              
+                                  
+tags:
+
+SVMcategories:
+Machine_Learningauthor: 解决你的问题date: 2021-01-16 13:46:25
+
+
+
+https://blog.csdn.net/tianjuewudi/arti
+                              
+                          </div>
+                          <div class="publish-info">
+                              <span class="publish-date">
+                                  <i class="far fa-clock fa-fw icon-date"></i>2022-03-09
+                              </span>
+                              <span class="publish-author">
+                                  
+                                  <i class="fas fa-user fa-fw"></i>
+                                  500饭
+                                  
+                              </span>
+                          </div>
+                      </div>
+  
+                      
+                  </div>
+              </div>
+                <!-- 隐藏某个文章 -->
+              
+               <!-- 隐藏某个文章 -->
+              <div class="article col s12 m6 l4" data-aos="zoom-in">
+                  <div class="card">
+                      <a href="/2022/03/09/%E5%85%B3%E9%94%AE%E8%AF%8D/">
+                          <div class="card-image">
+                              
+                              
+                              <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="关键词">
+                              
+                              <span class="card-title">关键词</span>
+                          </div>
+                      </a>
+  
+                      <div class="card-content article-content">
+                          <div class="summary block-with-text">
+                              
+                                  
+tags:
+
+SVM
+Have a nice daycategories:
+Machine_Learning
+关键词author: 解决你的问题
+流行语
+
+
+yyds
+
+                              
+                          </div>
+                          <div class="publish-info">
+                              <span class="publish-date">
+                                  <i class="far fa-clock fa-fw icon-date"></i>2022-03-09
+                              </span>
+                              <span class="publish-author">
+                                  
+                                  <i class="fas fa-user fa-fw"></i>
+                                  500饭
+                                  
+                              </span>
+                          </div>
+                      </div>
+  
+                      
+                  </div>
+              </div>
+                <!-- 隐藏某个文章 -->
+              
+               <!-- 隐藏某个文章 -->
+              <div class="article col s12 m6 l4" data-aos="zoom-in">
+                  <div class="card">
+                      <a href="/2022/03/05/%E5%8F%8A%E6%97%B6%E7%9A%84%E8%89%AF%E8%8D%AF%E4%BA%92%E5%8A%A8/">
+                          <div class="card-image">
+                              
+                              
+                              <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="及时的良药互动">
+                              
+                              <span class="card-title">及时的良药互动</span>
+                          </div>
+                      </a>
+  
+                      <div class="card-content article-content">
+                          <div class="summary block-with-text">
+                              
+                                  你知道么？ 一个成年人日均摄入热量2000千卡, 日行1万步, 相当于消耗维持人体正常生活所需以外的300千卡多余热量，帮助我们保持健康体格；日行1万步，相当于完成7公里的绿色出行，日均减少1.8千克碳排放，帮我们保护大气环境。
+ 待更新
+
+                              
+                          </div>
+                          <div class="publish-info">
+                              <span class="publish-date">
+                                  <i class="far fa-clock fa-fw icon-date"></i>2022-03-05
+                              </span>
+                              <span class="publish-author">
+                                  
+                                  <i class="fas fa-user fa-fw"></i>
+                                  500饭
+                                  
+                              </span>
+                          </div>
+                      </div>
+  
+                      
+                      <div class="card-action article-tags">
+                          
+                          <a href="/tags/%E5%9B%BE/">
+                              <span class="chip bg-color">图</span>
+                          </a>
+                          
+                          <a href="/tags/%E5%8C%BB%E7%96%97%E4%BA%92%E5%8A%A8/">
+                              <span class="chip bg-color">医疗互动</span>
+                          </a>
+                          
+                          <a href="/tags/%E9%9F%B3%E4%B9%90/">
+                              <span class="chip bg-color">音乐</span>
+                          </a>
+                          
+                          <a href="/tags/%E5%A5%BD%E7%89%A9%E7%A7%8D%E8%8D%89/">
+                              <span class="chip bg-color">好物种草</span>
+                          </a>
+                          
+                          <a href="/tags/%E7%94%B5%E5%BD%B1%E5%89%A7%E5%9C%BA/">
+                              <span class="chip bg-color">电影剧场</span>
+                          </a>
+                          
+                          <a href="/tags/%E9%A5%AE%E9%A3%9F/">
+                              <span class="chip bg-color">饮食</span>
+                          </a>
+                          
+                      </div>
+                      
+                  </div>
+              </div>
+                <!-- 隐藏某个文章 -->
+              
+               <!-- 隐藏某个文章 -->
+              <div class="article col s12 m6 l4" data-aos="zoom-in">
+                  <div class="card">
+                      <a href="/2021/07/10/%E9%99%8D%E4%BD%8E%E9%85%B8%20%E8%90%9D%20%E5%8D%9C%20%E4%B8%AD%20%E4%BA%9A%E7%A1%9D%20%E9%85%B8%E7%9B%90%E5%90%AB%E9%87%8F/">
+                          <div class="card-image">
+                              
+                              
+                              <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="">
+                              
+                              <span class="card-title"></span>
+                          </div>
+                      </a>
+  
+                      <div class="card-content article-content">
+                          <div class="summary block-with-text">
+                              
+                                  第一 章 文 献综述蔬菜加工发酵蔬菜麟泡菜制 品泡 菜产业的 国 内 外现状泡菜生产 的 发展前景泡菜生产 的研 究进展泡菜 中 亚硝酸盐研 究现 状泡菜 中 亚硝酸盐 的 来源亚硝酸 盐概述泡菜发 酵过程中 亚硝 酸 盐的 变 化规律泡菜
+                              
+                          </div>
+                          <div class="publish-info">
+                              <span class="publish-date">
+                                  <i class="far fa-clock fa-fw icon-date"></i>2021-07-10
+                              </span>
+                              <span class="publish-author">
+                                  
+                                  <i class="fas fa-user fa-fw"></i>
+                                  500饭
+                                  
+                              </span>
+                          </div>
+                      </div>
+  
+                      
+                  </div>
+              </div>
+                <!-- 隐藏某个文章 -->
+              
+               <!-- 隐藏某个文章 -->
+              <div class="article col s12 m6 l4" data-aos="zoom-in">
+                  <div class="card">
+                      <a href="/2021/07/09/%E4%B8%8D%E7%B4%A2%E6%80%8E%E5%BE%97/">
+                          <div class="card-image">
+                              
+                              
+                              <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="不索怎得">
+                              
+                              <span class="card-title">不索怎得</span>
+                          </div>
+                      </a>
+  
+                      <div class="card-content article-content">
+                          <div class="summary block-with-text">
+                              
+                                  Welcome to
+朱元璋为什么还要重开科举 看看元朝都做了什么就知道了2020-09-25 00:00  来自：历史名人http://collection.yd.chaoxing.com/apis/res/resPage.jspx?fo
+                              
+                          </div>
+                          <div class="publish-info">
+                              <span class="publish-date">
+                                  <i class="far fa-clock fa-fw icon-date"></i>2021-07-09
+                              </span>
+                              <span class="publish-author">
+                                  
+                                  <i class="fas fa-user fa-fw"></i>
+                                  500饭
+                                  
+                              </span>
+                          </div>
+                      </div>
+  
+                      
+                  </div>
+              </div>
+                <!-- 隐藏某个文章 -->
+              
+               <!-- 隐藏某个文章 -->
+              <div class="article col s12 m6 l4" data-aos="zoom-in">
+                  <div class="card">
+                      <a href="/2021/07/09/%E6%B7%98%E5%AE%9D%E5%92%B8%E9%B1%BC/">
+                          <div class="card-image">
+                              
+                              
+                              <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="淘宝咸鱼">
+                              
+                              <span class="card-title">淘宝咸鱼</span>
+                          </div>
+                      </a>
+  
+                      <div class="card-content article-content">
+                          <div class="summary block-with-text">
+                              
+                                  咸鱼&#x2F;二手&#x2F;资料微信小商店
+&lt;历史文章&gt;https://mp.weixin.qq.com/s?__biz=MzUzOTEyOTI1MQ==&amp;mid=2247486780&amp;idx=1&amp;s
+                              
+                          </div>
+                          <div class="publish-info">
+                              <span class="publish-date">
+                                  <i class="far fa-clock fa-fw icon-date"></i>2021-07-09
+                              </span>
+                              <span class="publish-author">
+                                  
+                                  <i class="fas fa-user fa-fw"></i>
+                                  500饭
+                                  
+                              </span>
+                          </div>
+                      </div>
+  
+                      
+                  </div>
+              </div>
+                <!-- 隐藏某个文章 -->
               
                <!-- 隐藏某个文章 -->
               <div class="article col s12 m6 l4" data-aos="zoom-in">
@@ -1591,131 +1936,6 @@ https://www.wuzhoutea.com.cn/vodplay/136958-1-1.html
               </div>
                 <!-- 隐藏某个文章 -->
               
-               <!-- 隐藏某个文章 -->
-              <div class="article col s12 m6 l4" data-aos="zoom-in">
-                  <div class="card">
-                      <a href="/2019/07/22/%E6%B7%98%E5%AE%9D%E5%BA%97/">
-                          <div class="card-image">
-                              
-                              <img src="/medias/banner/shuil.jpg" class="responsive-img" alt="淘宝店铺">
-                              
-                              <span class="card-title">淘宝店铺</span>
-                          </div>
-                      </a>
-  
-                      <div class="card-content article-content">
-                          <div class="summary block-with-text">
-                              
-                                  欢迎光临
-                              
-                          </div>
-                          <div class="publish-info">
-                              <span class="publish-date">
-                                  <i class="far fa-clock fa-fw icon-date"></i>2019-07-22
-                              </span>
-                              <span class="publish-author">
-                                  
-                                  <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                  
-                                  <a href="/categories/categories/" class="post-category">
-                                      categories
-                                  </a>
-                                  
-                                  
-                              </span>
-                          </div>
-                      </div>
-  
-                      
-                      <div class="card-action article-tags">
-                          
-                          <a href="/tags/%E6%B7%98%E5%AE%9D%E5%BA%97%E9%93%BA%E5%8D%96%E5%AE%B6/">
-                              <span class="chip bg-color">淘宝店铺卖家</span>
-                          </a>
-                          
-                          <a href="/tags/%E7%9B%B8%E5%86%8C/">
-                              <span class="chip bg-color">相册</span>
-                          </a>
-                          
-                          <a href="/tags/%E5%86%85%E9%83%A8%E7%BE%A4/">
-                              <span class="chip bg-color">内部群</span>
-                          </a>
-                          
-                          <a href="/tags/03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4/">
-                              <span class="chip bg-color">03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4</span>
-                          </a>
-                          
-                          <a href="/tags/1234/">
-                              <span class="chip bg-color">1234</span>
-                          </a>
-                          
-                          <a href="/tags/SHA256/">
-                              <span class="chip bg-color">SHA256</span>
-                          </a>
-                          
-                      </div>
-                      
-                  </div>
-              </div>
-                <!-- 隐藏某个文章 -->
-              
-               <!-- 隐藏某个文章 -->
-              <div class="article col s12 m6 l4" data-aos="zoom-in">
-                  <div class="card">
-                      <a href="/2019/07/22/%E8%B7%AF%E4%B8%8A/">
-                          <div class="card-image">
-                              
-                              <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="路上">
-                              
-                              <span class="card-title">路上</span>
-                          </div>
-                      </a>
-  
-                      <div class="card-content article-content">
-                          <div class="summary block-with-text">
-                              
-                                   未来楼市如村
-
-                              
-                          </div>
-                          <div class="publish-info">
-                              <span class="publish-date">
-                                  <i class="far fa-clock fa-fw icon-date"></i>2019-07-22
-                              </span>
-                              <span class="publish-author">
-                                  
-                                  <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                  
-                                  <a href="/categories/yy/" class="post-category">
-                                      yy
-                                  </a>
-                                  
-                                  
-                              </span>
-                          </div>
-                      </div>
-  
-                      
-                      <div class="card-action article-tags">
-                          
-                          <a href="/tags/%E4%BA%BA/">
-                              <span class="chip bg-color">人</span>
-                          </a>
-                          
-                          <a href="/tags/%E4%BA%8B%E7%89%A9/">
-                              <span class="chip bg-color">事物</span>
-                          </a>
-                          
-                          <a href="/tags/%E4%B8%96%E7%95%8C/">
-                              <span class="chip bg-color">世界</span>
-                          </a>
-                          
-                      </div>
-                      
-                  </div>
-              </div>
-                <!-- 隐藏某个文章 -->
-              
           </div>
       </article>
   
@@ -1735,11 +1955,12 @@ https://www.wuzhoutea.com.cn/vodplay/136958-1-1.html
             
         </div>
         <div class="page-info col m4 l4 hide-on-small-only">
-            <div class="center-align b-text-gray">3 / 3</div>
+            <div class="center-align b-text-gray">3 / 4</div>
         </div>
         <div class="col s6 m4 l4">
             
-            <a class="right btn-floating btn-large disabled">
+            <a href="/page/4/"
+               class="right btn-floating btn-large waves-effect waves-light bg-color">
                 <i class="fas fa-angle-right"></i>
             </a>
             
@@ -2163,10 +2384,10 @@ circleMagic();
                     const circles = [];
             
                     const settings = options || {
-                        color: 'rgba(255,255,255,.5)',
+                        color: 'random',
                         radius: 10,
                         density: 0.3,
-                        clearOffset: 0.2
+                        clearOffset: 0.9
                     }
             
             
@@ -2245,7 +2466,7 @@ circleMagic();
                         const r = Math.floor(Math.random() * 255);
                         const g = Math.floor(Math.random() * 255);
                         const b = Math.floor(Math.random() * 255);
-                        const alpha = Math.random().toPrecision(2);
+                        const alpha = 1;
                         return 'rgba(' + r + ', ' + g + ', ' + b + ', ' + alpha + ')';
                     }
             
@@ -2278,7 +2499,7 @@ circleMagic();
                                 init();
                             }
                             that.pos.y -= that.speed;
-                            that.alpha -= 0.0005;
+                            that.alpha -= 0.0001;
                             ctx.beginPath();
                             ctx.arc(
                                 that.pos.x,

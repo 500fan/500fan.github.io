@@ -781,11 +781,11 @@
     <ul class="sub-nav menus_item_child ">
       
       <li>
-        <a href="/musics">
+        <a href="/liuyan">
           
           <i class="fas fa-music" style="margin-top: -20px; zoom: 0.6;"></i>
           
-          <span>Musics</span>
+          <span>liuyan</span>
         </a>
       </li>
       
@@ -979,11 +979,11 @@
               
                 <li>
 
-                  <a href="/musics " style="margin-left:75px">
+                  <a href="/liuyan " style="margin-left:75px">
 				  
 				   <i class="fa fas fa-music" style="position: absolute;left:50px" ></i>
 			      
-		          <span>Musics</span>
+		          <span>liuyan</span>
                   </a>
                 </li>
               
@@ -1287,7 +1287,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.css">
 <script src="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.js"></script>
 
-    <div class="bg-cover pd-header about-cover">
+    <div class="bg-cover pd-header about-cover" style="position: relative; overflow: hidden;">
     <div class="container">
     <div class="row">
     <div class="col s10 offset-s1 m8 offset-m2 l8 offset-l2">
@@ -1381,6 +1381,40 @@
   </script>
 
     </div>
+    <style>
+    .about-cover .bubbles-bg > .particle {
+        opacity: 0;
+        position: absolute;
+        background-color: rgba(128,255,0,0.7);
+        animation: bubblesBg 60s ease-in infinite;
+        border-radius: 100%;
+    }
+    @keyframes bubblesBg {
+        0% { opacity: 0; }
+        5% { opacity: 1; transform: translate(0, -20%); }
+        100% { opacity: 0; transform: translate(0, -80000%); }
+    }
+    </style>
+    <div style="width: 100%; height: 100%; position: absolute; bottom: 0; left: 0;" class="particletext bubbles-bg"></div>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script>
+      $(function(){
+        if(!jQuery.rnd) {
+          jQuery.rnd = function(m,n) {
+            m = parseInt(m);
+            n = parseInt(n);
+            return Math.floor(Math.random() * (n - m + 1)) + m;
+          }
+        }
+        $.each($(".particletext.bubbles-bg"), function(){
+          var bubblecount = ($(this).width()/50)*10;
+          for(var i = 0; i <= bubblecount; i++) {
+            var size = ($.rnd(40,80)/10);
+            $(this).append('<span class="particle" style="top:' + $.rnd(20,80) + '%; left:' + $.rnd(0,95) + '%;width:' + size + 'px; height:' + size + 'px;animation-delay: ' + ($.rnd(0,180)/10) + 's;"></span>');
+          }
+        });
+      });
+    </script>
 </div>
 
 
@@ -1398,10 +1432,19 @@
                 
                 
                 
+                <a href="/categories/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/" title="技术教程: 7">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            style="background-color: #F9EBEA;">技术教程
+                        <span class="tag-length">7</span>
+                    </span>
+                </a>
+                
+                
                 <a href="/categories/categories/" title="categories: 3">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
-                            style="background-color: #F9EBEA;">categories
+                            style="background-color: #F5EEF8;">categories
                         <span class="tag-length">3</span>
                     </span>
                 </a>
@@ -1410,7 +1453,7 @@
                 <a href="/categories/%E5%B8%AE%E5%8A%A9%E6%96%87%E6%A1%A3/" title="帮助文档: 1">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
-                            style="background-color: #F5EEF8;">帮助文档
+                            style="background-color: #D5F5E3;">帮助文档
                         <span class="tag-length">1</span>
                     </span>
                 </a>
@@ -1419,7 +1462,7 @@
                 <a href="/categories/%E6%97%A5%E5%B8%B8/" title="日常: 1">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
-                            style="background-color: #D5F5E3;">日常
+                            style="background-color: #E8F8F5;">日常
                         <span class="tag-length">1</span>
                     </span>
                 </a>
@@ -1428,7 +1471,7 @@
                 <a href="/categories/%E6%9D%A5%E6%BA%90%E4%BA%8E%E7%BD%91%E7%BB%9C%EF%BC%8C%E6%88%91%E6%95%B4%E7%90%86/" title="来源于网络，我整理: 1">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
-                            style="background-color: #E8F8F5;">来源于网络，我整理
+                            style="background-color: #FEF9E7;">来源于网络，我整理
                         <span class="tag-length">1</span>
                     </span>
                 </a>
@@ -1437,7 +1480,7 @@
                 <a href="/categories/read/" title="read: 1">
                     <span class="chip center-align waves-effect waves-light
                              chip-active "
-                            style="background-color: #FEF9E7;">read
+                            style="background-color: #F8F9F9;">read
                         <span class="tag-length">1</span>
                     </span>
                 </a>
@@ -1446,7 +1489,7 @@
                 <a href="/categories/122/" title="122: 1">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
-                            style="background-color: #F8F9F9;">122
+                            style="background-color: #82E0AA;">122
                         <span class="tag-length">1</span>
                     </span>
                 </a>
@@ -1455,7 +1498,7 @@
                 <a href="/categories/Markdown/" title="Markdown: 1">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
-                            style="background-color: #82E0AA;">Markdown
+                            style="background-color: #D7BDE2;">Markdown
                         <span class="tag-length">1</span>
                     </span>
                 </a>
@@ -1464,7 +1507,7 @@
                 <a href="/categories/yy/" title="yy: 1">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
-                            style="background-color: #D7BDE2;">yy
+                            style="background-color: #A3E4D7;">yy
                         <span class="tag-length">1</span>
                     </span>
                 </a>

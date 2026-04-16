@@ -651,11 +651,11 @@
     <ul class="sub-nav menus_item_child ">
       
       <li>
-        <a href="/musics">
+        <a href="/liuyan">
           
           <i class="fas fa-music" style="margin-top: -20px; zoom: 0.6;"></i>
           
-          <span>Musics</span>
+          <span>liuyan</span>
         </a>
       </li>
       
@@ -849,11 +849,11 @@
               
                 <li>
 
-                  <a href="/musics " style="margin-left:75px">
+                  <a href="/liuyan " style="margin-left:75px">
 				  
 				   <i class="fa fas fa-music" style="position: absolute;left:50px" ></i>
 			      
-		          <span>Musics</span>
+		          <span>liuyan</span>
                   </a>
                 </li>
               
@@ -1163,7 +1163,7 @@
     }
 </style>
 
-<div class="bg-cover pd-header about-cover">
+<div class="bg-cover pd-header about-cover" style="position: relative; overflow: hidden;">
     <div class="container">
     <div class="row">
     <div class="col s10 offset-s1 m8 offset-m2 l8 offset-l2">
@@ -1257,10 +1257,45 @@
   </script>
 
     </div>
+    <style>
+    .about-cover .bubbles-bg > .particle {
+        opacity: 0;
+        position: absolute;
+        background-color: rgba(128,255,0,0.7);
+        animation: bubblesBg 60s ease-in infinite;
+        border-radius: 100%;
+    }
+    @keyframes bubblesBg {
+        0% { opacity: 0; }
+        5% { opacity: 1; transform: translate(0, -20%); }
+        100% { opacity: 0; transform: translate(0, -80000%); }
+    }
+    </style>
+    <div style="width: 100%; height: 100%; position: absolute; bottom: 0; left: 0;" class="particletext bubbles-bg"></div>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script>
+      $(function(){
+        if(!jQuery.rnd) {
+          jQuery.rnd = function(m,n) {
+            m = parseInt(m);
+            n = parseInt(n);
+            return Math.floor(Math.random() * (n - m + 1)) + m;
+          }
+        }
+        $.each($(".particletext.bubbles-bg"), function(){
+          var bubblecount = ($(this).width()/50)*10;
+          for(var i = 0; i <= bubblecount; i++) {
+            var size = ($.rnd(40,80)/10);
+            $(this).append('<span class="particle" style="top:' + $.rnd(20,80) + '%; left:' + $.rnd(0,95) + '%;width:' + size + 'px; height:' + size + 'px;animation-delay: ' + ($.rnd(0,180)/10) + 's;"></span>');
+          }
+        });
+      });
+    </script>
 </div>
 
 
 <main class="content">
+    <div id="page-canvas-wrap" style="position: relative; overflow: hidden;">
     <div class="container">
         <div class="card">
             <div class="card-content">
@@ -1423,6 +1458,117 @@
             </div>
         </div>
     </div>
+
+    <style>
+    .page-bubbles > .particle {
+        opacity: 0;
+        position: absolute;
+        background-color: rgba(128,255,0,0.7);
+        animation: pageBubbles 60s ease-in infinite;
+        border-radius: 100%;
+    }
+    @keyframes pageBubbles {
+        0% { opacity: 0; }
+        5% { opacity: 1; transform: translate(0, -20%); }
+        100% { opacity: 0; transform: translate(0, -80000%); }
+    }
+    </style>
+    <div style="width: 100%; height: 100%; position: relative; bottom: 0px;" class="particletext page-bubbles"></div>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script>
+      $(function(){
+        if(!jQuery.rnd) {
+          jQuery.rnd = function(m,n) {
+            m = parseInt(m);
+            n = parseInt(n);
+            return Math.floor(Math.random() * (n - m + 1)) + m;
+          }
+        }
+        $.each($(".particletext.page-bubbles"), function(){
+          var bubblecount = ($(this).width()/50)*10;
+          for(var i = 0; i <= bubblecount; i++) {
+            var size = ($.rnd(40,80)/10);
+            $(this).append('<span class="particle" style="top:' + $.rnd(20,80) + '%; left:' + $.rnd(0,95) + '%;width:' + size + 'px; height:' + size + 'px;animation-delay: ' + ($.rnd(0,180)/10) + 's;"></span>');
+          }
+        });
+      });
+    </script>
+    </div>
+
+    <script>
+    (function(){
+        var container = document.getElementById('page-canvas-wrap');
+        if (!container) return;
+        var width = container.offsetWidth;
+        var height = container.offsetHeight;
+        var canvas = document.createElement('canvas');
+        canvas.id = 'pageCanvasParticles';
+        canvas.width = width;
+        canvas.height = height;
+        canvas.style.position = 'absolute';
+        canvas.style.left = '0';
+        canvas.style.top = '0';
+        canvas.style.pointerEvents = 'none';
+        canvas.style.zIndex = '1';
+        container.appendChild(canvas);
+        var ctx = canvas.getContext('2d');
+        var circles = [];
+        var density = 0.3;
+        var radius = 10;
+        var clearOffset = 0.9;
+
+        function randomColor() {
+            var r = Math.floor(Math.random() * 255);
+            var g = Math.floor(Math.random() * 255);
+            var b = Math.floor(Math.random() * 255);
+            return 'rgba(' + r + ',' + g + ',' + b + ',1)';
+        }
+
+        function Circle() {
+            this.init = function() {
+                this.x = Math.random() * width;
+                this.y = height + Math.random() * 100;
+                this.alpha = 0.1 + Math.random() * clearOffset;
+                this.scale = 0.1 + Math.random() * 0.3;
+                this.speed = Math.random();
+                this.color = randomColor();
+            };
+            this.draw = function() {
+                if (this.alpha <= 0) this.init();
+                this.y -= this.speed;
+                this.alpha -= 0.0001;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.scale * radius, 0, 2 * Math.PI, false);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+                ctx.closePath();
+            };
+            this.init();
+        }
+
+        for (var i = 0; i < width * density; i++) {
+            circles.push(new Circle());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            for (var j = 0; j < circles.length; j++) {
+                circles[j].draw();
+            }
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', function() {
+            width = container.offsetWidth;
+            height = container.offsetHeight;
+            canvas.width = width;
+            canvas.height = height;
+        });
+
+        animate();
+    })();
+    </script>
+
 </main>
 
     <footer class="page-footer bg-color">
