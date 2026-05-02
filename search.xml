@@ -1612,6 +1612,79 @@ Gitee 防盗链检测到跨站引用 → ❌ 403    Gitee 无法识别来源 →
       </tags>
   </entry>
   <entry>
+    <title>Live2D看板娘集成教程</title>
+    <url>/2026/05/02/Live2D%E7%9C%8B%E6%9D%BF%E5%A8%98%E9%9B%86%E6%88%90%E6%95%99%E7%A8%8B/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="问题现象"><a href="#问题现象" class="headerlink" title="问题现象"></a>问题现象</h2><p>博客中已经存在 <code>source/live2d-w/</code> 目录（包含 <code>autoload.js</code>、<code>live2d.min.js</code>、<code>waifu-tips.js</code> 等文件），但页面上始终不显示 Live2D 看板娘。</p>
+<h2 id="原因分析"><a href="#原因分析" class="headerlink" title="原因分析"></a>原因分析</h2><ol>
+<li><strong><code>autoload.js</code> 路径错误</strong>：<code>live2d_path</code> 指向外部 CDN <code>https://cdn.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/</code>，该 CDN 资源可能与本地版本不一致或已失效。</li>
+<li><strong>未引入脚本</strong>：<code>layout.ejs</code> 中没有加载 <code>autoload.js</code> 的 <code>&lt;script&gt;</code> 标签，看板娘根本没有被初始化。</li>
+</ol>
+<h2 id="修复步骤"><a href="#修复步骤" class="headerlink" title="修复步骤"></a>修复步骤</h2><h3 id="第一步：确认文件结构"><a href="#第一步：确认文件结构" class="headerlink" title="第一步：确认文件结构"></a>第一步：确认文件结构</h3><p>确保 <code>source/live2d-w/</code> 目录下包含以下文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">source/live2d-w/</span><br><span class="line">├── autoload.js        # 自动加载脚本（入口）</span><br><span class="line">├── live2d.min.js      # Live2D 核心库</span><br><span class="line">├── waifu-tips.js      # 对话框和按钮逻辑</span><br><span class="line">├── waifu-tips.json    # 触发条件和对话文字</span><br><span class="line">├── waifu.css          # 看板娘样式表</span><br><span class="line">└── assets/            # 模型资源目录</span><br></pre></td></tr></table></figure>
+
+<p>同时在 <code>_config.yml</code> 的 <code>skip_render</code> 中确认已排除该目录（避免 Hexo 处理这些文件）：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">skip_render:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">&#x27;live2d-w/**&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="第二步：修改-autoload-js-的路径"><a href="#第二步：修改-autoload-js-的路径" class="headerlink" title="第二步：修改 autoload.js 的路径"></a>第二步：修改 autoload.js 的路径</h3><p><strong>文件路径：</strong> <code>source/live2d-w/autoload.js</code></p>
+<p>将 <code>live2d_path</code> 从外部 CDN 改为本地路径：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 修改前（指向外部 CDN）</span></span><br><span class="line"><span class="keyword">const</span> live2d_path = <span class="string">&quot;https://cdn.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 修改后（指向本地目录）</span></span><br><span class="line"><span class="keyword">const</span> live2d_path = <span class="string">&quot;/live2d-w/&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong> 路径末尾的 <code>/</code> 不能省略。</p>
+<h3 id="第三步：在-layout-ejs-中引入-autoload-js"><a href="#第三步：在-layout-ejs-中引入-autoload-js" class="headerlink" title="第三步：在 layout.ejs 中引入 autoload.js"></a>第三步：在 layout.ejs 中引入 autoload.js</h3><p><strong>文件路径：</strong> <code>themes/hexo-theme-matery/layout/layout.ejs</code></p>
+<p>在 <code>&lt;body&gt;</code> 区域内（建议放在回到顶部按钮之前）添加：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- Live2D 看板娘 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;/live2d-w/autoload.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>添加位置示例：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- Live2D 看板娘 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;/live2d-w/autoload.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 回到顶部按钮已由 _partial/back-top.ejs 提供 --&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="第四步：验证并生成"><a href="#第四步：验证并生成" class="headerlink" title="第四步：验证并生成"></a>第四步：验证并生成</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo clean &amp;&amp; hexo g &amp;&amp; hexo s</span><br></pre></td></tr></table></figure>
+
+<p>打开 <code>http://localhost:4000</code>，页面右下角应该会出现 Live2D 看板娘。</p>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><h3 id="屏幕宽度限制"><a href="#屏幕宽度限制" class="headerlink" title="屏幕宽度限制"></a>屏幕宽度限制</h3><p><code>autoload.js</code> 中有以下判断，<strong>仅在屏幕宽度 ≥ 768px 时加载</strong>：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (screen.<span class="property">width</span> &gt;= <span class="number">768</span>) &#123;</span><br><span class="line">    <span class="comment">// 加载看板娘</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>所以在手机上不会显示，这是正常行为。</p>
+<h3 id="Font-Awesome-依赖"><a href="#Font-Awesome-依赖" class="headerlink" title="Font Awesome 依赖"></a>Font Awesome 依赖</h3><p>Live2D 对话框中的按钮图标依赖 Font Awesome。<code>hexo-theme-matery</code> 主题已内置 Font Awesome，无需额外加载。如果使用其他主题，需要在 <code>&lt;head&gt;</code> 中添加：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;https://cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="自定义对话内容"><a href="#自定义对话内容" class="headerlink" title="自定义对话内容"></a>自定义对话内容</h3><p>编辑 <code>source/live2d-w/waifu-tips.json</code> 可以自定义看板娘的对话内容和触发条件。该文件定义了 <code>selector</code>（CSS 选择器）和 <code>text</code>（显示文字）。</p>
+<h3 id="模型更换"><a href="#模型更换" class="headerlink" title="模型更换"></a>模型更换</h3><p><code>autoload.js</code> 中的 <code>cdnPath</code> 参数指定模型加载地址：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="attr">cdnPath</span>: <span class="string">&quot;https://cdn.jsdelivr.net/gh/fghrsh/live2d_api/&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>如需更换模型，可修改此地址或自行搭建 API 后端。</p>
+<h2 id="修改文件清单"><a href="#修改文件清单" class="headerlink" title="修改文件清单"></a>修改文件清单</h2><table>
+<thead>
+<tr>
+<th>文件</th>
+<th>修改内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>source/live2d-w/autoload.js</code></td>
+<td><code>live2d_path</code> 从外部 CDN 改为本地 <code>/live2d-w/</code></td>
+</tr>
+<tr>
+<td><code>themes/hexo-theme-matery/layout/layout.ejs</code></td>
+<td>添加 <code>&lt;script src=&quot;/live2d-w/autoload.js&quot;&gt;&lt;/script&gt;</code></td>
+</tr>
+</tbody></table>
+<h2 id="效果验证"><a href="#效果验证" class="headerlink" title="效果验证"></a>效果验证</h2><ol>
+<li>生成博客后访问首页</li>
+<li>屏幕宽度 ≥ 768px 时，页面右下角出现看板娘</li>
+<li>点击看板娘可触发对话和交互</li>
+</ol>
+]]></content>
+      <categories>
+        <category>技术教程</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+        <tag>Live2D</tag>
+        <tag>看板娘</tag>
+        <tag>前端</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>daan</title>
     <url>/2026/04/12/daan/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h3 id="多喝醋能软化血管吗？"><a href="#多喝醋能软化血管吗？" class="headerlink" title="多喝醋能软化血管吗？"></a>多喝醋能软化血管吗？</h3><p>解析，这种说法没有科学依据。人们饮用的食醋进入消化系统后，最终代谢为二氧化碳和水，不会以溶解的形式作用于血管、血脂、斑块。长期过量喝醋，反而会刺激胃黏膜，诱发或加重胃炎、胃溃疡，影响钙等矿物质的吸收代谢。</p>
@@ -1619,6 +1692,67 @@ Gitee 防盗链检测到跨站引用 → ❌ 403    Gitee 无法识别来源 →
       <categories>
         <category>categories</category>
       </categories>
+  </entry>
+  <entry>
+    <title>wechat</title>
+    <url>/2024/06/15/wechat/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><hr>
+<p>tags:</p>
+<ul>
+<li>SVM</li>
+<li>Have a nice day<br>categories:</li>
+<li>Machine_Learning<br>author: 解决你的问题</li>
+</ul>
+<hr>
+<p><img src="http://imageproxy.chaoxing.com/0x0,q15,jpeg,samd7X0ZrJL6oHlAytD1Nbu9HyggfcanZX83-Ec8kDIk/http://p.ananas.chaoxing.com/star3/origin/3ef8e1bbeb56b0c2cd90df1ce4a3f119.png" alt="今日微信群"></p>
+
+        <div id="aplayer-KaOZHVCA" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+            <pre class="aplayer-lrc-content"></pre>
+        </div>
+        <script>
+          var ap = new APlayer({
+            element: document.getElementById("aplayer-KaOZHVCA"),
+            narrow: false,
+            autoplay: false,
+            showlrc: false,
+            music: {
+              title: "“天使的翅膀”",
+              author: "“安琥”",
+              url: "“https://music.163.com/#/my/m/music/playlist?id=2211665459”",
+              pic: "",
+              lrc: ""
+            }
+          });
+          window.aplayers || (window.aplayers = []);
+          window.aplayers.push(ap);
+        </script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+<!-- require MetingJS -->
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+
+<pre><code>&lt;meting-js style=&quot;margin-top: 1.5rem;width: auto;height: auto;&quot;
+server=&quot;netease&quot;
+type=&quot;playlist&quot;
+id=&quot;2211665459&quot;
+theme=&quot;#2980b9&quot;
+loop=&quot;all&quot;
+autoplay=&quot;true&quot;
+order=&quot;random&quot;
+storageName=&quot;aplayer-setting&quot;
+lrctype= 0
+&gt;
+&lt;/meting-js&gt;
+</code></pre>
+<style>
+    .aplayer{
+        margin: 1.5rem 0;
+    }
+</style>
+
+<p><meting-js
+    auto="https://y.qq.com/n/yqq/song/001RGrEX3ija5X.html"><br></meting-js></p>
+]]></content>
   </entry>
   <entry>
     <title>heexo 部署到腾讯云</title>
@@ -1772,65 +1906,15 @@ Gitee 防盗链检测到跨站引用 → ❌ 403    Gitee 无法识别来源 →
       </tags>
   </entry>
   <entry>
-    <title>wechat</title>
-    <url>/2024/06/15/wechat/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><hr>
-<p>tags:</p>
-<ul>
-<li>SVM</li>
-<li>Have a nice day<br>categories:</li>
-<li>Machine_Learning<br>author: 解决你的问题</li>
-</ul>
-<hr>
-<p><img src="http://imageproxy.chaoxing.com/0x0,q15,jpeg,samd7X0ZrJL6oHlAytD1Nbu9HyggfcanZX83-Ec8kDIk/http://p.ananas.chaoxing.com/star3/origin/3ef8e1bbeb56b0c2cd90df1ce4a3f119.png" alt="今日微信群"></p>
-
-        <div id="aplayer-GrBTVaCL" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
-            <pre class="aplayer-lrc-content"></pre>
-        </div>
-        <script>
-          var ap = new APlayer({
-            element: document.getElementById("aplayer-GrBTVaCL"),
-            narrow: false,
-            autoplay: false,
-            showlrc: false,
-            music: {
-              title: "“天使的翅膀”",
-              author: "“安琥”",
-              url: "“https://music.163.com/#/my/m/music/playlist?id=2211665459”",
-              pic: "",
-              lrc: ""
-            }
-          });
-          window.aplayers || (window.aplayers = []);
-          window.aplayers.push(ap);
-        </script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
-<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
-<!-- require MetingJS -->
-<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
-
-<pre><code>&lt;meting-js style=&quot;margin-top: 1.5rem;width: auto;height: auto;&quot;
-server=&quot;netease&quot;
-type=&quot;playlist&quot;
-id=&quot;2211665459&quot;
-theme=&quot;#2980b9&quot;
-loop=&quot;all&quot;
-autoplay=&quot;true&quot;
-order=&quot;random&quot;
-storageName=&quot;aplayer-setting&quot;
-lrctype= 0
-&gt;
-&lt;/meting-js&gt;
-</code></pre>
-<style>
-    .aplayer{
-        margin: 1.5rem 0;
-    }
-</style>
-
-<p><meting-js
-    auto="https://y.qq.com/n/yqq/song/001RGrEX3ija5X.html"><br></meting-js></p>
+    <title>亚硝胺</title>
+    <url>/2024/09/30/%E4%BA%9A%E7%A1%9D%E8%83%BA/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>亚硝胺是一类强烈的化学致癌物质，被视为四大食品污染物之一。它是由硝酸盐、亚硝酸盐及胺类在一定条件下生成的。亚硝胺主要存在于腌制食品、霉变食品、烟熏制品中，如腌菜、熏肉、腐乳、罐头、剁椒酱、辣酱等。此外，香烟、酒精、化妆品、啤酒以及某些不新鲜的食品，如过夜的剩菜、腐烂的蔬菜等，也可能含有亚硝胺。</p>
+<p>亚硝胺在人体内可转化为亚硝酸，进而与血红蛋白中的血红蛋白氧化为高铁血红蛋白，导致血红蛋白失去携氧能力，引起组织缺氧。长期大量摄入含有亚硝胺的食物，可能会增加患上消化系统肿瘤的风险，如胃癌、食管癌等。</p>
+<p>虽然亚硝酸盐并不一定会转化为亚硝胺产生致癌作用，但为了避免潜在的健康风险，建议在日常生活中保持饮食清洁卫生，避免吃过夜的剩菜或腐烂的蔬菜，减少腌制、熏制食品的摄入，并避免长期大量饮酒和吸烟。</p>
 ]]></content>
+      <tags>
+        <tag>致癌物质</tag>
+      </tags>
   </entry>
   <entry>
     <title>不索怎得</title>
@@ -1902,17 +1986,6 @@ lrctype= 0
 <p>免责声明：以上内容源自网络，版权归原作者所有，如有侵犯您的原创版权请告知，我们将尽快删除相关内容。</p>
 <p>我说的才是捷径<br>每个人对每个人具体都不同<br>教程是假象，虽然我当时也用上了，受益，但是这正是专家用来骗取人性的有力兵器<br>变化快得很<br>实践起来又是陌生的同一起跑线<br>稍微用耐心反思又了不得<br><a href="https://hesifan.top/2021/042039526.html%E7%BB%99%E6%B7%B1%E8%89%B2%E6%A8%A1%E5%BC%8F">https://hesifan.top/2021/042039526.html给深色模式</a><br><a href="https://notes.zhangxiaocai.cn/posts/7404e01a.html/tianjiaartitalk">https://notes.zhangxiaocai.cn/posts/7404e01a.html/tianjiaartitalk</a><br><a href="https://bb.js.org/quick-start.html#%F0%9F%93%83%E5%89%8D%E8%A8%80">https://bb.js.org/quick-start.html#%F0%9F%93%83%E5%89%8D%E8%A8%80</a><br><a href="https://leancloud.cn/docs/start.html">https://leancloud.cn/docs/start.html</a><br><a href="https://taro-docs.jd.com/taro/docs/GETTING-STARTED/#%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F">https://taro-docs.jd.com/taro/docs/GETTING-STARTED/#%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F</a><br><a href="https://artitalk.js.org/links.html#%E5%A6%82%E4%BD%95%E5%8A%A0%E5%85%A5%E6%88%90%E5%8A%9F%E6%A1%88%E4%BE%8B">https://artitalk.js.org/links.html#%E5%A6%82%E4%BD%95%E5%8A%A0%E5%85%A5%E6%88%90%E5%8A%9F%E6%A1%88%E4%BE%8B</a><br><a href="http://i.mooc.chaoxing.com/space/index?t=1625019560226">http://i.mooc.chaoxing.com/space/index?t=1625019560226</a></p>
 ]]></content>
-  </entry>
-  <entry>
-    <title>亚硝胺</title>
-    <url>/2024/09/30/%E4%BA%9A%E7%A1%9D%E8%83%BA/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>亚硝胺是一类强烈的化学致癌物质，被视为四大食品污染物之一。它是由硝酸盐、亚硝酸盐及胺类在一定条件下生成的。亚硝胺主要存在于腌制食品、霉变食品、烟熏制品中，如腌菜、熏肉、腐乳、罐头、剁椒酱、辣酱等。此外，香烟、酒精、化妆品、啤酒以及某些不新鲜的食品，如过夜的剩菜、腐烂的蔬菜等，也可能含有亚硝胺。</p>
-<p>亚硝胺在人体内可转化为亚硝酸，进而与血红蛋白中的血红蛋白氧化为高铁血红蛋白，导致血红蛋白失去携氧能力，引起组织缺氧。长期大量摄入含有亚硝胺的食物，可能会增加患上消化系统肿瘤的风险，如胃癌、食管癌等。</p>
-<p>虽然亚硝酸盐并不一定会转化为亚硝胺产生致癌作用，但为了避免潜在的健康风险，建议在日常生活中保持饮食清洁卫生，避免吃过夜的剩菜或腐烂的蔬菜，减少腌制、熏制食品的摄入，并避免长期大量饮酒和吸烟。</p>
-]]></content>
-      <tags>
-        <tag>致癌物质</tag>
-      </tags>
   </entry>
   <entry>
     <title>关于体力锻炼，午睡</title>
@@ -2038,6 +2111,41 @@ lrctype= 0
       </tags>
   </entry>
   <entry>
+    <title>及时的良药互动</title>
+    <url>/2022/03/05/%E5%8F%8A%E6%97%B6%E7%9A%84%E8%89%AF%E8%8D%AF%E4%BA%92%E5%8A%A8/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>你知道么？ 一个成年人日均摄入热量2000千卡, 日行1万步, 相当于消耗维持人体正常生活所需以外的300千卡多余热量，帮助我们保持健康体格；日行1万步，相当于完成7公里的绿色出行，日均减少1.8千克碳排放，帮我们保护大气环境。</p>
+<p> 待更新</p>
+<ul>
+<li><p>图</p>
+</li>
+<li><p>医疗互动 </p>
+</li>
+<li><p>音乐 </p>
+</li>
+<li><p>好物种草</p>
+</li>
+</ul>
+<p><a href="https://115.com/s/swnj24c3hfd?password=o132&amp;#">https://115.com/s/swnj24c3hfd?password=o132&amp;#</a><br>#美国哈佛大学哈佛燕京图书馆古籍<br>访问码:o132   总共780G，文件7263个，这个算比较全的了，需要的赶快保存</p>
+<ul>
+<li><p>电影剧场 </p>
+</li>
+<li><p>饮食</p>
+</li>
+</ul>
+<p><a href="https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/EqQPeeoRNUVOgT9v9K1wARkBADqDqGZtwC0o5YzIUwPa9Q">https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/EqQPeeoRNUVOgT9v9K1wARkBADqDqGZtwC0o5YzIUwPa9Q</a></p>
+<p><a href="https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/EmEWxjoFxOZFqjMW68KBw7gBplrh9gwwiz043jQIJJui3w">https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/EmEWxjoFxOZFqjMW68KBw7gBplrh9gwwiz043jQIJJui3w</a></p>
+<p><a href="https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/EgZXCrs64G5Bg0FAxw3b8AwBBgXirl21aCBpsSOvPhEWRg">https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/EgZXCrs64G5Bg0FAxw3b8AwBBgXirl21aCBpsSOvPhEWRg</a><br><a href="https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/Ev03Gas72G5LkpxHEwhoUToBdThin_KcHAgwBZYL9AwFjw">https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/Ev03Gas72G5LkpxHEwhoUToBdThin_KcHAgwBZYL9AwFjw</a><br><a href="https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/EphIeS5iJNhMi-Ikx8h6eIABTmTuZfEUwPjfVtHKA6oC7Q">https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/EphIeS5iJNhMi-Ikx8h6eIABTmTuZfEUwPjfVtHKA6oC7Q</a><br><a href="https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/EnRBLTOD5iJHnhtmVbmplV0BSy1RBBd2SH5jhPExnP9JJw">https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/EnRBLTOD5iJHnhtmVbmplV0BSy1RBBd2SH5jhPExnP9JJw</a></p>
+]]></content>
+      <tags>
+        <tag>图</tag>
+        <tag>医疗互动</tag>
+        <tag>音乐</tag>
+        <tag>好物种草</tag>
+        <tag>电影剧场</tag>
+        <tag>饮食</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>关于自我肯定感，开心情绪，</title>
     <url>/2024/10/13/%E5%85%B3%E4%BA%8E%E8%87%AA%E6%88%91%E8%82%AF%E5%AE%9A%E6%84%9F%EF%BC%8C%E5%BC%80%E5%BF%83%E6%83%85%E7%BB%AA%EF%BC%8C/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h3 id=""><a href="#" class="headerlink" title=""></a></h3><p>我们平常祝福别人都经常会说祝你天天快乐，事实上有多少人真的替你快乐，我坚信就世界上98%的人都不能做到天天的快乐，为什么是98%呢</p>
@@ -2139,41 +2247,6 @@ lrctype= 0
       </tags>
   </entry>
   <entry>
-    <title>及时的良药互动</title>
-    <url>/2022/03/05/%E5%8F%8A%E6%97%B6%E7%9A%84%E8%89%AF%E8%8D%AF%E4%BA%92%E5%8A%A8/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>你知道么？ 一个成年人日均摄入热量2000千卡, 日行1万步, 相当于消耗维持人体正常生活所需以外的300千卡多余热量，帮助我们保持健康体格；日行1万步，相当于完成7公里的绿色出行，日均减少1.8千克碳排放，帮我们保护大气环境。</p>
-<p> 待更新</p>
-<ul>
-<li><p>图</p>
-</li>
-<li><p>医疗互动 </p>
-</li>
-<li><p>音乐 </p>
-</li>
-<li><p>好物种草</p>
-</li>
-</ul>
-<p><a href="https://115.com/s/swnj24c3hfd?password=o132&amp;#">https://115.com/s/swnj24c3hfd?password=o132&amp;#</a><br>#美国哈佛大学哈佛燕京图书馆古籍<br>访问码:o132   总共780G，文件7263个，这个算比较全的了，需要的赶快保存</p>
-<ul>
-<li><p>电影剧场 </p>
-</li>
-<li><p>饮食</p>
-</li>
-</ul>
-<p><a href="https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/EqQPeeoRNUVOgT9v9K1wARkBADqDqGZtwC0o5YzIUwPa9Q">https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/EqQPeeoRNUVOgT9v9K1wARkBADqDqGZtwC0o5YzIUwPa9Q</a></p>
-<p><a href="https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/EmEWxjoFxOZFqjMW68KBw7gBplrh9gwwiz043jQIJJui3w">https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/EmEWxjoFxOZFqjMW68KBw7gBplrh9gwwiz043jQIJJui3w</a></p>
-<p><a href="https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/EgZXCrs64G5Bg0FAxw3b8AwBBgXirl21aCBpsSOvPhEWRg">https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/EgZXCrs64G5Bg0FAxw3b8AwBBgXirl21aCBpsSOvPhEWRg</a><br><a href="https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/Ev03Gas72G5LkpxHEwhoUToBdThin_KcHAgwBZYL9AwFjw">https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/Ev03Gas72G5LkpxHEwhoUToBdThin_KcHAgwBZYL9AwFjw</a><br><a href="https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/EphIeS5iJNhMi-Ikx8h6eIABTmTuZfEUwPjfVtHKA6oC7Q">https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/EphIeS5iJNhMi-Ikx8h6eIABTmTuZfEUwPjfVtHKA6oC7Q</a><br><a href="https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/EnRBLTOD5iJHnhtmVbmplV0BSy1RBBd2SH5jhPExnP9JJw">https://zl86n-my.sharepoint.com/:f:/g/personal/show_tmzn_top/EnRBLTOD5iJHnhtmVbmplV0BSy1RBBd2SH5jhPExnP9JJw</a></p>
-]]></content>
-      <tags>
-        <tag>图</tag>
-        <tag>医疗互动</tag>
-        <tag>音乐</tag>
-        <tag>好物种草</tag>
-        <tag>电影剧场</tag>
-        <tag>饮食</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>二手待售</title>
     <url>/2021/01/13/%E5%95%86%E5%BA%97/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p><img src="http://pan-yz.chaoxing.com/preview/showpreview_579415739645202432.html?v=1622614798000"></p>
@@ -2191,22 +2264,108 @@ lrctype= 0
       </categories>
   </entry>
   <entry>
+    <title>大红灯笼左右对称布局教程</title>
+    <url>/2026/05/02/%E5%A4%A7%E7%BA%A2%E7%81%AF%E7%AC%BC%E5%B7%A6%E5%8F%B3%E5%AF%B9%E7%A7%B0%E5%B8%83%E5%B1%80%E6%95%99%E7%A8%8B/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>本教程记录了如何将 Hexo 博客的春节主题大红灯笼从右侧单边布局改为左右对称布局。</p>
+<hr>
+<h2 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a>问题背景</h2><p>原来的春节主题中，两个大红灯笼都固定在页面<strong>右侧</strong>（<code>right: -20px</code> 和 <code>right: 10px</code>），视觉上不够对称。</p>
+<p>布局结构（<code>themes/hexo-theme-matery/layout/layout.ejs</code> 第244-264行）：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--大红灯笼--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;denglong&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;deng-box&quot;</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 第一个灯笼：&quot;过节&quot; --&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;deng-box1&quot;</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 第二个灯笼：&quot;福到&quot; --&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>.deng-box</code>：第一个灯笼</li>
+<li><code>.deng-box1</code>：第二个灯笼</li>
+</ul>
+<hr>
+<h2 id="修改方案"><a href="#修改方案" class="headerlink" title="修改方案"></a>修改方案</h2><p>修改文件：<code>themes/hexo-theme-matery/source/css/matery.css</code>（第1486行）</p>
+<h3 id="修改前"><a href="#修改前" class="headerlink" title="修改前"></a>修改前</h3><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.deng-box</span> &#123;</span><br><span class="line">    <span class="attribute">position</span>: fixed;</span><br><span class="line">    <span class="attribute">top</span>: -<span class="number">40px</span>;</span><br><span class="line">    <span class="attribute">right</span>: -<span class="number">20px</span>;    <span class="comment">/* 右侧 */</span></span><br><span class="line">    <span class="attribute">z-index</span>: <span class="number">999</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.deng-box1</span> &#123;</span><br><span class="line">    <span class="attribute">position</span>: fixed;</span><br><span class="line">    <span class="attribute">top</span>: -<span class="number">30px</span>;</span><br><span class="line">    <span class="attribute">right</span>: <span class="number">10px</span>;     <span class="comment">/* 右侧 */</span></span><br><span class="line">    <span class="attribute">z-index</span>: <span class="number">999</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="修改后"><a href="#修改后" class="headerlink" title="修改后"></a>修改后</h3><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.deng-box</span> &#123;</span><br><span class="line">    <span class="attribute">position</span>: fixed;</span><br><span class="line">    <span class="attribute">top</span>: -<span class="number">40px</span>;</span><br><span class="line">    <span class="attribute">right</span>: -<span class="number">20px</span>;    <span class="comment">/* 右侧（不变） */</span></span><br><span class="line">    <span class="attribute">z-index</span>: <span class="number">999</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.deng-box1</span> &#123;</span><br><span class="line">    <span class="attribute">position</span>: fixed;</span><br><span class="line">    <span class="attribute">top</span>: -<span class="number">30px</span>;</span><br><span class="line">    <span class="attribute">left</span>: <span class="number">10px</span>;      <span class="comment">/* ← 改为左侧 */</span></span><br><span class="line">    <span class="attribute">z-index</span>: <span class="number">999</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>核心改动：<strong>只改了一行</strong>，将 <code>.deng-box1</code> 的 <code>right: 10px</code> 改为 <code>left: 10px</code>。</p>
+<hr>
+<h2 id="效果对比"><a href="#效果对比" class="headerlink" title="效果对比"></a>效果对比</h2><table>
+<thead>
+<tr>
+<th>位置</th>
+<th>修改前</th>
+<th>修改后</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>.deng-box</code>（”过节”灯笼）</td>
+<td>右侧 <code>right: -20px</code></td>
+<td>右侧 <code>right: -20px</code>（不变）</td>
+</tr>
+<tr>
+<td><code>.deng-box1</code>（”福到”灯笼）</td>
+<td>右侧 <code>right: 10px</code></td>
+<td><strong>左侧</strong> <code>left: 10px</code></td>
+</tr>
+</tbody></table>
+<p>修改后效果：</p>
+<ul>
+<li>✅ 页面左上角悬挂一个灯笼（”福到”）</li>
+<li>✅ 页面右上角悬挂一个灯笼（”过节”）</li>
+<li>✅ 左右对称，视觉更协调</li>
+<li>✅ 移动端和桌面端都生效（灯笼仅在春节主题模式 <code>themespring</code> 下显示）</li>
+</ul>
+<hr>
+<h2 id="相关-CSS-说明"><a href="#相关-CSS-说明" class="headerlink" title="相关 CSS 说明"></a>相关 CSS 说明</h2><table>
+<thead>
+<tr>
+<th>类名</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>.denglong</code></td>
+<td>灯笼容器，<code>display: none</code> 默认隐藏，<code>body.themespring .denglong &#123; display: block &#125;</code> 激活</td>
+</tr>
+<tr>
+<td><code>.deng-box</code> &#x2F; <code>.deng-box1</code></td>
+<td>两个灯笼的定位容器，<code>position: fixed</code> 固定在视窗上</td>
+</tr>
+<tr>
+<td><code>.deng</code></td>
+<td>灯笼主体，圆角红色 + 摇摆动画 <code>swing</code></td>
+</tr>
+<tr>
+<td><code>.deng-a</code> &#x2F; <code>.deng-b</code></td>
+<td>灯笼内部装饰线条</td>
+</tr>
+<tr>
+<td><code>.deng-t</code></td>
+<td>灯笼上的文字（”过节”、”福到”）</td>
+</tr>
+<tr>
+<td><code>.xian</code></td>
+<td>灯笼上方的悬挂线</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="生效方法"><a href="#生效方法" class="headerlink" title="生效方法"></a>生效方法</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo clean &amp;&amp; hexo g &amp;&amp; hexo s</span><br></pre></td></tr></table></figure>
+
+<p>开启春节主题模式后（点击页面上的节日图标），即可看到左右对称的大红灯笼。</p>
+]]></content>
+      <categories>
+        <category>技术教程</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+        <tag>CSS</tag>
+        <tag>灯笼</tag>
+        <tag>春节主题</tag>
+        <tag>布局</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>微信二维码</title>
     <url>/2026/04/29/%E5%BE%AE%E4%BF%A1%E4%BA%8C%E7%BB%B4%E7%A0%81/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p><img src="http://imageproxy.chaoxing.com/0x0,q15,jpeg,slEtmWeY6WexS0SaijdY_3as70_MybRg4ZDGoVY7atkM/https://p.ananas.chaoxing.com/star3/origin/b6ccee78bf534263b9699503f1a05b25.png" alt="微信二维码"></p>
 <p><img src="http://imageproxy.chaoxing.com/0x0,q15,jpeg,sSx7GoSLhEvgU5jUdZwqyozG6W91-i_LEghZ2m6schX4/https://p.ananas.chaoxing.com/star3/origin/0473fec0ee33f8e8fc0e5111decb191a.png" alt="微信二维码"></p>
 <p><img src="http://imageproxy.chaoxing.com/0x0,q15,jpeg,sEYxbeucRcJ2Q0CfEKQkU_D3INCr4BWZmzbO0Dz2asc0/https://p.ananas.chaoxing.com/star3/origin/3221eeded507850c4238687cb2380ae6.png" alt="微信二维码"></p>
 <p>082<br><img src="https://img.alicdn.com/imgextra/i4/4251995763/O1CN01VPMUY71sRVGp4SJLc_!!4251995763.jpg" alt="微信二维码"></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>悬崖边上的金鱼姬</title>
-    <url>/2021/01/13/%E6%82%AC%E5%B4%96%E8%BE%B9%E4%B8%8A%E7%9A%84%E9%87%91%E9%B1%BC%E5%A7%AC/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><div style="width:100%;height:480px;">
-<iframe style="width:100%;height:100%;"  src="https://www.wuzhoutea.com.cn/vodplay/136958-1-1.html" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
-</div>
-
-<p><a href="https://www.wuzhoutea.com.cn/vodplay/136958-1-1.html">https://www.wuzhoutea.com.cn/vodplay/136958-1-1.html</a></p>
 ]]></content>
   </entry>
   <entry>
@@ -2225,17 +2384,13 @@ lrctype= 0
 ]]></content>
   </entry>
   <entry>
-    <title>淘宝咸鱼</title>
-    <url>/2021/07/09/%E6%B7%98%E5%AE%9D%E5%92%B8%E9%B1%BC/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p><a href="https://mp.weixin.qq.com/s?__biz=MzUzOTEyOTI1MQ==&mid=2247486687&idx=1&sn=3f6b33fcaa524f67c09d223eb2731d68&chksm=facc6813cdbbe1050f35208100edac26144a44f6053e4771b76d199e29480fdb13a52547316c&token=784632264&lang=zh_CN#rd" title="咸鱼">咸鱼&#x2F;二手&#x2F;资料</a><br><a href="https://mp.weixin.qq.com/s?__biz=MzUzOTEyOTI1MQ==&mid=2247486672&idx=1&sn=b97ae19c11ebf24c28c4384238adb86b&chksm=facc681ccdbbe10a918c7fa6604d240f8cead40e8e0b983ad12587c096109ca78593b2079310&token=784632264&lang=zh_CN#rd/" title="微信小商店/便宜">微信小商店</a></p>
-<p>&lt;历史文章&gt;<br><a href="https://mp.weixin.qq.com/s?__biz=MzUzOTEyOTI1MQ==&amp;mid=2247486780&amp;idx=1&amp;sn=da509e2371348c37eb2def6697ced658&amp;chksm=facc69f0cdbbe0e64e71e26b3fa8b2fa69b06fa14a5b97c9bf3e53cf7ba9fbae0a0cff8c764c&amp;token=784632264&amp;lang=zh_CN#rd/">https://mp.weixin.qq.com/s?__biz=MzUzOTEyOTI1MQ==&amp;mid=2247486780&amp;idx=1&amp;sn=da509e2371348c37eb2def6697ced658&amp;chksm=facc69f0cdbbe0e64e71e26b3fa8b2fa69b06fa14a5b97c9bf3e53cf7ba9fbae0a0cff8c764c&amp;token=784632264&amp;lang=zh_CN#rd/</a></p>
-<p> <img src="../medias/20.png" alt="微信公众号" style="zoom: 100%;" />  “微信公众号”</p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ xo gerate</span><br></pre></td></tr></table></figure>
+    <title>悬崖边上的金鱼姬</title>
+    <url>/2021/01/13/%E6%82%AC%E5%B4%96%E8%BE%B9%E4%B8%8A%E7%9A%84%E9%87%91%E9%B1%BC%E5%A7%AC/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><div style="width:100%;height:480px;">
+<iframe style="width:100%;height:100%;"  src="https://www.wuzhoutea.com.cn/vodplay/136958-1-1.html" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+</div>
 
-<p>More info: ！<a href="https://https//mp.weixin.qq.com/s/p0HwoJ6zPxuZHRLXzt-Cqw">微信</a></p>
-<p><img src="https://img-blog.csdnimg.cn/20210116125340771.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0Nzc3MjUx,size_16,color_FFFFFF,t_70#pic_center" alt="淘宝店铺01"></p>
-<p><img src="https://img-blog.csdnimg.cn/202101161254413.png#pic_center" alt="系统对话"></p>
-<p><img src="https://img-blog.csdnimg.cn/20210116125533198.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0Nzc3MjUx,size_16,color_FFFFFF,t_70#pic_center" alt="咸鱼"></p>
+<p><a href="https://www.wuzhoutea.com.cn/vodplay/136958-1-1.html">https://www.wuzhoutea.com.cn/vodplay/136958-1-1.html</a></p>
 ]]></content>
   </entry>
   <entry>
@@ -2252,6 +2407,157 @@ lrctype= 0
         <tag>Typora</tag>
         <tag>Markdown</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>春节挂件图标修复教程</title>
+    <url>/2026/05/02/%E6%98%A5%E8%8A%82%E6%8C%82%E4%BB%B6%E5%9B%BE%E6%A0%87%E4%BF%AE%E5%A4%8D%E6%95%99%E7%A8%8B/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="问题现象"><a href="#问题现象" class="headerlink" title="问题现象"></a>问题现象</h2><p>开启春节主题后，所有挂件（小鱼、花灯、福袋、财神等）显示的都是同一张图片 <code>homes.png</code>，没有各自对应的图标。</p>
+<h2 id="原因分析"><a href="#原因分析" class="headerlink" title="原因分析"></a>原因分析</h2><p><code>themes/hexo-theme-matery/layout/layout.ejs</code> 中，所有挂件的 <code>&lt;img src&gt;</code> 都指向了同一个占位图：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 错误写法：全部使用同一个图片 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">class</span>=<span class="string">&quot;caishenpic lala&quot;</span> <span class="attr">src</span>=<span class="string">&quot;https://cdn.jsdelivr.net/gh/haoxihuan/666@main/spring-img/homes.png&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">class</span>=<span class="string">&quot;caishenpic huadengpic&quot;</span> <span class="attr">src</span>=<span class="string">&quot;https://cdn.jsdelivr.net/gh/haoxihuan/666@main/spring-img/homes.png&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">class</span>=<span class="string">&quot;caishenpic fudai&quot;</span> <span class="attr">src</span>=<span class="string">&quot;https://cdn.jsdelivr.net/gh/haoxihuan/666@main/spring-img/homes.png&quot;</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- ...全部都是 homes.png --&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>另外部分挂件使用了已失效的外部链接 <code>https://7.dusays.com/...</code>，导致图片加载失败。</p>
+<h2 id="修复步骤"><a href="#修复步骤" class="headerlink" title="修复步骤"></a>修复步骤</h2><h3 id="第一步：确认本地图片资源存在"><a href="#第一步：确认本地图片资源存在" class="headerlink" title="第一步：确认本地图片资源存在"></a>第一步：确认本地图片资源存在</h3><p>检查 <code>themes/hexo-theme-matery/source/medias/spring-img/</code> 目录，确认以下文件齐全：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">baozhu.png      爆竹</span><br><span class="line">caishen.png     财神</span><br><span class="line">denglong.png    灯笼</span><br><span class="line">dragon-boat.png 划船</span><br><span class="line">fish.png        小鱼</span><br><span class="line">fudai.png       福袋</span><br><span class="line">fudao.png       福到</span><br><span class="line">gugu.png        大鼓</span><br><span class="line">homes.png       节日模式按钮（保留原样）</span><br><span class="line">huadeng.png     花灯</span><br><span class="line">lion.png        老虎</span><br><span class="line">maozi.png       帽子</span><br><span class="line">nianhuo.png     年货</span><br><span class="line">shanzi.png      扇子</span><br></pre></td></tr></table></figure>
+
+<h3 id="第二步：修改-layout-ejs"><a href="#第二步：修改-layout-ejs" class="headerlink" title="第二步：修改 layout.ejs"></a>第二步：修改 layout.ejs</h3><p><strong>文件路径：</strong> <code>themes/hexo-theme-matery/layout/layout.ejs</code></p>
+<p>找到所有挂件区域（约第102-236行），按以下对应关系修改 <code>src</code>：</p>
+<table>
+<thead>
+<tr>
+<th>挂件名称</th>
+<th>CSS 类名</th>
+<th>正确的 src 路径</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>节日模式按钮</td>
+<td><code>chunjiepic</code></td>
+<td><code>https://cdn.jsdelivr.net/gh/haoxihuan/666@main/spring-img/homes.png</code>（<strong>不改</strong>）</td>
+</tr>
+<tr>
+<td>小鱼挂件</td>
+<td><code>lala</code></td>
+<td><code>/medias/spring-img/fish.png</code></td>
+</tr>
+<tr>
+<td>花灯挂件</td>
+<td><code>huadengpic</code></td>
+<td><code>/medias/spring-img/huadeng.png</code></td>
+</tr>
+<tr>
+<td>福袋挂件</td>
+<td><code>fudai</code></td>
+<td><code>/medias/spring-img/fudai.png</code></td>
+</tr>
+<tr>
+<td>财神挂件</td>
+<td><code>caishenpic</code></td>
+<td><code>/medias/spring-img/caishen.png</code></td>
+</tr>
+<tr>
+<td>大门挂件</td>
+<td><code>huadengpic</code></td>
+<td><code>/medias/spring-img/denglong.png</code></td>
+</tr>
+<tr>
+<td>扇子挂件</td>
+<td><code>shanzipic</code></td>
+<td><code>/medias/spring-img/shanzi.png</code></td>
+</tr>
+<tr>
+<td>福到挂件</td>
+<td><code>fudao</code></td>
+<td><code>/medias/spring-img/fudao.png</code></td>
+</tr>
+<tr>
+<td>年货挂件</td>
+<td><code>huadengpic</code></td>
+<td><code>/medias/spring-img/nianhuo.png</code></td>
+</tr>
+<tr>
+<td>老虎挂件</td>
+<td><code>lions</code></td>
+<td><code>/medias/spring-img/lion.png</code></td>
+</tr>
+<tr>
+<td>划船挂件</td>
+<td><code>huadengpic</code></td>
+<td><code>/medias/spring-img/dragon-boat.png</code></td>
+</tr>
+<tr>
+<td>爆竹挂件</td>
+<td><code>lions</code></td>
+<td><code>/medias/spring-img/baozhu.png</code></td>
+</tr>
+<tr>
+<td>大鼓挂件</td>
+<td><code>gugus</code></td>
+<td><code>/medias/spring-img/gugu.png</code></td>
+</tr>
+<tr>
+<td>标签小帽子</td>
+<td><code>labelmz</code></td>
+<td><code>/medias/spring-img/maozi.png</code></td>
+</tr>
+<tr>
+<td>头像小帽子</td>
+<td><code>xiaomaozitx</code></td>
+<td><code>/medias/spring-img/maozi.png</code></td>
+</tr>
+<tr>
+<td>友链小帽子</td>
+<td><code>friendmz</code></td>
+<td><code>/medias/spring-img/maozi.png</code></td>
+</tr>
+</tbody></table>
+<h3 id="修改示例"><a href="#修改示例" class="headerlink" title="修改示例"></a>修改示例</h3><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 修改前 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">class</span>=<span class="string">&quot;caishenpic lala&quot;</span> <span class="attr">src</span>=<span class="string">&quot;https://cdn.jsdelivr.net/gh/haoxihuan/666@main/spring-img/homes.png&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 修改后 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">class</span>=<span class="string">&quot;caishenpic lala&quot;</span> <span class="attr">src</span>=<span class="string">&quot;/medias/spring-img/fish.png&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 修改前（失效链接） --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">class</span>=<span class="string">&quot;caishenpic gugus&quot;</span> <span class="attr">src</span>=<span class="string">&quot;https://7.dusays.com/2021/02/15/ac9830e410169.png&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 修改后 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">class</span>=<span class="string">&quot;caishenpic gugus&quot;</span> <span class="attr">src</span>=<span class="string">&quot;/medias/spring-img/gugu.png&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="第三步：验证并生成"><a href="#第三步：验证并生成" class="headerlink" title="第三步：验证并生成"></a>第三步：验证并生成</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo clean &amp;&amp; hexo g &amp;&amp; hexo s</span><br></pre></td></tr></table></figure>
+
+<p>打开浏览器访问 <code>http://localhost:4000</code>，点击页面上的节日模式按钮，检查每个挂件是否显示了各自对应的图标。</p>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ol>
+<li><strong>节日模式按钮不改</strong>：<code>chunjiepic</code> 类的 <code>homes.png</code> 是切换按钮的图标，不是挂件，保持原样。</li>
+<li><strong>使用本地路径</strong>：建议用 <code>/medias/spring-img/xxx.png</code> 而非外部 CDN，加载更快且不受外部链接失效影响。</li>
+<li><strong>路径开头有斜杠</strong>：<code>/medias/...</code> 而非 <code>./medias/...</code> 或 <code>medias/...</code>，确保从网站根目录正确解析。</li>
+</ol>
+<h2 id="修改文件清单"><a href="#修改文件清单" class="headerlink" title="修改文件清单"></a>修改文件清单</h2><table>
+<thead>
+<tr>
+<th>文件</th>
+<th>修改内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>themes/hexo-theme-matery/layout/layout.ejs</code></td>
+<td>将所有挂件的 <code>src</code> 从占位图&#x2F;失效链接改为正确的本地图标路径</td>
+</tr>
+</tbody></table>
+]]></content>
+      <categories>
+        <category>技术教程</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+        <tag>春节主题</tag>
+        <tag>挂件</tag>
+        <tag>图标修复</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>淘宝咸鱼</title>
+    <url>/2021/07/09/%E6%B7%98%E5%AE%9D%E5%92%B8%E9%B1%BC/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p><a href="https://mp.weixin.qq.com/s?__biz=MzUzOTEyOTI1MQ==&mid=2247486687&idx=1&sn=3f6b33fcaa524f67c09d223eb2731d68&chksm=facc6813cdbbe1050f35208100edac26144a44f6053e4771b76d199e29480fdb13a52547316c&token=784632264&lang=zh_CN#rd" title="咸鱼">咸鱼&#x2F;二手&#x2F;资料</a><br><a href="https://mp.weixin.qq.com/s?__biz=MzUzOTEyOTI1MQ==&mid=2247486672&idx=1&sn=b97ae19c11ebf24c28c4384238adb86b&chksm=facc681ccdbbe10a918c7fa6604d240f8cead40e8e0b983ad12587c096109ca78593b2079310&token=784632264&lang=zh_CN#rd/" title="微信小商店/便宜">微信小商店</a></p>
+<p>&lt;历史文章&gt;<br><a href="https://mp.weixin.qq.com/s?__biz=MzUzOTEyOTI1MQ==&amp;mid=2247486780&amp;idx=1&amp;sn=da509e2371348c37eb2def6697ced658&amp;chksm=facc69f0cdbbe0e64e71e26b3fa8b2fa69b06fa14a5b97c9bf3e53cf7ba9fbae0a0cff8c764c&amp;token=784632264&amp;lang=zh_CN#rd/">https://mp.weixin.qq.com/s?__biz=MzUzOTEyOTI1MQ==&amp;mid=2247486780&amp;idx=1&amp;sn=da509e2371348c37eb2def6697ced658&amp;chksm=facc69f0cdbbe0e64e71e26b3fa8b2fa69b06fa14a5b97c9bf3e53cf7ba9fbae0a0cff8c764c&amp;token=784632264&amp;lang=zh_CN#rd/</a></p>
+<p> <img src="../medias/20.png" alt="微信公众号" style="zoom: 100%;" />  “微信公众号”</p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ xo gerate</span><br></pre></td></tr></table></figure>
+
+<p>More info: ！<a href="https://https//mp.weixin.qq.com/s/p0HwoJ6zPxuZHRLXzt-Cqw">微信</a></p>
+<p><img src="https://img-blog.csdnimg.cn/20210116125340771.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0Nzc3MjUx,size_16,color_FFFFFF,t_70#pic_center" alt="淘宝店铺01"></p>
+<p><img src="https://img-blog.csdnimg.cn/202101161254413.png#pic_center" alt="系统对话"></p>
+<p><img src="https://img-blog.csdnimg.cn/20210116125533198.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0Nzc3MjUx,size_16,color_FFFFFF,t_70#pic_center" alt="咸鱼"></p>
+]]></content>
   </entry>
   <entry>
     <title>淘宝店铺</title>

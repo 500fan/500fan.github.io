@@ -1406,7 +1406,7 @@ pre code {
     width: 34px;
     height: 34px;
     position: absolute;
-    top: 7px;
+    top: 46px;
     right: -84px;
     transform: rotate(40deg);
     position: absolute;
@@ -1418,12 +1418,12 @@ pre code {
     position: relative;
 }
 .friendmz {
-    width: 50px!important;
-    height: 50px!important;
+    width: 46px!important;
+    height: 46px!important;
     position: absolute;
-    top: 8px;
-    right: -90px;
-    transform: rotate(44deg);
+    top: 84px;
+    left: -78px;
+    transform: rotate(-38deg);
     position: absolute;
     z-index: 99;
     -webkit-transform-origin: 50% -100px;
@@ -1486,7 +1486,7 @@ body.themespring .denglong {
 .deng-box1 {
     position: fixed;
     top: -30px;
-    right: 10px;
+    left: 10px;
     z-index: 999;
 }
 .deng-box1 .deng {
