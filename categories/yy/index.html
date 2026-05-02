@@ -1432,11 +1432,20 @@
                 
                 
                 
-                <a href="/categories/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/" title="技术教程: 7">
+                <a href="/categories/yy/" title="yy: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-active "
+                            style="background-color: #F9EBEA;">yy
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/categories/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/" title="技术教程: 8">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
-                            style="background-color: #F9EBEA;">技术教程
-                        <span class="tag-length">7</span>
+                            style="background-color: #F5EEF8;">技术教程
+                        <span class="tag-length">8</span>
                     </span>
                 </a>
                 
@@ -1444,7 +1453,7 @@
                 <a href="/categories/categories/" title="categories: 3">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
-                            style="background-color: #F5EEF8;">categories
+                            style="background-color: #D5F5E3;">categories
                         <span class="tag-length">3</span>
                     </span>
                 </a>
@@ -1453,7 +1462,7 @@
                 <a href="/categories/%E5%B8%AE%E5%8A%A9%E6%96%87%E6%A1%A3/" title="帮助文档: 1">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
-                            style="background-color: #D5F5E3;">帮助文档
+                            style="background-color: #E8F8F5;">帮助文档
                         <span class="tag-length">1</span>
                     </span>
                 </a>
@@ -1462,16 +1471,7 @@
                 <a href="/categories/%E6%97%A5%E5%B8%B8/" title="日常: 1">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
-                            style="background-color: #E8F8F5;">日常
-                        <span class="tag-length">1</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/categories/read/" title="read: 1">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            style="background-color: #FEF9E7;">read
+                            style="background-color: #FEF9E7;">日常
                         <span class="tag-length">1</span>
                     </span>
                 </a>
@@ -1486,19 +1486,19 @@
                 </a>
                 
                 
-                <a href="/categories/122/" title="122: 1">
+                <a href="/categories/read/" title="read: 1">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
-                            style="background-color: #82E0AA;">122
+                            style="background-color: #82E0AA;">read
                         <span class="tag-length">1</span>
                     </span>
                 </a>
                 
                 
-                <a href="/categories/yy/" title="yy: 1">
+                <a href="/categories/122/" title="122: 1">
                     <span class="chip center-align waves-effect waves-light
-                             chip-active "
-                            style="background-color: #D7BDE2;">yy
+                             chip-default "
+                            style="background-color: #D7BDE2;">122
                         <span class="tag-length">1</span>
                     </span>
                 </a>
@@ -1526,19 +1526,18 @@
             
             <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2019/07/22/%E8%B7%AF%E4%B8%8A/">
+                    <a href="/2019/07/22/Gitee%20%E9%98%B2%E7%9B%97%E9%93%BE/">
                         <div class="card-image tag-image">
                             
-                            <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="路上">
+                            <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="Gitee 防盗链">
                             
-                            <span class="card-title">路上</span>
+                            <span class="card-title">Gitee 防盗链</span>
                         </div>
                     </a>
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                 未来楼市如村
-
+                                 未来楼市如村 问题确认：Gitee 防盗链 (Anti-Hotlink) 解决方案（推荐程度从高到低）方案 1 ⭐ 用 jsDelivr CDN 代理 GitHub 仓库（最推荐）如果你在 GitHub 上有同样的 fuliefu 仓库，
                             
                         </div>
                         <div class="publish-info">
@@ -2306,10 +2305,23 @@ document.addEventListener("visibilitychange", function () { document.hidden ? (d
 <!--鼠标尾巴效果-->
 <script src='https://cdn.jsdelivr.net/gh/sviptzk/HexoStaticFile@latest/Hexo/js/mouse_snow.min.js'></script>
 
+<!-- 回到顶部按钮已由 _partial/back-top.ejs 提供 -->
+
 <!-- 悬挂的喵 -->
-<script type="text/javascript" src="https://blog-static.cnblogs.com/files/fsh001/szgotop.js"></script>
 <link rel="stylesheet" type="text/css" href="https://blog-static.cnblogs.com/files/fsh001/szgotop.css" />
 <div class="back-to-top cd-top faa-float animated cd-is-visible" style="top: -999px;"></div>
+<script>
+$(window).scroll(function() {
+    if ($(window).scrollTop() > 500) {
+        $('.back-to-top').not('#backTop').css('top','-200px');
+    } else {
+        $('.back-to-top').not('#backTop').css('top','-999px');
+    }
+});
+$('.back-to-top').not('#backTop').click(function() {
+    $('body,html').animate({scrollTop: 0}, 600);
+});
+</script>
 
 
     </div>

@@ -1432,11 +1432,20 @@
                 
                 
                 
-                <a href="/categories/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/" title="技术教程: 7">
+                <a href="/categories/yy/" title="yy: 1">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
-                            style="background-color: #F9EBEA;">技术教程
-                        <span class="tag-length">7</span>
+                            style="background-color: #F9EBEA;">yy
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/categories/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/" title="技术教程: 8">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            style="background-color: #F5EEF8;">技术教程
+                        <span class="tag-length">8</span>
                     </span>
                 </a>
                 
@@ -1444,7 +1453,7 @@
                 <a href="/categories/categories/" title="categories: 3">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
-                            style="background-color: #F5EEF8;">categories
+                            style="background-color: #D5F5E3;">categories
                         <span class="tag-length">3</span>
                     </span>
                 </a>
@@ -1453,7 +1462,7 @@
                 <a href="/categories/%E5%B8%AE%E5%8A%A9%E6%96%87%E6%A1%A3/" title="帮助文档: 1">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
-                            style="background-color: #D5F5E3;">帮助文档
+                            style="background-color: #E8F8F5;">帮助文档
                         <span class="tag-length">1</span>
                     </span>
                 </a>
@@ -1462,16 +1471,7 @@
                 <a href="/categories/%E6%97%A5%E5%B8%B8/" title="日常: 1">
                     <span class="chip center-align waves-effect waves-light
                              chip-active "
-                            style="background-color: #E8F8F5;">日常
-                        <span class="tag-length">1</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/categories/read/" title="read: 1">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            style="background-color: #FEF9E7;">read
+                            style="background-color: #FEF9E7;">日常
                         <span class="tag-length">1</span>
                     </span>
                 </a>
@@ -1486,19 +1486,19 @@
                 </a>
                 
                 
-                <a href="/categories/122/" title="122: 1">
+                <a href="/categories/read/" title="read: 1">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
-                            style="background-color: #82E0AA;">122
+                            style="background-color: #82E0AA;">read
                         <span class="tag-length">1</span>
                     </span>
                 </a>
                 
                 
-                <a href="/categories/yy/" title="yy: 1">
+                <a href="/categories/122/" title="122: 1">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
-                            style="background-color: #D7BDE2;">yy
+                            style="background-color: #D7BDE2;">122
                         <span class="tag-length">1</span>
                     </span>
                 </a>
@@ -2325,10 +2325,23 @@ document.addEventListener("visibilitychange", function () { document.hidden ? (d
 <!--鼠标尾巴效果-->
 <script src='https://cdn.jsdelivr.net/gh/sviptzk/HexoStaticFile@latest/Hexo/js/mouse_snow.min.js'></script>
 
+<!-- 回到顶部按钮已由 _partial/back-top.ejs 提供 -->
+
 <!-- 悬挂的喵 -->
-<script type="text/javascript" src="https://blog-static.cnblogs.com/files/fsh001/szgotop.js"></script>
 <link rel="stylesheet" type="text/css" href="https://blog-static.cnblogs.com/files/fsh001/szgotop.css" />
 <div class="back-to-top cd-top faa-float animated cd-is-visible" style="top: -999px;"></div>
+<script>
+$(window).scroll(function() {
+    if ($(window).scrollTop() > 500) {
+        $('.back-to-top').not('#backTop').css('top','-200px');
+    } else {
+        $('.back-to-top').not('#backTop').css('top','-999px');
+    }
+});
+$('.back-to-top').not('#backTop').click(function() {
+    $('body,html').animate({scrollTop: 0}, 600);
+});
+</script>
 
 
     </div>

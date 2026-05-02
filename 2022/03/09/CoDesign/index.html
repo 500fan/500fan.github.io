@@ -2059,8 +2059,8 @@ var refer = "{Permalink}".replace("http://","");
 <script>
     new Valine({
         el: '#vcomments',
-        appId: '9SpXH9odSXLYjnnm5J9UG9mm-gzGzoHsz',
-        appKey: 'FL69KukifEA1Rrnd9yrAwTXi',
+        appId: 'v2kuiYWyAs1KnuKB5xe3LBnm-MdYXbMMI',
+        appKey: 'VRvFkN8QgiCWgojOikjh3aDK',
         notify: 'true' === 'true',
         verify: 'true' === 'true',
         visitor: 'true' === 'true',
@@ -3412,10 +3412,23 @@ document.addEventListener("visibilitychange", function () { document.hidden ? (d
 <!--鼠标尾巴效果-->
 <script src='https://cdn.jsdelivr.net/gh/sviptzk/HexoStaticFile@latest/Hexo/js/mouse_snow.min.js'></script>
 
+<!-- 回到顶部按钮已由 _partial/back-top.ejs 提供 -->
+
 <!-- 悬挂的喵 -->
-<script type="text/javascript" src="https://blog-static.cnblogs.com/files/fsh001/szgotop.js"></script>
 <link rel="stylesheet" type="text/css" href="https://blog-static.cnblogs.com/files/fsh001/szgotop.css" />
 <div class="back-to-top cd-top faa-float animated cd-is-visible" style="top: -999px;"></div>
+<script>
+$(window).scroll(function() {
+    if ($(window).scrollTop() > 500) {
+        $('.back-to-top').not('#backTop').css('top','-200px');
+    } else {
+        $('.back-to-top').not('#backTop').css('top','-999px');
+    }
+});
+$('.back-to-top').not('#backTop').click(function() {
+    $('body,html').animate({scrollTop: 0}, 600);
+});
+</script>
 
 
     </div>

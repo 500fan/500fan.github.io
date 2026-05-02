@@ -1429,8 +1429,9 @@
                     
                     <div class="col s6 m4 l4 xl3 gallery-box">
                         <a href="private" class="gallery-item" data-aos="zoom-in-up">
+                            
                             <div class="gallery-cover-box"
-                                 style="background-image: url(https://gitee.com/yzyys/reai/raw/master/image/hexomaterry/01.webp);">
+                                 style="background-image: url(https://raw.giteeusercontent.com/huajiaojiang/fuliefu/raw/master/image/hexomaterry/01.webp);">
                             </div>
                             <p class="gallery-name">
                                 private
@@ -1441,8 +1442,9 @@
                     
                     <div class="col s6 m4 l4 xl3 gallery-box">
                         <a href="BBB" class="gallery-item" data-aos="zoom-in-up">
+                            
                             <div class="gallery-cover-box"
-                                 style="background-image: url(https://gitee.com/yzyys/reai/raw/master/image/hexomaterry/jingyu.webp);">
+                                 style="background-image: url(/image/hexomaterry/jingyu.webp);">
                             </div>
                             <p class="gallery-name">
                                 BBB
@@ -1453,8 +1455,9 @@
                     
                     <div class="col s6 m4 l4 xl3 gallery-box">
                         <a href="AAA" class="gallery-item" data-aos="zoom-in-up">
+                            
                             <div class="gallery-cover-box"
-                                 style="background-image: url(https://gitee.com/yzyys/reai/raw/master/banner/51.png);">
+                                 style="background-image: url(/image/hexomaterry/bingshan.jpeg);">
                             </div>
                             <p class="gallery-name">
                                 AAA
@@ -1465,8 +1468,9 @@
                     
                     <div class="col s6 m4 l4 xl3 gallery-box">
                         <a href="甜村" class="gallery-item" data-aos="zoom-in-up">
+                            
                             <div class="gallery-cover-box"
-                                 style="background-image: url(https://gitee.com/yzyys/reai/raw/master/image/hexomaterry/qiuqian.jpg);">
+                                 style="background-image: url(/image/hexomaterry/cun.jpg);">
                             </div>
                             <p class="gallery-name">
                                 甜村
@@ -1477,8 +1481,9 @@
                     
                     <div class="col s6 m4 l4 xl3 gallery-box">
                         <a href="收购二手iPad，mac pro，windows，硬件，网线" class="gallery-item" data-aos="zoom-in-up">
+                            
                             <div class="gallery-cover-box"
-                                 style="background-image: url(https://gitee.com/yzyys/reai/raw/master/image/hexomaterry/suipingshuxia.jfif);">
+                                 style="background-image: url(/image/hexomaterry/suipingshuxia.jfif);">
                             </div>
                             <p class="gallery-name">
                                 收购二手iPad，mac pro，windows，硬件，网线
@@ -1489,8 +1494,9 @@
                     
                     <div class="col s6 m4 l4 xl3 gallery-box">
                         <a href="饰品" class="gallery-item" data-aos="zoom-in-up">
+                            
                             <div class="gallery-cover-box"
-                                 style="background-image: url(https://gitee.com/yzyys/reai/raw/master/image/hexomaterry/shipin02.webp);">
+                                 style="background-image: url(/image/hexomaterry/shipin02.webp);">
                             </div>
                             <p class="gallery-name">
                                 饰品
@@ -1501,8 +1507,9 @@
                     
                     <div class="col s6 m4 l4 xl3 gallery-box">
                         <a href="ddd" class="gallery-item" data-aos="zoom-in-up">
+                            
                             <div class="gallery-cover-box"
-                                 style="background-image: url(https://gitee.com/yzyys/reai/raw/master/banner/23.jpg);">
+                                 style="background-image: url(/image/hexomaterry/kh1.jpg);">
                             </div>
                             <p class="gallery-name">
                                 ddd
@@ -2237,10 +2244,23 @@ document.addEventListener("visibilitychange", function () { document.hidden ? (d
 <!--鼠标尾巴效果-->
 <script src='https://cdn.jsdelivr.net/gh/sviptzk/HexoStaticFile@latest/Hexo/js/mouse_snow.min.js'></script>
 
+<!-- 回到顶部按钮已由 _partial/back-top.ejs 提供 -->
+
 <!-- 悬挂的喵 -->
-<script type="text/javascript" src="https://blog-static.cnblogs.com/files/fsh001/szgotop.js"></script>
 <link rel="stylesheet" type="text/css" href="https://blog-static.cnblogs.com/files/fsh001/szgotop.css" />
 <div class="back-to-top cd-top faa-float animated cd-is-visible" style="top: -999px;"></div>
+<script>
+$(window).scroll(function() {
+    if ($(window).scrollTop() > 500) {
+        $('.back-to-top').not('#backTop').css('top','-200px');
+    } else {
+        $('.back-to-top').not('#backTop').css('top','-999px');
+    }
+});
+$('.back-to-top').not('#backTop').click(function() {
+    $('body,html').animate({scrollTop: 0}, 600);
+});
+</script>
 
 
     </div>

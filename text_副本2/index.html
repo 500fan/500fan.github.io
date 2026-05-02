@@ -1424,6 +1424,11 @@
 </div>
 
 
+<script>
+    $('.bg-cover').css('background-image', 'url(/medias/banner/2.jpg)');
+</script>
+
+
 <main class="content">
     <div id="page-canvas-wrap" style="position: relative; overflow: hidden;">
     <div class="container">
@@ -2286,10 +2291,23 @@ document.addEventListener("visibilitychange", function () { document.hidden ? (d
 <!--鼠标尾巴效果-->
 <script src='https://cdn.jsdelivr.net/gh/sviptzk/HexoStaticFile@latest/Hexo/js/mouse_snow.min.js'></script>
 
+<!-- 回到顶部按钮已由 _partial/back-top.ejs 提供 -->
+
 <!-- 悬挂的喵 -->
-<script type="text/javascript" src="https://blog-static.cnblogs.com/files/fsh001/szgotop.js"></script>
 <link rel="stylesheet" type="text/css" href="https://blog-static.cnblogs.com/files/fsh001/szgotop.css" />
 <div class="back-to-top cd-top faa-float animated cd-is-visible" style="top: -999px;"></div>
+<script>
+$(window).scroll(function() {
+    if ($(window).scrollTop() > 500) {
+        $('.back-to-top').not('#backTop').css('top','-200px');
+    } else {
+        $('.back-to-top').not('#backTop').css('top','-999px');
+    }
+});
+$('.back-to-top').not('#backTop').click(function() {
+    $('body,html').animate({scrollTop: 0}, 600);
+});
+</script>
 
 
     </div>
