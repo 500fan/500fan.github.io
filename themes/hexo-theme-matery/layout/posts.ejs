@@ -1,0 +1,106 @@
+<style type="text/css">
+    .about-cover {
+        height: 75vh;
+    }
+    .post-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+    }
+    .post-item {
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0,0,0,.1);
+        transition: transform .3s, box-shadow .3s;
+        background: #fff;
+    }
+    .post-item:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(0,0,0,.15);
+    }
+    .post-item img {
+        width: 100%;
+        height: 160px;
+        object-fit: cover;
+    }
+    .post-item-body {
+        padding: 14px;
+    }
+    .post-item-title {
+        font-size: 1rem;
+        font-weight: bold;
+        margin-bottom: 6px;
+    }
+    .post-item-title a {
+        color: #333;
+    }
+    .post-item-title a:hover {
+        color: #42b983;
+    }
+    .post-item-desc {
+        font-size: 0.85rem;
+        color: #888;
+        line-height: 1.5;
+    }
+    .post-item-meta {
+        font-size: 0.75rem;
+        color: #aaa;
+        margin-top: 8px;
+    }
+    @media only screen and (max-width: 601px) {
+        .post-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<%- partial('_partial/bg-cover') %>
+
+<main class="content">
+    <div class="container">
+        <div class="card">
+            <div class="card-content">
+                <div style="font-size:1.4rem;font-weight:bold;margin-bottom:20px;padding-bottom:10px;border-bottom:2px solid #42b983;">
+                    <i class="fas fa-newspaper" style="color:#42b983;margin-right:8px;"></i>文章
+                </div>
+                <div class="post-grid">
+                    <% site.posts.sort('date', -1).forEach(function(post) { %>
+                    <div class="post-item">
+                        <% if (post.img) { %>
+                            <a href="<%- url_for(post.path) %>">
+                                <img src="<%- url_for(post.img) %>" alt="<%= post.title %>">
+                            </a>
+                        <% } else { %>
+                            <% var featureImages = theme.featureImages; %>
+                            <% if (featureImages && featureImages.length > 0) { %>
+                                <% var idx = Math.abs(post.title.charCodeAt(0) % featureImages.length); %>
+                                <a href="<%- url_for(post.path) %>">
+                                    <img src="<%- theme.jsDelivr.url %><%- url_for(featureImages[idx]) %>" alt="<%= post.title %>">
+                                </a>
+                            <% } %>
+                        <% } %>
+                        <div class="post-item-body">
+                            <div class="post-item-title">
+                                <a href="<%- url_for(post.path) %>"><%= post.title %></a>
+                            </div>
+                            <div class="post-item-desc">
+                                <% if (post.excerpt && post.excerpt.length > 0) { %>
+                                    <%- strip_html(post.excerpt).substring(0, 80) %>...
+                                <% } else if (post.content) { %>
+                                    <%- strip_html(post.content).substring(0, 80) %>...
+                                <% } %>
+                            </div>
+                            <div class="post-item-meta">
+                                <i class="far fa-clock"></i> <%= date(post.date, 'YYYY-MM-DD') %>
+                                <% if (post.categories && post.categories.length > 0) { %>
+                                    &nbsp;<i class="fas fa-folder"></i> <%= post.categories.first().name %>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                    <% }); %>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

@@ -1,0 +1,648 @@
+<link rel="stylesheet" type="text/css" href="/css/style.css" />
+<link rel="stylesheet" type="text/css" href="/css/barrager.css">
+<!-- av-min.js 只在这里加载一次，供弹幕和 Valine 评论共用 -->
+<script src="/libs/valine/av-min.js"></script>
+<script src="/libs/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="/js/jquery.barrager.js"></script>
+
+<%- partial('_partial/bg-cover') %>
+
+<style>
+    #send{
+        margin-bottom: 60px;
+        width: 44%;
+        background-color: #0ba360;
+    }
+    #clear{
+        margin-bottom: 60px;
+        width: 44%;
+        float: right!important;
+        background-color: #e7c65c;
+    }
+    p{
+        text-align: center;
+    }
+</style>
+<main class="content">
+    <div id="contact" class="container chip-container">
+        <div id="smarts" class="card">
+            <div class="card-content">
+                <div class="tag-title center-align">
+                    <i class="fas fa-comments"></i>&nbsp;&nbsp;<%= __('contact') %>
+                </div>
+                <%- page.content %>
+            </div>
+            <!--valine评论弹幕-->
+            <% if (theme.valine && theme.valine.enable) { %>
+                <p>
+                    <b>讨论互动</b><br>
+                    <b>···</b><br>
+                    <b>友链信息</b><br>
+                    <b>博客名称: <%- config.title %></b><br>
+                    <b>博客网址: <%- config.url %></b><br>
+                    <b>博客头像: <%- config.url %>/medias/logo.png</b><br>
+                    <b>博客介绍: 犹豫就会败北</b><br>
+                    <b>···</b>
+                    <b></b>
+                </p>
+                <div class="container barrage-container">
+                    <section id="custom" class="bb-section">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <form class="form-inline">
+                                    <div class="form-group">
+                                        文字：<input class="form-control" name="info" type="text" placeholder="这里输入展示的样式为弹幕,留言内容会同步在弹屏"/>
+                                    </div>
+                                    <div class="form-group">
+                                        链接：<input class="form-control" name="href" type="text" placeholder="https://mp.weixin.qq.com/s?__biz=MzUzOTEyOTI1MQ==&mid=2247488419&idx=1&sn=a849b45711b5b96f8ca91296242cd7ad&chksm=facc776fcdbbfe79b8e7dcddf272a7582064c62a9e854c69261d9dfb3b9bf75338e68603d30b&token=63507328&lang=zh_CN#rd"/>
+                                    </div>
+                                    <div class="form-group">
+                                        速度：<input  class="form-control"  name="speed" type="text" placeholder="number输入5~20弹屏速度，数字越大弹屏速度越慢" value="16" />
+                                    </div>
+                                </form>
+                                <div class="form-group">
+                                    <button id="send"  class="btn" onclick="run()">留言</button>
+                                    <button id="clear" class="btn " onclick="clear_barrage()"> 清除</button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <script type="text/javascript">
+                    AV.init({
+                        appId: '<%- theme.valine.appId %>',
+                        appKey: '<%- theme.valine.appKey %>'
+                    });
+
+                    $(function() {
+                        do_barrager();
+                        async function do_barrager() {
+                            let lists = [];
+                            //查询弹幕
+                            const query = new AV.Query('barrager');
+                            const barrager = await query.find().then((barrager) => {
+                                lists = barrager;
+                            })
+                            let length = lists.length;
+                            let index = 0;
+                            const timer = setInterval(() => {
+                                if (index === length) {
+                                    clearInterval(timer);
+                                    do_barrager()
+                                } else {
+                                    let obj = lists[index]
+                                    let jsonObject = eval('(' + JSON.stringify(obj) + ')');
+                                    $('body').barrager({
+                                        'img': '/medias/barrager/' + Math.floor(Math.random() * 3) + ".png",
+                                        'href': jsonObject.href,
+                                        'info': jsonObject.info,
+                                        'speed': jsonObject.speed
+                                    });
+                                    index++;
+                                }
+                            }, 500)
+                        }
+                    });
+
+                    //发送弹幕
+                    function  run(){
+                        let info = $('input[name=info]').val();
+                        (info === '' ) ?  info='hello world' : info=info;
+                        let href = $('input[name=href]').val();
+                        (href === '' ) ?  href='https://github.500fan.io' : href=href;
+                        let speed = parseInt($('input[name=speed]').val());
+                        if(speed > 20 || speed < 5)
+                            speed = Math.floor(Math.random() * 10) + 5;
+                        const Barrager = AV.Object.extend('barrager');
+                        const barrager = new Barrager();
+                        barrager.set('href', href);
+                        barrager.set('info', info);
+                        barrager.set('speed', speed);
+                        barrager.save().then((todo) => {
+                            // 保存成功后立即在页面显示弹幕
+                            $('body').barrager({
+                                'img': '/medias/barrager/' + Math.floor(Math.random() * 3) + ".png",
+                                'href': href,
+                                'info': info,
+                                'speed': speed
+                            });
+                            // 清空输入框
+                            $(" input[ name='info' ] ").val("")
+                            $(" input[ name='href' ] ").val("")
+                            $(" input[ name='speed' ] ").val("")
+                        }).catch((err) => {
+                            alert('留言发送失败，请检查网络或稍后再试');
+                            console.error('弹幕保存失败:', err);
+                        });
+                    }
+
+                    function  clear_barrage()
+                    {
+                        $.fn.barrager.removeAll();
+                    }
+
+                </script>
+            <% } %>
+        </div>
+
+
+
+   
+          
+
+          
+        <!--其他评论card-->
+        <div class="card">
+            <% if (theme.gitalk && theme.gitalk.enable) { %>
+                <%- partial('_partial/gitalk') %>
+            <% } %>
+
+            <% if (theme.gitment.enable) { %>
+                <%- partial('_partial/gitment') %>
+            <% } %>
+
+            <% if (theme.disqus.enable) { %>
+                <%- partial('_partial/disqus') %>
+            <% } %>
+
+            <% if (theme.livere && theme.livere.enable) { %>
+                <%- partial('_partial/livere') %>
+            <% } %>
+
+            <% if (theme.minivaline && theme.minivaline.enable) { %>
+                <%- partial('_partial/minivaline') %>
+            <% } %>
+
+            <% if (theme.twikoo && theme.twikoo.enable) { %>
+                <%- partial('_partial/twikoo') %>
+            <% } %>
+
+            <% if (theme.changyan && theme.changyan.enable) { %>
+                <%- partial('_partial/changyan') %>
+            <% } %>
+
+        </div>
+    </div>
+</main>
+
+<main><style>
+    .valine-card {
+        margin: 1.5rem auto;
+    }
+
+    .valine-card .card-content {
+        padding: 20px 20px 5px 20px;
+    }
+
+    #vcomments textarea {
+        box-sizing: border-box;
+        background: url("<%- url_for(theme.valine.background) %>") 100% 100% no-repeat;
+    }
+
+    #vcomments p {
+        margin: 2px 2px 10px;
+        font-size: 1.05rem;
+        line-height: 1.78rem;
+    }
+
+    #vcomments blockquote p {
+        text-indent: 0.2rem;
+    }
+
+    #vcomments a {
+        padding: 0 2px;
+        color: #4cbf30;
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+    #vcomments img {
+        max-width: 100%;
+        height: auto;
+        cursor: pointer;
+    }
+
+    #vcomments ol li {
+        list-style-type: decimal;
+    }
+
+    #vcomments ol,
+    ul {
+        display: block;
+        padding-left: 2em;
+        word-spacing: 0.05rem;
+    }
+
+    #vcomments ul li,
+    ol li {
+        display: list-item;
+        line-height: 1.8rem;
+        font-size: 1rem;
+    }
+
+    #vcomments ul li {
+        list-style-type: disc;
+    }
+
+    #vcomments ul ul li {
+        list-style-type: circle;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    #vcomments table, th, td {
+        border: 0;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments h1 {
+        font-size: 1.85rem;
+        font-weight: bold;
+        line-height: 2.2rem;
+    }
+
+    #vcomments h2 {
+        font-size: 1.65rem;
+        font-weight: bold;
+        line-height: 1.9rem;
+    }
+
+    #vcomments h3 {
+        font-size: 1.45rem;
+        font-weight: bold;
+        line-height: 1.7rem;
+    }
+
+    #vcomments h4 {
+        font-size: 1.25rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    #vcomments h5 {
+        font-size: 1.1rem;
+        font-weight: bold;
+        line-height: 1.4rem;
+    }
+
+    #vcomments h6 {
+        font-size: 1rem;
+        line-height: 1.3rem;
+    }
+
+    #vcomments p {
+        font-size: 1rem;
+        line-height: 1.5rem;
+    }
+
+    #vcomments hr {
+        margin: 12px 0;
+        border: 0;
+        border-top: 1px solid #ccc;
+    }
+
+    #vcomments blockquote {
+        margin: 15px 0;
+        border-left: 5px solid #42b983;
+        padding: 1rem 0.8rem 0.3rem 0.8rem;
+        color: #666;
+        background-color: rgba(66, 185, 131, .1);
+    }
+
+    #vcomments pre {
+        font-family: monospace, monospace;
+        padding: 1.2em;
+        margin: .5em 0;
+        background: #272822;
+        overflow: auto;
+        border-radius: 0.3em;
+        tab-size: 4;
+    }
+
+    #vcomments code {
+        font-family: monospace, monospace;
+        padding: 1px 3px;
+        font-size: 0.92rem;
+        color: #e96900;
+        background-color: #f8f8f8;
+        border-radius: 2px;
+    }
+
+    #vcomments pre code {
+        font-family: monospace, monospace;
+        padding: 0;
+        color: #e8eaf6;
+        background-color: #272822;
+    }
+
+    #vcomments pre[class*="language-"] {
+        padding: 1.2em;
+        margin: .5em 0;
+    }
+
+    #vcomments code[class*="language-"],
+    pre[class*="language-"] {
+        color: #e8eaf6;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+
+    #vcomments b,
+    strong {
+        font-weight: bold;
+    }
+
+    #vcomments dfn {
+        font-style: italic;
+    }
+
+    #vcomments small {
+        font-size: 85%;
+    }
+
+    #vcomments cite {
+        font-style: normal;
+    }
+
+    #vcomments mark {
+        background-color: #fcf8e3;
+        padding: .2em;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+</style>
+
+<div class="card valine-card" data-aos="fade-up">
+    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; padding-left: 20px; top: 15px; padding-bottom: 5px;">
+        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
+        <span>评论</span>
+    </div>
+    <div  id="vcomments" class="card-content" style="display: grid">
+    </div>
+</div>
+
+<!-- 删除重复的 av-min.js 加载，已在页面顶部加载过 -->
+<script src="<%- theme.jsDelivr.url %><%- url_for(theme.libs.js.valine) %>"></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        appId: '<%- theme.valine.appId %>',
+        appKey: '<%- theme.valine.appKey %>',
+        notify: '<%- theme.valine.notify %>' === 'true',
+        verify: '<%- theme.valine.verify %>' === 'true',
+        visitor: '<%- theme.valine.visitor %>' === 'true',
+        avatar: '<%- theme.valine.avatar %>',
+        pageSize: '<%- theme.valine.pageSize %>',
+        lang: '<% if (config.language == "zh-CN") {  %>zh-cn<% } else { %>en<% } %>',
+        placeholder: '<%= theme.valine.placeholder %>'
+    });
+</script>
+
+<!--酷Q推送-->
+<% if (theme.valine.coolpushkey && theme.valine.coolpushkey > 1) { %>
+<script>
+    var pushLink ="https://push.xuthus.cc/send/<%- theme.valine.coolpushkey %>";
+    var siteName = "<%- config.title %>'s Blog";
+    var valineButton=document.getElementsByClassName("vsubmit vbtn")[0];
+    var title = siteName + "上又有新评论啦~!\n";
+  
+    function send_valine() {
+      //获取元素信息
+      var pagename = document.title;
+      var pageurl = document.URL;
+      var pushtime = new Date();
+      var vnick = document.getElementsByClassName("vnick vinput")[0].value;
+      var vmail = document.getElementsByClassName("vmail vinput")[0].value;
+      var vlink = document.getElementsByClassName("vlink vinput")[0].value;
+      var veditor = document.getElementsByClassName("veditor vinput")[0].value;
+      content =
+        title +
+        "昵称：" + vnick +
+        "\n邮箱：" + vmail +
+        "\n网站地址：" + vlink +
+        "\n文章标题：" + pagename +
+        "\n评论内容：" + veditor +
+        "\n文章链接：" + pageurl +
+        "\n评论时间" + pushtime.toLocaleString() + "\n";
+      var httpRequest = new XMLHttpRequest(); //第一步：创建需要的对象
+      httpRequest.open("POST", pushLink, true); //第二步：打开连接
+      httpRequest.setRequestHeader(
+        "Content-type",
+        "application/json"
+      ); //设置请求头 注：post方式必须设置请求头（在建立连接后设置请求头）
+      httpRequest.send(content); //发送请求 
+    }
+  
+    document.body.addEventListener('click', function(e) {
+    if(e.target.className.indexOf('vsubmit') === -1) {
+      return;
+    }
+    send_valine();
+  })
+</script>
+
+<script>
+//运行主函数
+circleMagic();
+            //主函数内容
+            function circleMagic(options) {
+                    let width;
+                    let height;
+                    let canvas;
+                    let ctx;
+                    let animateHeader = true;
+                    const circles = [];
+            
+                    const settings = options || {
+                        color: 'rgba(255,255,255,.5)',
+                        radius: 10,
+                        density: 0.3,
+                        clearOffset: 0.2
+                    }
+            
+            
+                    //  Main
+            
+                    const container = document.getElementById('smarts');
+                    initContainer();
+                    addListeners();
+            
+            
+                    function initContainer() {
+                        width = container.offsetWidth;
+                        height = container.offsetHeight - 120;
+            
+                        //  create canvas element
+            
+                        initCanvas();
+                        canvas = document.getElementById('homeTopCanvas');
+                        canvas.width = width;
+                        canvas.height = height;
+                        canvas.style.position = 'absolute';
+                        canvas.style.left = '0';
+                        canvas.style.bottom = '0';
+                        ctx = canvas.getContext('2d');
+            
+                        //  create circles
+                        for (let x = 0; x < width * settings.density; x++) {
+                            const c = new Circle();
+                            circles.push(c);
+                        }
+                        animate();
+                    }
+            
+                    // Init canvas element
+                    function initCanvas() {
+                        const canvasElement = document.createElement('canvas');
+                        canvasElement.id = 'homeTopCanvas';
+                        canvasElement.style.pointerEvents = 'none';
+                        container.appendChild(canvasElement);
+                        canvasElement.parentElement.style.overflow = 'hidden';
+                    }
+            
+                    // Event handling
+                    function addListeners() {
+                        window.addEventListener('scroll', scrollCheck, false);
+                        window.addEventListener('resize', resize, false);
+                    }
+            
+                    function scrollCheck() {
+                        if (document.body.scrollTop > height) {
+                            animateHeader = false;
+                        } else {
+                            animateHeader = true;
+                        }
+                    }
+            
+                    function resize() {
+                        width = container.clientWidth;
+                        height = container.clientHeight;
+                        container.height = height + 'px';
+                        canvas.width = width;
+                        canvas.height = height;
+                    }
+            
+                    function animate() {
+                        if (animateHeader) {
+                            ctx.clearRect(0, 0, width, height);
+                            for (const i in circles) {
+                                circles[i].draw();
+                            }
+                        }
+                        requestAnimationFrame(animate);
+                    }
+            
+                    function randomColor() {
+                        const r = Math.floor(Math.random() * 255);
+                        const g = Math.floor(Math.random() * 255);
+                        const b = Math.floor(Math.random() * 255);
+                        const alpha = Math.random().toPrecision(2);
+                        return 'rgba(' + r + ', ' + g + ', ' + b + ', ' + alpha + ')';
+                    }
+            
+                    //  Canvas manipulation
+            
+                    function Circle() {
+                        const that = this;
+            
+                        // constructor
+                        (function () {
+                            that.pos = {};
+                            init();
+                        })();
+            
+                        function init() {
+                            that.pos.x = Math.random() * width;
+                            that.pos.y = height + Math.random() * 100;
+                            that.alpha = 0.1 + Math.random() * settings.clearOffset;
+                            that.scale = 0.1 + Math.random() * 0.3;
+                            that.speed = Math.random();
+                            if (settings.color === 'random') {
+                                that.color = randomColor();
+                            } else {
+                                that.color = settings.color;
+                            }
+                        }
+            
+                        this.draw = function () {
+                            if (that.alpha <= 0) {
+                                init();
+                            }
+                            that.pos.y -= that.speed;
+                            that.alpha -= 0.0005;
+                            ctx.beginPath();
+                            ctx.arc(
+                                that.pos.x,
+                                that.pos.y,
+                                that.scale * settings.radius,
+                                0,
+                                2 * Math.PI,
+                                false
+                            );
+                            ctx.fillStyle = that.color;
+                            ctx.fill();
+                            ctx.closePath();
+                        }
+                    }
+                }
+
+</script>
+<% } %>
+
+<div class="aplayer" data-id="60198" data-server="netease" data-type="playlist"></div>
+ 
+<div class="aplayer" data-id="002QE24W26baEy" data-server="tencent" data-type="album" data-fixed="true" data-autoplay="false" data-volume="1.0" data-list-max-height="200px" data-list-folded="true"></div>
+
+
+
+</main>

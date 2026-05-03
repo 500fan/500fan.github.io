@@ -1,0 +1,127 @@
+<% if (theme.musics.fixed) { %>
+<!-- 脚本放在面板外面，确保执行 -->
+<link rel="stylesheet" href="<%- theme.libs.css.aplayer %>">
+<style>
+    .aplayer .aplayer-lrc p {
+        <%if(theme.musics.hideLrc){%>display: none;<%}%>
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        <%if(theme.musics.hideLrc){%>display: none;<%}%>
+        font-size: 15px;
+        color: <%- theme.musics.theme %>;
+    }
+</style>
+<script src="<%- theme.libs.js.aplayer %>"></script>
+<script>var meting_api='https://api.injahow.cn/meting/?server=:server&type=:type&id=:id&r=:r';</script>
+<script src="<%- theme.libs.js.meting %>"></script>
+
+<!-- 吸底浮动面板 -->
+<div id="global-musics-player" style="display:none;position:fixed;right:0;bottom:80px;z-index:999;width:280px;max-height:400px;overflow-y:auto;box-shadow:-2px 0 8px rgba(0,0,0,.15);border-radius:8px 0 0 8px;background:#fff;">
+    <div id="musics-toggle-bar" style="cursor:pointer;text-align:center;padding:6px 0;background:#f5f5f5;border-radius:8px 0 0 0;font-size:13px;color:#666;user-select:none;">
+        <i class="fas fa-chevron-down"></i> 收起播放器
+    </div>
+    <div id="musics-content">
+        <meting-js
+                   server="<%- theme.musics.server %>"
+                   type="<%- theme.musics.type %>"
+                   id="<%- theme.musics.id %>"
+                   fixed="false"
+                   autoplay="<%- theme.musics.autoplay === true %>"
+                   theme="<%- theme.musics.theme %>"
+                   order="<%- theme.musics.order %>"
+                   preload="<%- theme.musics.preload %>"
+                   volume="<%- Number(theme.musics.volume) %>"
+                   list-folded="<%- theme.musics.listFolded ? 'true' : 'false' %>"
+                   list-max-height="<%- theme.musics.listMaxHeight || '300px' %>"
+        >
+        </meting-js>
+    </div>
+</div>
+
+<!-- 迷你展开条 -->
+<div id="musics-mini-bar" onclick="toggleMusicsPanel()" style="display:none;position:fixed;right:0;bottom:320px;z-index:999;cursor:pointer;background:#fff;box-shadow:-2px 0 8px rgba(0,0,0,.15);border-radius:8px 0 0 8px;padding:8px 12px;font-size:13px;color:#666;">
+    <i class="fas fa-chevron-up"></i> 展开播放器
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var toggleBar = document.getElementById('musics-toggle-bar');
+        if (toggleBar) {
+            toggleBar.addEventListener('click', function() {
+                toggleMusicsPanel();
+            });
+        }
+
+        <% if (theme.musics.autoplay === true) { %>
+        // autoplay 时自动展开面板
+        setTimeout(function() {
+            var panel = document.getElementById('global-musics-player');
+            if (panel) panel.style.display = 'block';
+        }, 1000);
+        <% } %>
+    });
+
+    function toggleMusicsPanel() {
+        var panel = document.getElementById('global-musics-player');
+        var miniBar = document.getElementById('musics-mini-bar');
+        if (!panel) return;
+        if (panel.style.display === 'none') {
+            panel.style.display = 'block';
+            if (miniBar) miniBar.style.display = 'none';
+        } else {
+            panel.style.display = 'none';
+            if (miniBar) miniBar.style.display = 'block';
+        }
+    }
+</script>
+
+<% } else { %>
+<!-- 非吸底模式：页面内嵌播放器 -->
+<div class="music-player">
+    <% if (theme.musics.title && theme.musics.title.enable) { %>
+        <div class="title center-align">
+            <i class="fas fa-music"></i>&nbsp;&nbsp;<%- theme.musics.title.show %>
+        </div>
+    <% } %>
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="<%- theme.musics.server %>"
+                   type="<%- theme.musics.type %>"
+                   id="<%- theme.musics.id %>"
+                   fixed="false"
+                   autoplay="<%- theme.musics.autoplay === true %>"
+                   theme="<%- theme.musics.theme %>"
+                   order="<%- theme.musics.order %>"
+                   preload="<%- theme.musics.preload %>"
+                   volume="<%- Number(theme.musics.volume) %>"
+                   list-folded="<%- theme.musics.listFolded ? 'true' : 'false' %>"
+        >
+        </meting-js>
+    </div>
+</div>
+<% } %>
+
+<%# 左侧吸底播放器：独立的 APlayer fixed 模式 %>
+<% if (theme.music && theme.music.enable) { %>
+<div class="">
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="<%- theme.music.server %>"
+                   type="<%- theme.music.type %>"
+                   id="<%- theme.music.id %>"
+                   fixed='<%- theme.music.fixed ? "true" : "false" %>'
+                   autoplay='<%- theme.music.autoplay === true %>'
+                   theme='<%- theme.music.theme %>'
+                   loop='<%- theme.music.loop || "all" %>'
+                   order='<%- theme.music.order || "random" %>'
+                   preload='<%- theme.music.preload || "auto" %>'
+                   volume='<%- Number(theme.music.volume || 0.7) %>'
+                   list-folded='<%- theme.music.listFolded ? "true" : "true" %>'
+        >
+        </meting-js>
+    </div>
+</div>
+<% } %>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图集</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, sans-serif; background: #f5f5f5; padding: 40px 20px; }
+        h1 { text-align: center; color: #333; margin-bottom: 30px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card {
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0,0,0,.1);
+            margin-bottom: 24px;
+        }
+        .card img { width: 100%; display: block; }
+        .card-body { padding: 16px 20px; }
+        .card-title { font-size: 1.2rem; font-weight: bold; color: #333; margin-bottom: 8px; }
+        .card-desc { font-size: 0.95rem; color: #666; line-height: 1.6; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📷 我的图集</h1>
+
+        <div class="card">
+            <img src="/medias/featureimages/1.jpg" alt="风景">
+            <div class="card-body">
+                <div class="card-title">山间风景</div>
+                <div class="card-desc">这是一张风景照片，拍摄于山间。青山绿水，美不胜收。</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="/medias/featureimages/2.jpg" alt="大海">
+            <div class="card-body">
+                <div class="card-title">辽阔大海</div>
+                <div class="card-desc">大海辽阔，让人心旷神怡。蓝天白云，海天一色。</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="/medias/featureimages/3.jpg" alt="日落">
+            <div class="card-body">
+                <div class="card-title">夕阳日落</div>
+                <div class="card-desc">夕阳西下，最美的时刻。余晖洒满大地。</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

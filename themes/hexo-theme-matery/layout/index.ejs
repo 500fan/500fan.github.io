@@ -1,0 +1,733 @@
+<% if (is_home() && page.current === 1) { %>
+  <%- partial('_partial/index-cover') %>
+  <% } else { %>
+      <%- partial('_partial/bg-cover') %>
+  <% } %>
+<%- partial('_partial/bg-video') %>
+<main class="content">
+  <div class="background-color:#ddd;">
+		<ul class="hotArticle-list">
+      <li>
+				<a href="https://v1.hitokoto.cn/?c=d&c=h&c=j" target="_blank" data-report-click="{&quot;mod&quot;:&quot;popu_541&quot;,&quot;spm&quot;:&quot;1001.2101.3001.4139&quot;,&quot;dest&quot;:&quot;https://cungudafa.blog.csdn.net/article/details/85871871&quot;,&quot;ab&quot;:&quot;new&quot;}">
+				随机的
+					<img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					<span class="read">1</span>
+                </a>
+			</li>
+			<li>
+				<a href="https://mp.xiaohudong.com/pdd/add?pid=70004_180643776" target="_blank" data-report-click="{&quot;mod&quot;:&quot;popu_541&quot;,&quot;spm&quot;:&quot;1001.2101.3001.4139&quot;,&quot;dest&quot;:&quot;https://cungudafa.blog.csdn.net/article/details/85871871&quot;,&quot;ab&quot;:&quot;new&quot;}">
+				商城，更方便
+					<img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					<span class="read">1</span>
+                </a>
+			</li>
+			<li>
+				<a href="https://support.qq.com/embed/329748" target="_blank" data-report-click="{&quot;mod&quot;:&quot;popu_541&quot;,&quot;spm&quot;:&quot;1001.2101.3001.4139&quot;,&quot;dest&quot;:&quot;https://cungudafa.blog.csdn.net/article/details/103163313&quot;,&quot;ab&quot;:&quot;new&quot;}">
+				反馈，互动，研讨，团队博客地址
+					<img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					<span class="read">2</span>
+                </a>
+			</li>
+			<li>
+				<a href="https://openai.weixin.qq.com/h5/wxb65548ecb4bd1ed1" target="_blank" data-report-click="{&quot;mod&quot;:&quot;popu_541&quot;,&quot;spm&quot;:&quot;1001.2101.3001.4139&quot;,&quot;dest&quot;:&quot;https://cungudafa.blog.csdn.net/article/details/88872711&quot;,&quot;ab&quot;:&quot;new&quot;}">
+				微信公众号智能对话地址
+					<img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					<span class="read">3</span>
+                </a>
+			</li>
+			<li>
+				<a href="https://waline100-tiandoo.vercel.app/" target="_blank" data-report-click="{&quot;mod&quot;:&quot;popu_541&quot;,&quot;spm&quot;:&quot;1001.2101.3001.4139&quot;,&quot;dest&quot;:&quot;https://cungudafa.blog.csdn.net/article/details/93493229&quot;,&quot;ab&quot;:&quot;new&quot;}">
+				品论直达
+					<img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					<span class="read">4</span>
+                </a>
+			</li>
+			<li>
+				<a href="http://imageproxy.chaoxing.com/0x0,q15,jpeg,slEtmWeY6WexS0SaijdY_3as70_MybRg4ZDGoVY7atkM/https://p.ananas.chaoxing.com/star3/origin/b6ccee78bf534263b9699503f1a05b25.png" target="_blank" data-report-click="{&quot;mod&quot;:&quot;popu_541&quot;,&quot;spm&quot;:&quot;1001.2101.3001.4139&quot;,&quot;dest&quot;:&quot;https://cungudafa.blog.csdn.net/article/details/84658703&quot;,&quot;ab&quot;:&quot;new&quot;}">
+				微信二维码，来意备注进群
+					<img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					<span class="read">5</span>
+                </a>
+			</li>
+		</ul>
+	</div>
+</div>
+
+      <% if (page.current === 1
+              && ((theme.dream.enable || theme.musics.enable)
+                      || theme.video.enable || theme.recommend.enable)) { %>
+      <div id="smarts" id="indexCard" class="index-card">
+          <div class="container ">
+              <div class="card">
+                  <div class="card-content">
+                      <% if (theme.dream.enable) { %>
+                          <%- partial('_widget/dream') %>
+                      <% } %>
+  
+                      <% if (theme.musics.enable && !theme.musics.fixed) { %>
+                          <%- partial('_widget/music') %>
+                      <% } %>
+  
+                      <% if (theme.video.enable && ( theme.video.url || theme.video.iframeUrl ) ) { %>
+                          <%- partial('_widget/video') %>
+                      <% } %>
+  
+                      <% if (theme.recommend.enable) { %>
+                      <div id="recommend-sections" class="recommend">
+                          <%- partial('_widget/recommend') %>
+                      </div>
+                      <% } %>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <% }%>
+  
+      <%
+      var hashCode = function (str) {
+          if (!str && str.length === 0) {
+              return 0;
+          }
+  
+          var hash = 0;
+          for (var i = 0, len = str.length; i < len; i++) {
+              hash = ((hash << 5) - hash) + str.charCodeAt(i);
+              hash |= 0;
+          }
+          return hash;
+      };
+      %>
+
+      <!-- 所有文章卡片 -->
+      <article id="articles" class="container articles">
+          <div class="row article-row">
+              <% page.posts.forEach(post => { %>
+              <% if (post.hide != true)  { %> <!-- 隐藏某个文章 -->
+              <div class="article col s12 m6 l4" data-aos="zoom-in">
+                  <div class="card">
+                      <a href="<%- url_for(post.path) %>">
+                          <div class="card-image">
+                              <% if (post.img) { %>
+                              <img src="<%- url_for(post.img) %>" class="responsive-img" alt="<%= post.title %>">
+                              <% } else { %>
+                              <%
+                                  var featureimg = '/medias/featureimages/0.jpg';
+                                  var featureImages = theme.featureImages;
+                                  if (!featureImages || featureImages.length == 0) {
+                                      return featureimg;
+                                  }
+                                  featureimg = featureImages[Math.abs(hashCode(post.title) % featureImages.length)]
+                              %>
+                              <img src="<%- theme.jsDelivr.url %><%- url_for(featureimg) %>" class="responsive-img" alt="<%= post.title %>">
+                              <% } %>
+                              <span class="card-title"><%= post.title %></span>
+                          </div>
+                      </a>
+  
+                      <div class="card-content article-content">
+                          <div class="summary block-with-text">
+                              <% if (post.summary && post.summary.length > 0) { %>
+                                  <%- post.summary %>
+                              <% } else if (post.excerpt && post.excerpt.length > 0) { %>
+                                  <%- strip_html(post.excerpt).substring(0, 120) %>
+                              <% } else if (post.content && post.content.length > 0) { %>
+                                  <%- strip_html(post.content).substring(0, 120) %>
+                              <% } %>
+                          </div>
+                          <div class="publish-info">
+                              <span class="publish-date">
+                                  <i class="far fa-clock fa-fw icon-date"></i><%= date(post.date, config.date_format) %>
+                              </span>
+                              <span class="publish-author">
+                                  <% if (post.categories && post.categories.length > 0) { %>
+                                  <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                  <% post.categories.forEach(category => { %>
+                                  <a href="<%- url_for(category.path) %>" class="post-category">
+                                      <%- category.name %>
+                                  </a>
+                                  <% }); %>
+                                  <% } else if (post.author && post.author.length > 0) { %>
+                                  <i class="fas fa-user fa-fw"></i>
+                                  <%- post.author %>
+                                  <% } else { %>
+                                  <i class="fas fa-user fa-fw"></i>
+                                  <%- config.author %>
+                                  <% } %>
+                              </span>
+                          </div>
+                      </div>
+  
+                      <% if(post.tags && post.tags.length > 0) { %>
+                      <div class="card-action article-tags">
+                          <% post.tags.forEach(tag => { %>
+                          <a href="<%- url_for(tag.path) %>">
+                              <span class="chip bg-color"><%= tag.name %></span>
+                          </a>
+                          <% }); %>
+                      </div>
+                      <% } %>
+                  </div>
+              </div>
+              <% } %>  <!-- 隐藏某个文章 -->
+              <% }); %>
+          </div>
+      </article>
+  
+  </main>
+
+<%# 播放器已移到 layout.ejs 全局加载 %>
+
+  <% if (page.total > 1) { %>
+  <%- partial('_partial/paging') %>
+  <% } %>
+
+
+
+
+
+
+
+<main class="content" style="min-height: 324px;">
+    <div id="contact" class="container chip-container">
+        <div class="card">
+            <div class="card-content">
+                <!-- 主题 挂件 -->
+                <div class="caishendengsd">        
+                    <div class="caishenxiansd">
+                        <img class="caishenpic huadengpic" src="/medias/christmas-img/2.png">
+                    </div>              
+                </div>
+                <div class="caishendengsd">        
+                    <div class="caishenxianleftsd">
+                        <img class="caishenpic huadengpic" src="/medias/christmas-img/2.png">
+                    </div>              
+                </div>
+                <div class="caishendeng">        
+                    <div class="caishenxian">
+                        <img class="caishenpic huadengpic" src="/medias/christmas-img/2.png">
+                    </div>              
+                </div>
+                <div class="caishendeng">        
+                    <div class="caishenxianleft">
+                        <img class="caishenpic huadengpic" src="/medias/christmas-img/2.png">
+                    </div>              
+                </div>
+                <div class="tag-title center-align">
+                    <i class="fas fa-comments"></i>&nbsp;&nbsp;   interaction                
+				</div>
+				 <!-- 加入网易云音乐热门评论，实时更新 -->
+                <div class="poem-wrap">
+                    <div class="poem-border poem-left">
+                    </div>
+                    <div class="poem-border poem-right">
+                    </div>
+                    <h1>热评</h1>
+                    <p id="poem">在童话中，一个人做他想做的事；在现实中，一个人做他能做的事。</p>
+                    <p id="info"> “ 埃莱娜·费兰特 ” </p>
+                </div>
+                <script>
+                    $.get("https://v1.hitokoto.cn?c=d&c=h&c=j",function(data,status){if(status=='success'){$('#poem').html(data.hitokoto);if(data.from_who!=null){$('#info').html(data.from_who+" · "+"《 "+data.from+" 》");}else{$('#info').html(" “ "+data.from+" ” ");}}else{$('#poem').html("获取出错啦");}});
+                </script>
+                
+                <div class="swbk">
+                    <div class="label" style="color: rgb(138, 2, 250);">
+                        <!-- 标签小帽子-->
+                        <img class="labelmz" src="https://gravatar.helingqi.com/wavatar/684f9309ac5d283fe56bab12dec1b9cd?s=65&r=PG&d=">
+                        <img class="labelmzsd" src="https://q2.qlogo.cn/g?b=qq&nk=138950128&s=100">
+                        <span>欢迎</span>
+                    </div>
+                    <!--主题挂件 -->
+                    <div class="caishendengsd">        
+                        <div class="caishenxiansd">
+                            <img class="caishenpic huadengpic" src="/medias/christmas-img/2.png">
+                        </div>              
+                    </div>
+                    <div class="caishendeng">        
+                        <div class="caishenxian">
+                            <img class="caishenpic huadengpic" src="/medias/spring-img/2.png">
+                        </div>              
+                    </div>
+                    <p class="bozhushuo">虽然现在是独立博客式微的时代，但无论你是循关键词自搜索引擎而来，还是从 SNS、朋友引荐而来，能在众多博客中与你相遇，也未尝不是一种缘分。欢迎你！</p>
+			        <p class="bozhushuo">待续</p>
+                    <p class="bozhushuo">文章若有内容纰漏、图片加载失败、链接失效的地方, 可告知博主, 定会修改完善。</p>
+                </div>
+				<div class="swbk">
+                    <div class="label" style="color: rgb(127, 41, 197);">
+                        <!-- 标签小帽子-->
+                        <img class="labelmz" src="/medias/spring-img/9.png">
+                        <img class="labelmzsd" src="/medias/christmas-img/2.png">
+                        <span>申请友链须知</span></div>
+                    <!--主题 挂件-->
+                    <div class="caishendengsd">        
+                        <div class="caishenxiansd">
+                            <img class="caishenpic gugus" src="/medias/christmas-img/9.png">
+                        </div>              
+                    </div>
+                    <div class="caishendeng">        
+                        <div class="caishenxian">
+                            <img class="caishenpic gugus" src="/medias/spring-img/9.png">
+                        </div>              
+                    </div>
+				    <ul>
+                        <li><p class="bozhushuo">1、本站与技术类写作类、生活类、情感类、兴趣类等各类博客互换友链，且具有原创高质量文章、经常更新的站优先。</p></li>
+                        <li><p class="bozhushuo">2、不与含有色情、暴力、政治敏感或其他法律法规禁止的网站互换。</p></li>
+                        <li><p class="bozhushuo">3、申请链接前请先添加本博链接，通过本友链页面留言或邮件告知。</p></li>
+                        <li><p class="bozhushuo">4、请提供网站名称、网站链接、网站描述（12字以内）、网站图标或头像。</p></li>
+                        <li><p class="bozhushuo">5、本站会定期对所有友链进行检查，如果发现一月内不能访问或者六个月内没有内容更新可能会取消该友链。</p></li>
+                        <ul>
+                   
+                    <hr>
+                </ul></ul></div>
+                <div class="swbk">
+                    <div class="label" style="color: rgb(74, 248, 21);">
+                        <!-- 标签小帽子-->
+                        <img class="labelmz" src="/medias/spring-img/2.png">
+                        <img class="labelmzsd" src="/medias/christmas-img/9.png">
+                        <span>我的博客资料</span></div>
+                        <!-- 主题 挂件 -->
+                        <div class="caishendengsd">        
+                             <div class="caishenxiansd">
+                                <img class="caishenpic huadengpic" src="/medias/christmas-img/9.png">
+                             </div>              
+                        </div>
+                        <div class="caishendeng">        
+                            <div class="caishenxian">
+                               <img class="caishenpic huadengpic" src="/medias/spring-img/2.png">
+                            </div>              
+                       </div>
+                    <p><strong>小提示</strong></p><p>交换友链还请前往留言此格式哦~</p>
+                    <pre class="language-txt center-align"><code class="language-txt">
+{"avatar": "https://top/medias/avatar.jpg"
+"name": "iniunai",
+"introduction": "念念不忘 必有回响",
+"url": "https://biteniunai.gitee.io
+"title": "访问主页"}</code></pre><p><strong>
+                          
+                          
+                          非Matery版：</strong></p>
+<pre class="language-txt center-align"><code class="language-txt">{博客名称: "iniunai",
+博客地址: https://biteniunai.gitee.io
+博客头像: https://top/medias/avatar.jpg
+博客简介: 念念不忘 必有回响
+可选标题: 访问主页"}</code></pre>
+                </div>
+            </div>
+        </div>
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            <style>
+  .valine-card {
+    margin: 1.5rem auto;
+  }
+
+  .valine-card .card-content {
+    padding: 10px 10px 5px 10px;
+  }
+
+  #vcomments textarea {
+    box-sizing: border-box;
+    background: url('/medias/comment_bg.png') 100% 100% no-repeat;
+  }
+
+  #vcomments p {
+    margin: 2px 2px 10px;
+    font-size: 1.05rem;
+    line-height: 1.78rem;
+  }
+
+  #vcomments blockquote p {
+    text-indent: 0.2rem;
+  }
+
+  #vcomments a {
+    padding: 0 2px;
+    color: #4cbf30;
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  #vcomments img {
+    max-width: 100%;
+    height: auto;
+    cursor: pointer;
+  }
+
+  #vcomments ol li {
+    list-style-type: decimal;
+  }
+
+  #vcomments ol,
+  ul {
+    display: block;
+    padding-left: 2em;
+    word-spacing: 0.05rem;
+  }
+
+  #vcomments ul li,
+  ol li {
+    display: list-item;
+    line-height: 1.8rem;
+    font-size: 1rem;
+  }
+
+  #vcomments ul li {
+    list-style-type: disc;
+  }
+
+  #vcomments ul ul li {
+    list-style-type: circle;
+  }
+
+  #vcomments table,
+  th,
+  td {
+    padding: 12px 13px;
+    border: 1px solid #dfe2e5;
+  }
+
+  #vcomments table,
+  th,
+  td {
+    border: 0;
+  }
+
+  table tr:nth-child(2n),
+  thead {
+    background-color: #fafafa;
+  }
+
+  #vcomments table th {
+    background-color: #f2f2f2;
+    min-width: 80px;
+  }
+
+  #vcomments table td {
+    min-width: 80px;
+  }
+
+  #vcomments h1 {
+    font-size: 1.85rem;
+    font-weight: bold;
+    line-height: 2.2rem;
+  }
+
+  #vcomments h2 {
+    font-size: 1.65rem;
+    font-weight: bold;
+    line-height: 1.9rem;
+  }
+
+  #vcomments h3 {
+    font-size: 1.45rem;
+    font-weight: bold;
+    line-height: 1.7rem;
+  }
+
+  #vcomments h4 {
+    font-size: 1.25rem;
+    font-weight: bold;
+    line-height: 1.5rem;
+  }
+
+  #vcomments h5 {
+    font-size: 1.1rem;
+    font-weight: bold;
+    line-height: 1.4rem;
+  }
+
+  #vcomments h6 {
+    font-size: 1rem;
+    line-height: 1.3rem;
+  }
+
+  #vcomments p {
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
+
+  #vcomments hr {
+    margin: 12px 0;
+    border: 0;
+    border-top: 1px solid #ccc;
+  }
+
+  #vcomments blockquote {
+    margin: 15px 0;
+    border-left: 5px solid #42b983;
+    padding: 1rem 0.8rem 0.3rem 0.8rem;
+    color: #666;
+    background-color: rgba(66, 185, 131, 0.1);
+  }
+
+  #vcomments pre {
+    font-family: monospace, monospace;
+    padding: 1.2em;
+    margin: 0.5em 0;
+    background: #272822;
+    overflow: auto;
+    border-radius: 0.3em;
+    tab-size: 4;
+  }
+
+  #vcomments code {
+    font-family: monospace, monospace;
+    padding: 1px 3px;
+    font-size: 0.92rem;
+    color: #e96900;
+    background-color: #f8f8f8;
+    border-radius: 2px;
+  }
+
+  #vcomments pre code {
+    font-family: monospace, monospace;
+    padding: 0;
+    color: #e8eaf6;
+    background-color: #272822;
+  }
+
+  #vcomments pre[class*='language-'] {
+    padding: 1.2em;
+    margin: 0.5em 0;
+  }
+
+  #vcomments code[class*='language-'],
+  pre[class*='language-'] {
+    color: #e8eaf6;
+  }
+
+  #vcomments [type='checkbox']:not(:checked),
+  [type='checkbox']:checked {
+    position: inherit;
+    margin-left: -1.3rem;
+    margin-right: 0.4rem;
+    margin-top: -1px;
+    vertical-align: middle;
+    left: unset;
+    visibility: visible;
+  }
+
+  #vcomments b,
+  strong {
+    font-weight: bold;
+  }
+
+  #vcomments dfn {
+    font-style: italic;
+  }
+
+  #vcomments small {
+    font-size: 85%;
+  }
+
+  #vcomments cite {
+    font-style: normal;
+  }
+
+  #vcomments mark {
+    background-color: #fcf8e3;
+    padding: 0.2em;
+  }
+
+  #vcomments table,
+  th,
+  td {
+    padding: 12px 13px;
+    border: 1px solid #dfe2e5;
+  }
+
+  table tr:nth-child(2n),
+  thead {
+    background-color: #fafafa;
+  }
+
+  #vcomments table th {
+    background-color: #f2f2f2;
+    min-width: 80px;
+  }
+
+  #vcomments table td {
+    min-width: 80px;
+  }
+
+  #vcomments [type='checkbox']:not(:checked),
+  [type='checkbox']:checked {
+    position: inherit;
+    margin-left: -1.3rem;
+    margin-right: 0.4rem;
+    margin-top: -1px;
+    vertical-align: middle;
+    left: unset;
+    visibility: visible;
+  }
+
+  .v[data-class='v'] .vwrap .vheader .vinput {
+    width: 32%;
+    border-bottom: 1px dashed #dedede;
+  }
+</style>
+
+
+        </div>
+    
+</main>
+
+
+<main>
+
+
+<script>
+      //运行主函数
+circleMagic();
+            //主函数内容
+            function circleMagic(options) {
+                    let width;
+                    let height;
+                    let canvas;
+                    let ctx;
+                    let animateHeader = true;
+                    const circles = [];
+            
+                    const settings = options || {
+                        color: 'random',
+                        radius: 10,
+                        density: 0.3,
+                        clearOffset: 0.9
+                    }
+            
+            
+                    //  Main
+            
+                    const container = document.getElementById('smarts');
+                    initContainer();
+                    addListeners();
+            
+            
+                    function initContainer() {
+                        width = container.offsetWidth;
+                        height = container.offsetHeight - 120;
+            
+                        //  create canvas element
+            
+                        initCanvas();
+                        canvas = document.getElementById('homeTopCanvas');
+                        canvas.width = width;
+                        canvas.height = height;
+                        canvas.style.position = 'absolute';
+                        canvas.style.left = '0';
+                        canvas.style.bottom = '0';
+                        ctx = canvas.getContext('2d');
+            
+                        //  create circles
+                        for (let x = 0; x < width * settings.density; x++) {
+                            const c = new Circle();
+                            circles.push(c);
+                        }
+                        animate();
+                    }
+            
+                    // Init canvas element
+                    function initCanvas() {
+                        const canvasElement = document.createElement('canvas');
+                        canvasElement.id = 'homeTopCanvas';
+                        canvasElement.style.pointerEvents = 'none';
+                        container.appendChild(canvasElement);
+                        canvasElement.parentElement.style.overflow = 'hidden';
+                    }
+            
+                    // Event handling
+                    function addListeners() {
+                        window.addEventListener('scroll', scrollCheck, false);
+                        window.addEventListener('resize', resize, false);
+                    }
+            
+                    function scrollCheck() {
+                        if (document.body.scrollTop > height) {
+                            animateHeader = false;
+                        } else {
+                            animateHeader = true;
+                        }
+                    }
+            
+                    function resize() {
+                        width = container.clientWidth;
+                        height = container.clientHeight;
+                        container.height = height + 'px';
+                        canvas.width = width;
+                        canvas.height = height;
+                    }
+            
+                    function animate() {
+                        if (animateHeader) {
+                            ctx.clearRect(0, 0, width, height);
+                            for (const i in circles) {
+                                circles[i].draw();
+                            }
+                        }
+                        requestAnimationFrame(animate);
+                    }
+            
+                    function randomColor() {
+                        const r = Math.floor(Math.random() * 255);
+                        const g = Math.floor(Math.random() * 255);
+                        const b = Math.floor(Math.random() * 255);
+                        const alpha = 1;
+                        return 'rgba(' + r + ', ' + g + ', ' + b + ', ' + alpha + ')';
+                    }
+            
+                    //  Canvas manipulation
+            
+                    function Circle() {
+                        const that = this;
+            
+                        // constructor
+                        (function () {
+                            that.pos = {};
+                            init();
+                        })();
+            
+                        function init() {
+                            that.pos.x = Math.random() * width;
+                            that.pos.y = height + Math.random() * 100;
+                            that.alpha = 0.1 + Math.random() * settings.clearOffset;
+                            that.scale = 0.1 + Math.random() * 0.3;
+                            that.speed = Math.random();
+                            if (settings.color === 'random') {
+                                that.color = randomColor();
+                            } else {
+                                that.color = settings.color;
+                            }
+                        }
+            
+                        this.draw = function () {
+                            if (that.alpha <= 0) {
+                                init();
+                            }
+                            that.pos.y -= that.speed;
+                            that.alpha -= 0.0001;
+                            ctx.beginPath();
+                            ctx.arc(
+                                that.pos.x,
+                                that.pos.y,
+                                that.scale * settings.radius,
+                                0,
+                                2 * Math.PI,
+                                false
+                            );
+                            ctx.fillStyle = that.color;
+                            ctx.fill();
+                            ctx.closePath();
+                        }
+                    }
+                }
+                
+                //cdn.jsdelivr.net/gh/bynotes/texiao/source/js/qipao.js #头部上升气泡    <script src="https://cdn.jsdelivr.net/gh/bynotes/texiao/source/js/qipao.js">/script
+</script>
+
+</main>

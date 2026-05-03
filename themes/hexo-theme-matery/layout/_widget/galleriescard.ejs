@@ -1,0 +1,23 @@
+<style>
+
+.title {
+        margin-bottom: 0rem !important;
+    }
+
+.card {
+        margin: 3rem 0 1rem 0 !important;
+        
+     }   
+</style>
+    <div class="galleriescard">
+    <% if (theme.galleries.showTitle) { %>
+    <div class="title center-align">
+        <i class= "fa fa-camera-retro"></i>&nbsp;&nbsp;<%= theme.galleriescard.title %>
+    </div>
+    <% } %>
+    <div class="row">
+        <div class="col l8 offset-l2 m10 offset-m1 s10 offset-s1 center-align text">
+            <%= theme.galleriescard.text %>
+        </div>
+    </div>
+</div>

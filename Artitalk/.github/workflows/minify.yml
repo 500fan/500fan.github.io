@@ -1,0 +1,44 @@
+name: minify
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '10.x'
+
+    - name: Use cached node_modules
+      uses: actions/cache@v1
+      with:
+        path: node_modules
+        key: nodeModules-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          nodeModules-
+
+    - name: Install Dependencies
+      run: yarn install --frozen-lockfile
+      env:
+        CI: true 
+
+    - name: Minify
+      run: yarn build
+
+    - name: Commit
+      run: |
+        ls
+        git config --global user.email artitalk-bot@email.com
+        git config --global user.name artitalk-bot
+        git add dist/css/artitalk.min.css -f
+        git add dist/js/artitalk.js -f
+        git add dist/js/artitalk.min.js -f
+        git commit -m ":zap: Successful minify" -a
+
+    - name: Push
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.TOKEN }}

@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//Users/apple/.config/**)",
+      "Read(//Users/apple/.claude/**)",
+      "Read(//Users/apple/Library/Application Support/Antigravity/User/**)"
+    ]
+  }
+}

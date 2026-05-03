@@ -1,0 +1,72 @@
+<%
+var featureimg = url_for('/medias/bg.jpg');
+if (page.img) {
+    featureimg = url_for(page.img);
+} else {
+    var hashCode = function (str) {
+        if (!str && str.length === 0) {
+            return 0;
+        }
+
+        var hash = 0;
+        for (var i = 0, len = str.length; i < len; i++) {
+            hash = ((hash << 5) - hash) + str.charCodeAt(i);
+            hash |= 0;
+        }
+        return hash;
+    };
+
+    var len = theme.featureImages.length;
+    var num = Math.abs(hashCode(page.title) % len);
+
+    featureimg = theme.jsDelivr.url
+            ? theme.jsDelivr.url + url_for(theme.featureImages[num])
+            : url_for(theme.featureImages[num]);
+}
+%>
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('<%- featureimg %>'); position: relative; overflow: hidden;">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title"><%= page.title %></h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+    .post-cover .bubbles-cover > .particle {
+        opacity: 0;
+        position: absolute;
+        background-color: rgba(128,255,0,0.7);
+        animation: bubblesCover 60s ease-in infinite;
+        border-radius: 100%;
+    }
+    @keyframes bubblesCover {
+        0% { opacity: 0; }
+        5% { opacity: 1; transform: translate(0, -20%); }
+        100% { opacity: 0; transform: translate(0, -80000%); }
+    }
+    </style>
+    <div style="width: 100%; height: 100%; position: absolute; bottom: 0; left: 0;" class="particletext bubbles-cover"></div>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script>
+      $(function(){
+        $.each($(".particletext.bubbles-cover"), function(){
+          var bubblecount = ($(this).width()/50)*10;
+          for(var i = 0; i <= bubblecount; i++) {
+            var size = ($.rnd(40,80)/10);
+            $(this).append('<span class="particle" style="top:' + $.rnd(20,80) + '%; left:' + $.rnd(0,95) + '%;width:' + size + 'px; height:' + size + 'px;animation-delay: ' + ($.rnd(0,180)/10) + 's;"></span>');
+          }
+        });
+      });
+      if(!jQuery.rnd) {
+        jQuery.rnd = function(m,n) {
+          m = parseInt(m);
+          n = parseInt(n);
+          return Math.floor(Math.random() * (n - m + 1)) + m;
+        }
+      }
+    </script>
+</div>

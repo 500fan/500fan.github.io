@@ -1,0 +1,108 @@
+<footer class="page-footer bg-color">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/HCLonely/images@master/others/heartbeat.min.css">
+
+    <div class="container row center-align"
+         style="margin-bottom: <% if (theme.time.enable) { %>15<% } else { %>0<% } %>px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            <% if (theme.time.year !== new Date().getFullYear()) { %>
+                <span id="year"><%- theme.time.year %>-<%- new Date().getFullYear() %></span>
+            <% } else { %>
+                <span id="year"><%- theme.time.year %></span>
+            <% } %>
+            <span id="year"><%- theme.time.year %></span>
+            <a href="<%- url_for('/about') %>" target="_blank"><i id="heartbeat" class="fa fas fa-heartbeat"></i><%- config.author %><i id="heartbeat" class="fa fas fa-heartbeat"></i></a>
+            |&nbsp;&nbsp;<a href="https://mp.weixin.qq.com/s/fQ8G0ooo9BCQsloVUedD9A" target="_blank">💰群</a>
+            |&nbsp;&nbsp;<a href="https://support.qq.com/product/329748" target="_blank">巢博文</a>
+            |&nbsp;&nbsp;<a href="https://waline100-tiandoo.vercel.app/" target="_blank">vercel互动</a>
+            |&nbsp;&nbsp;<a href="https://coding-pages-bucket-3487552-8272768-12346-490561-1304168527.cos-website.ap-hongkong.myqcloud.com/bb/" target="_blank">@待更新</a>
+            |&nbsp;SIMI&nbsp;<a href="https://mp.weixin.qq.com/s?__biz=MzUzOTEyOTI1MQ==&mid=2247488419&idx=1&sn=a849b45711b5b96f8ca91296242cd7ad&chksm=facc776fcdbbfe79b8e7dcddf272a7582064c62a9e854c69261d9dfb3b9bf75338e68603d30b&token=63507328&lang=zh_CN#rd" target="_blank">微信公众号文章节选</a>
+            <br>
+            <% if (theme.postInfo.totalCount) { %>
+                &nbsp;<i class="fas fa-chart-area"></i>&nbsp;<%- __('siteTotalWords') %>:&nbsp;<span
+                        class="white-color"><%= totalcount(site) %></span>
+            <% } %>
+            <% let socialClass = '' %>
+            <% if (theme.busuanziStatistics && theme.busuanziStatistics.enable) { %>
+                <% socialClass = 'social-statis' %>
+            <% } %>
+            <% if (theme.busuanziStatistics && theme.busuanziStatistics.totalTraffic) { %>
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;<%- __('siteTotalVisits') %>:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            <% } %>
+            <% if (theme.busuanziStatistics && theme.busuanziStatistics.totalNumberOfvisitors) { %>
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;<%- __('siteTotalVisitors') %>:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            <% } %>
+            <br>
+
+
+            &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                class="white-color">197k</span>&nbsp;字
+
+            <a href="https://travellings.now.sh/" title="开往-友链接力" style="width: 120px;"><img src="/medias/images/logo-3.png" alt="开往-友链接力" width="120px"></a>
+            <!-- 运行天数提醒. -->
+            <br>
+            <span id="sitetime">载入运行时间...</span>
+            <script>
+                function siteTime() {
+                    var seconds = 1000;
+                    var minutes = seconds * 60;
+                    var hours = minutes * 60;
+                    var days = hours * 24;
+                    var years = days * 365;
+                    var today = new Date();
+                    var startYear = "2018";
+                    var startMonth = "09";
+                    var startDate = "20";
+                    var startHour = "0";
+                    var startMinute = "0";
+                    var startSecond = "0";
+                    var todayYear = today.getFullYear();
+                    var todayMonth = today.getMonth() + 1;
+                    var todayDate = today.getDate();
+                    var todayHour = today.getHours();
+                    var todayMinute = today.getMinutes();
+                    var todaySecond = today.getSeconds();
+                    var t1 = Date.UTC(startYear, startMonth, startDate, startHour, startMinute, startSecond);
+                    var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+                    var diff = t2 - t1;
+                    var diffYears = Math.floor(diff / years);
+                    var diffDays = Math.floor((diff / days) - diffYears * 365);
+                    var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+                    var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) /
+                        minutes);
+                    var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours -
+                        diffMinutes * minutes) / seconds);
+                    if (startYear == todayYear) {
+                        document.getElementById("year").innerHTML = todayYear;
+                        document.getElementById("sitetime").innerHTML = "本站已安全运行 " + diffDays + " 天 " + diffHours +
+                            " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+                    } else {
+                        document.getElementById("year").innerHTML = startYear + " - " + todayYear;
+                        document.getElementById("sitetime").innerHTML = "本站已安全运行 " + diffYears + " 年 " + diffDays +
+                            " 天 " + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+                    }
+                }
+                setInterval(siteTime, 1000);
+            
+	    </script>
+	
+            <br>
+            <% if (theme.icp.enable) { %>
+                <span id="icp"><img src="<%- theme.jsDelivr.url %><%- url_for('/medias/icp.png') %>"
+                                    style="vertical-align: text-bottom;"/>
+                <a href="<%- url_for(theme.icp.url) %>" target="_blank"><%= theme.icp.text %></a>
+            </span>
+            <% } %>
+        </div>
+        <div class="col s12 m4 l4 social-link <%- socialClass %>"><%- partial('_partial/social-link') %></div>
+    </div>
+    
+<div class="progress-bar"></div>
+
+</footer>
