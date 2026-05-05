@@ -4,6 +4,37 @@
   
     
     <entry>
+      <title>Twikoo评论系统从Vercel迁移到Render</title>
+      <link href="/2026/05/05/Twikoo%E8%AF%84%E8%AE%BA%E8%BF%81%E7%A7%BB%E5%88%B0Render/"/>
+      <url>/2026/05/05/Twikoo%E8%AF%84%E8%AE%BA%E8%BF%81%E7%A7%BB%E5%88%B0Render/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>之前博客的 Twikoo 评论系统部署在 Vercel 上，但由于 Vercel 的 <code>*.vercel.app</code> 域名在国内被墙，导致国内访客无法加载评论模块。经过调研，决定将 Twikoo 后端迁移到 Render 平台，并将前端 JS CDN 切换为国内可用的 baomitu.com。</p><h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>原来的配置：</p><ul><li><strong>Twikoo 后端</strong>：<code>https://twikoo100-tiandoo.vercel.app</code>（Vercel，国内不可访问）</li><li><strong>Twikoo JS</strong>：<code>https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js</code>（jsdelivr，国内较慢）</li></ul><p>参考了 <a href="https://www.80tz.cn/">80tz.cn</a> 的做法：</p><ul><li>后端使用自建域名，国内可访问</li><li>JS 库使用 <code>lib.baomitu.com</code>（360 CDN，国内速度快）</li></ul><h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><h3 id="1-Fork-Twikoo-官方仓库"><a href="#1-Fork-Twikoo-官方仓库" class="headerlink" title="1. Fork Twikoo 官方仓库"></a>1. Fork Twikoo 官方仓库</h3><p>将 <a href="https://github.com/twikoojs/twikoo-zeabur">twikoojs&#x2F;twikoo-zeabur</a> fork 到自己的 GitHub 账号下。</p><h3 id="2-添加-Render-Blueprint"><a href="#2-添加-Render-Blueprint" class="headerlink" title="2. 添加 Render Blueprint"></a>2. 添加 Render Blueprint</h3><p>在 fork 的仓库中添加 <code>render.yaml</code>：</p><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">type:</span> <span class="string">web</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">twikoo</span></span><br><span class="line">    <span class="attr">runtime:</span> <span class="string">node</span></span><br><span class="line">    <span class="attr">plan:</span> <span class="string">free</span></span><br><span class="line">    <span class="attr">buildCommand:</span> <span class="string">npm</span> <span class="string">install</span></span><br><span class="line">    <span class="attr">startCommand:</span> <span class="string">npx</span> <span class="string">tkserver</span></span><br><span class="line">    <span class="attr">envVars:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">key:</span> <span class="string">MONGODB_URL</span></span><br><span class="line">        <span class="attr">fromDatabase:</span></span><br><span class="line">          <span class="attr">name:</span> <span class="string">twikoo-mongo</span></span><br><span class="line">          <span class="attr">property:</span> <span class="string">connectionString</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">key:</span> <span class="string">TWIKOO_IP_ENABLED</span></span><br><span class="line">        <span class="attr">value:</span> <span class="string">&quot;true&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">databases:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">twikoo-mongo</span></span><br><span class="line">    <span class="attr">plan:</span> <span class="string">free</span></span><br><span class="line">    <span class="attr">ipAllowList:</span> []</span><br></pre></td></tr></table></figure><h3 id="3-一键部署"><a href="#3-一键部署" class="headerlink" title="3. 一键部署"></a>3. 一键部署</h3><p>访问以下链接，一键部署到 Render：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://render.com/deploy?repo=https://github.com/500fan/twikoo-zeabur</span><br></pre></td></tr></table></figure><p>Render 会自动创建 MongoDB 数据库和 Twikoo Web Service，免费计划即可。</p><h3 id="4-获取域名"><a href="#4-获取域名" class="headerlink" title="4. 获取域名"></a>4. 获取域名</h3><p>部署完成后，在 Render 的 Settings → Networking 中会得到一个类似 <code>https://twikoo-xxx.onrender.com</code> 的域名。</p><h3 id="5-更新-Hexo-配置"><a href="#5-更新-Hexo-配置" class="headerlink" title="5. 更新 Hexo 配置"></a>5. 更新 Hexo 配置</h3><p>修改 <code>themes/hexo-theme-matery/_config.yml</code>：</p><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Twikoo 评论模块</span></span><br><span class="line"><span class="attr">twikoo:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">envId:</span> <span class="string">https://twikoo-ydp0.onrender.com</span>  <span class="comment"># 新的 Render 域名</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># JS CDN 替换为国内源</span></span><br><span class="line"><span class="attr">twikoo:</span> <span class="string">https://lib.baomitu.com/twikoo/1.6.16/twikoo.all.min.js</span></span><br></pre></td></tr></table></figure><h3 id="6-重新部署博客"><a href="#6-重新部署博客" class="headerlink" title="6. 重新部署博客"></a>6. 重新部署博客</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</span><br></pre></td></tr></table></figure><h2 id="对比总结"><a href="#对比总结" class="headerlink" title="对比总结"></a>对比总结</h2><table><thead><tr><th>项目</th><th>迁移前 (Vercel)</th><th>迁移后 (Render)</th></tr></thead><tbody><tr><td>后端域名</td><td><code>*.vercel.app</code>（被墙）</td><td><code>*.onrender.com</code>（国内可访问）</td></tr><tr><td>JS CDN</td><td>jsdelivr（国内慢）</td><td>baomitu.com（360 CDN，快）</td></tr><tr><td>数据库</td><td>Vercel KV</td><td>Render MongoDB</td></tr><tr><td>费用</td><td>免费</td><td>免费</td></tr><tr><td>冷启动</td><td>快</td><td>首次约 30-50 秒唤醒</td></tr></tbody></table><h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ul><li>Render 免费版会休眠，首次访问需要等待唤醒（30-50秒）</li><li>如果有自有域名，可以绑定自定义域名进一步提升访问速度</li><li>数据存储在 Render 的 MongoDB 中，记得定期备份</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 技术笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Twikoo </tag>
+            
+            <tag> 评论系统 </tag>
+            
+            <tag> Render </tag>
+            
+            <tag> 部署 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Node.js 留言板部署到 Render 教程</title>
       <link href="/2026/05/05/Node.js%E7%95%99%E8%A8%80%E6%9D%BF%E9%83%A8%E7%BD%B2%E5%88%B0Render%E6%95%99%E7%A8%8B/"/>
       <url>/2026/05/05/Node.js%E7%95%99%E8%A8%80%E6%9D%BF%E9%83%A8%E7%BD%B2%E5%88%B0Render%E6%95%99%E7%A8%8B/</url>
@@ -51,9 +82,9 @@
       
         <tags>
             
-            <tag> Vercel </tag>
-            
             <tag> 留言板 </tag>
+            
+            <tag> Vercel </tag>
             
             <tag> Serverless </tag>
             
@@ -88,9 +119,9 @@
       
         <tags>
             
-            <tag> Vercel </tag>
-            
             <tag> 留言板 </tag>
+            
+            <tag> Vercel </tag>
             
             <tag> Serverless </tag>
             
@@ -154,10 +185,6 @@
       
         <tags>
             
-            <tag> 前端 </tag>
-            
-            <tag> 留言板 </tag>
-            
             <tag> Cloudflare </tag>
             
             <tag> Workers </tag>
@@ -165,6 +192,10 @@
             <tag> KV </tag>
             
             <tag> R2 </tag>
+            
+            <tag> 留言板 </tag>
+            
+            <tag> 前端 </tag>
             
         </tags>
       
@@ -226,13 +257,13 @@
       
         <tags>
             
+            <tag> 前端 </tag>
+            
             <tag> Hexo </tag>
             
             <tag> Live2D </tag>
             
             <tag> 看板娘 </tag>
-            
-            <tag> 前端 </tag>
             
         </tags>
       
@@ -714,33 +745,6 @@
     
     
     <entry>
-      <title>日语</title>
-      <link href="/2024/06/20/%E6%97%A5%E8%AF%AD%E4%B8%AD%EF%BC%8C%E2%80%9COmakase%E2%80%9D/"/>
-      <url>/2024/06/20/%E6%97%A5%E8%AF%AD%E4%B8%AD%EF%BC%8C%E2%80%9COmakase%E2%80%9D/</url>
-      
-        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>答：”Omakase” 的日语读音为 &#x2F;oʊməˈkɑːseɪ&#x2F;<br>问：不是&#x2F;omə’keɪs&#x2F;吗￼我记得元辅e是开音节来着<br>答：在日语中，“Omakase” 的标准发音与英语的发音规则不同。你的问题涉及到不同语言的发音区别。让我们区分一下：</p><p>1.日语发音：<br>•日语中的 “おまかせ” (Omakase) 发音是逐个音节发出来的，音标为 &#x2F;o̞.ma.ka.se&#x2F;。其中的 “e” 发音更接近于英语中的短音 [ɛ]，类似于 “set” 中的 “e”。日语中的 “おお其中的 “e”发音更接近于英语中的短音 []，类似于 “set” 中的 “e”。<br>2.英语借词发音：<br>•如果在英语中，“Omakase” 有时会按英语发音规则进行近似发音。你提到的 &#x2F;omə’keɪs&#x2F; 属于英语化的发音，其中的 &#x2F;keɪ&#x2F; 部分反映了英语中 “e” 在开音节中的发音（类似 “say” 中的发音）。<br>•这个发音 (&#x2F;omə’keɪs&#x2F;) 不是标准日语发音，而是英语母语者对日语词汇的一种适应性发音。</p><p>总结：在日语中，“Omakase” 的 “e” 并不发长音 &#x2F;eɪ&#x2F;，而是短音 &#x2F;e&#x2F;。如果是在英语语境中借用这个词，可能会被发成 &#x2F;omə’keɪs&#x2F;。</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> 122 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> Typora </tag>
-            
-            <tag> Markdown </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>语录</title>
       <link href="/2024/06/20/%E8%AF%AD%E5%BD%95/"/>
       <url>/2024/06/20/%E8%AF%AD%E5%BD%95/</url>
@@ -768,11 +772,38 @@
     
     
     <entry>
+      <title>日语</title>
+      <link href="/2024/06/20/%E6%97%A5%E8%AF%AD%E4%B8%AD%EF%BC%8C%E2%80%9COmakase%E2%80%9D/"/>
+      <url>/2024/06/20/%E6%97%A5%E8%AF%AD%E4%B8%AD%EF%BC%8C%E2%80%9COmakase%E2%80%9D/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>答：”Omakase” 的日语读音为 &#x2F;oʊməˈkɑːseɪ&#x2F;<br>问：不是&#x2F;omə’keɪs&#x2F;吗￼我记得元辅e是开音节来着<br>答：在日语中，“Omakase” 的标准发音与英语的发音规则不同。你的问题涉及到不同语言的发音区别。让我们区分一下：</p><p>1.日语发音：<br>•日语中的 “おまかせ” (Omakase) 发音是逐个音节发出来的，音标为 &#x2F;o̞.ma.ka.se&#x2F;。其中的 “e” 发音更接近于英语中的短音 [ɛ]，类似于 “set” 中的 “e”。日语中的 “おお其中的 “e”发音更接近于英语中的短音 []，类似于 “set” 中的 “e”。<br>2.英语借词发音：<br>•如果在英语中，“Omakase” 有时会按英语发音规则进行近似发音。你提到的 &#x2F;omə’keɪs&#x2F; 属于英语化的发音，其中的 &#x2F;keɪ&#x2F; 部分反映了英语中 “e” 在开音节中的发音（类似 “say” 中的发音）。<br>•这个发音 (&#x2F;omə’keɪs&#x2F;) 不是标准日语发音，而是英语母语者对日语词汇的一种适应性发音。</p><p>总结：在日语中，“Omakase” 的 “e” 并不发长音 &#x2F;eɪ&#x2F;，而是短音 &#x2F;e&#x2F;。如果是在英语语境中借用这个词，可能会被发成 &#x2F;omə’keɪs&#x2F;。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 122 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Typora </tag>
+            
+            <tag> Markdown </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>wechat</title>
       <link href="/2024/06/15/wechat/"/>
       <url>/2024/06/15/wechat/</url>
       
-        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><hr><p>tags:</p><ul><li>SVM</li><li>Have a nice day<br>categories:</li><li>Machine_Learning<br>author: 解决你的问题</li></ul><hr><p><img src="http://imageproxy.chaoxing.com/0x0,q15,jpeg,samd7X0ZrJL6oHlAytD1Nbu9HyggfcanZX83-Ec8kDIk/http://p.ananas.chaoxing.com/star3/origin/3ef8e1bbeb56b0c2cd90df1ce4a3f119.png" alt="今日微信群"></p>        <div id="aplayer-eaCKoHwH" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">            <pre class="aplayer-lrc-content"></pre>        </div>        <script>          var ap = new APlayer({            element: document.getElementById("aplayer-eaCKoHwH"),            narrow: false,            autoplay: false,            showlrc: false,            music: {              title: "“天使的翅膀”",              author: "“安琥”",              url: "“https://music.163.com/#/my/m/music/playlist?id=2211665459”",              pic: "",              lrc: ""            }          });          window.aplayers || (window.aplayers = []);          window.aplayers.push(ap);        </script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><!-- require MetingJS --><script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script><pre><code>&lt;meting-js style=&quot;margin-top: 1.5rem;width: auto;height: auto;&quot;server=&quot;netease&quot;type=&quot;playlist&quot;id=&quot;2211665459&quot;theme=&quot;#2980b9&quot;loop=&quot;all&quot;autoplay=&quot;true&quot;order=&quot;random&quot;storageName=&quot;aplayer-setting&quot;lrctype= 0&gt;&lt;/meting-js&gt;</code></pre><style>    .aplayer{        margin: 1.5rem 0;    }</style><p><meting-js    auto="https://y.qq.com/n/yqq/song/001RGrEX3ija5X.html"><br></meting-js></p>]]></content>
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><hr><p>tags:</p><ul><li>SVM</li><li>Have a nice day<br>categories:</li><li>Machine_Learning<br>author: 解决你的问题</li></ul><hr><p><img src="http://imageproxy.chaoxing.com/0x0,q15,jpeg,samd7X0ZrJL6oHlAytD1Nbu9HyggfcanZX83-Ec8kDIk/http://p.ananas.chaoxing.com/star3/origin/3ef8e1bbeb56b0c2cd90df1ce4a3f119.png" alt="今日微信群"></p>        <div id="aplayer-EYYhCxwH" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">            <pre class="aplayer-lrc-content"></pre>        </div>        <script>          var ap = new APlayer({            element: document.getElementById("aplayer-EYYhCxwH"),            narrow: false,            autoplay: false,            showlrc: false,            music: {              title: "“天使的翅膀”",              author: "“安琥”",              url: "“https://music.163.com/#/my/m/music/playlist?id=2211665459”",              pic: "",              lrc: ""            }          });          window.aplayers || (window.aplayers = []);          window.aplayers.push(ap);        </script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><!-- require MetingJS --><script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script><pre><code>&lt;meting-js style=&quot;margin-top: 1.5rem;width: auto;height: auto;&quot;server=&quot;netease&quot;type=&quot;playlist&quot;id=&quot;2211665459&quot;theme=&quot;#2980b9&quot;loop=&quot;all&quot;autoplay=&quot;true&quot;order=&quot;random&quot;storageName=&quot;aplayer-setting&quot;lrctype= 0&gt;&lt;/meting-js&gt;</code></pre><style>    .aplayer{        margin: 1.5rem 0;    }</style><p><meting-js    auto="https://y.qq.com/n/yqq/song/001RGrEX3ija5X.html"><br></meting-js></p>]]></content>
       
       
       

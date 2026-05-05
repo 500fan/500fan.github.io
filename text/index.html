@@ -1450,6 +1450,21 @@
 </div>
 
 <p>上面是 B 站视频，下面是另一段文字。</p>
+  <!-- Twikoo 评论区 -->
+  <div id="tcomment" style="
+    margin-top: 40px;
+    padding-top: 40px;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+  "></div>
+  <script src="https://cdn.jsdelivr.net/npm/twikoo@1.6.42/dist/twikoo.all.min.js"></script>
+  <script>
+    twikoo.init({
+      envId: 'https://twikoo-ydp0.onrender.com',
+      el: '#tcomment',
+      path: window.location.pathname
+    })
+  </script>
+
 <h2 id="留言板"><a href="#留言板" class="headerlink" title="留言板"></a>留言板</h2><div style="margin:20px 0;">
   <iframe src="https://message-board-render.onrender.com/"
     style="width:100%;height:700px;border:none;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.1);"
