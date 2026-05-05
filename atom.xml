@@ -62,9 +62,9 @@
     <category term="博客搭建" scheme="http://fuliefu.gitlab.io/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/"/>
     
     
-    <category term="留言板" scheme="http://fuliefu.gitlab.io/tags/%E7%95%99%E8%A8%80%E6%9D%BF/"/>
-    
     <category term="Vercel" scheme="http://fuliefu.gitlab.io/tags/Vercel/"/>
+    
+    <category term="留言板" scheme="http://fuliefu.gitlab.io/tags/%E7%95%99%E8%A8%80%E6%9D%BF/"/>
     
     <category term="Serverless" scheme="http://fuliefu.gitlab.io/tags/Serverless/"/>
     
@@ -97,9 +97,9 @@
     <category term="博客搭建" scheme="http://fuliefu.gitlab.io/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/"/>
     
     
-    <category term="留言板" scheme="http://fuliefu.gitlab.io/tags/%E7%95%99%E8%A8%80%E6%9D%BF/"/>
-    
     <category term="Vercel" scheme="http://fuliefu.gitlab.io/tags/Vercel/"/>
+    
+    <category term="留言板" scheme="http://fuliefu.gitlab.io/tags/%E7%95%99%E8%A8%80%E6%9D%BF/"/>
     
     <category term="Serverless" scheme="http://fuliefu.gitlab.io/tags/Serverless/"/>
     
@@ -158,6 +158,10 @@
     <category term="技术教程" scheme="http://fuliefu.gitlab.io/categories/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/"/>
     
     
+    <category term="前端" scheme="http://fuliefu.gitlab.io/tags/%E5%89%8D%E7%AB%AF/"/>
+    
+    <category term="留言板" scheme="http://fuliefu.gitlab.io/tags/%E7%95%99%E8%A8%80%E6%9D%BF/"/>
+    
     <category term="Cloudflare" scheme="http://fuliefu.gitlab.io/tags/Cloudflare/"/>
     
     <category term="Workers" scheme="http://fuliefu.gitlab.io/tags/Workers/"/>
@@ -165,10 +169,6 @@
     <category term="KV" scheme="http://fuliefu.gitlab.io/tags/KV/"/>
     
     <category term="R2" scheme="http://fuliefu.gitlab.io/tags/R2/"/>
-    
-    <category term="留言板" scheme="http://fuliefu.gitlab.io/tags/%E7%95%99%E8%A8%80%E6%9D%BF/"/>
-    
-    <category term="前端" scheme="http://fuliefu.gitlab.io/tags/%E5%89%8D%E7%AB%AF/"/>
     
   </entry>
   
@@ -230,11 +230,11 @@
     
     <category term="Hexo" scheme="http://fuliefu.gitlab.io/tags/Hexo/"/>
     
-    <category term="前端" scheme="http://fuliefu.gitlab.io/tags/%E5%89%8D%E7%AB%AF/"/>
-    
     <category term="Live2D" scheme="http://fuliefu.gitlab.io/tags/Live2D/"/>
     
     <category term="看板娘" scheme="http://fuliefu.gitlab.io/tags/%E7%9C%8B%E6%9D%BF%E5%A8%98/"/>
+    
+    <category term="前端" scheme="http://fuliefu.gitlab.io/tags/%E5%89%8D%E7%AB%AF/"/>
     
   </entry>
   
