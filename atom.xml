@@ -228,9 +228,9 @@
     <category term="技术教程" scheme="http://fuliefu.gitlab.io/categories/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/"/>
     
     
-    <category term="前端" scheme="http://fuliefu.gitlab.io/tags/%E5%89%8D%E7%AB%AF/"/>
-    
     <category term="Hexo" scheme="http://fuliefu.gitlab.io/tags/Hexo/"/>
+    
+    <category term="前端" scheme="http://fuliefu.gitlab.io/tags/%E5%89%8D%E7%AB%AF/"/>
     
     <category term="Live2D" scheme="http://fuliefu.gitlab.io/tags/Live2D/"/>
     
