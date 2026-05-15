@@ -1289,8 +1289,6 @@
 
     <link rel="stylesheet" type="text/css" href="/css/style.css" />
 <link rel="stylesheet" type="text/css" href="/css/barrager.css">
-<!-- av-min.js 只在这里加载一次，供弹幕和 Valine 评论共用 -->
-<script src="/libs/valine/av-min.js"></script>
 <script src="/libs/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="/js/jquery.barrager.js"></script>
 
@@ -1488,78 +1486,112 @@
                 </div>
 
                 <script type="text/javascript">
-                    AV.init({
-                        appId: 'v2kuiYWyAs1KnuKB5xe3LBnm-MdYXbMMI',
-                        appKey: 'VRvFkN8QgiCWgojOikjh3aDK'
-                    });
+                    var TWIKOO_API = 'https://twikoo-ydp0.onrender.com';
+
+                    // 解析弹幕数据: [barrage]info|href|speed[/barrage]
+                    function parseBarrageComment(commentHtml) {
+                        var match = commentHtml.match(/\[barrage\](.*?)\[\/barrage\]/);
+                        if (!match) return null;
+                        var parts = match[1].split('|');
+                        if (parts.length < 3) return null;
+                        return {
+                            info: parts[0],
+                            href: parts[1],
+                            speed: parseInt(parts[2]) || 10
+                        };
+                    }
 
                     $(function() {
                         do_barrager();
                         async function do_barrager() {
-                            let lists = [];
-                            //查询弹幕
-                            const query = new AV.Query('barrager');
-                            const barrager = await query.find().then((barrager) => {
-                                lists = barrager;
-                            })
-                            let length = lists.length;
-                            let index = 0;
-                            const timer = setInterval(() => {
-                                if (index === length) {
-                                    clearInterval(timer);
-                                    do_barrager()
-                                } else {
-                                    let obj = lists[index]
-                                    let jsonObject = eval('(' + JSON.stringify(obj) + ')');
-                                    $('body').barrager({
-                                        'img': '/medias/barrager/' + Math.floor(Math.random() * 3) + ".png",
-                                        'href': jsonObject.href,
-                                        'info': jsonObject.info,
-                                        'speed': jsonObject.speed
-                                    });
-                                    index++;
+                            try {
+                                var resp = await fetch(TWIKOO_API, {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({
+                                        event: 'GET_RECENT_COMMENTS',
+                                        includeReply: false,
+                                        pageSize: 100
+                                    })
+                                });
+                                var data = await resp.json();
+                                var lists = [];
+                                if (data.result && data.result.data) {
+                                    for (var i = 0; i < data.result.data.length; i++) {
+                                        var item = data.result.data[i];
+                                        if (item.url === '/barrage') {
+                                            var barrage = parseBarrageComment(item.comment);
+                                            if (barrage) lists.push(barrage);
+                                        }
+                                    }
                                 }
-                            }, 500)
+                                var index = 0;
+                                var timer = setInterval(function() {
+                                    if (index >= lists.length) {
+                                        clearInterval(timer);
+                                        do_barrager();
+                                    } else {
+                                        $('body').barrager({
+                                            'img': '/medias/barrager/' + Math.floor(Math.random() * 3) + '.png',
+                                            'href': lists[index].href,
+                                            'info': lists[index].info,
+                                            'speed': lists[index].speed
+                                        });
+                                        index++;
+                                    }
+                                }, 500);
+                            } catch (err) {
+                                console.error('弹幕加载失败:', err);
+                            }
                         }
                     });
 
-                    //发送弹幕
-                    function  run(){
-                        let info = $('input[name=info]').val();
-                        (info === '' ) ?  info='hello world' : info=info;
-                        let href = $('input[name=href]').val();
-                        (href === '' ) ?  href='https://github.500fan.io' : href=href;
-                        let speed = parseInt($('input[name=speed]').val());
-                        if(speed > 20 || speed < 5)
-                            speed = Math.floor(Math.random() * 10) + 5;
-                        const Barrager = AV.Object.extend('barrager');
-                        const barrager = new Barrager();
-                        barrager.set('href', href);
-                        barrager.set('info', info);
-                        barrager.set('speed', speed);
-                        barrager.save().then((todo) => {
-                            // 保存成功后立即在页面显示弹幕
-                            $('body').barrager({
-                                'img': '/medias/barrager/' + Math.floor(Math.random() * 3) + ".png",
-                                'href': href,
-                                'info': info,
-                                'speed': speed
+                    // 发送弹幕
+                    async function run() {
+                        var info = $('input[name=info]').val();
+                        info = info === '' ? 'hello world' : info;
+                        var href = $('input[name=href]').val();
+                        href = href === '' ? 'https://github.500fan.io' : href;
+                        var speed = parseInt($('input[name=speed]').val());
+                        if (speed > 20 || speed < 5) speed = Math.floor(Math.random() * 10) + 5;
+
+                        var commentText = '[barrage]' + info + '|' + href + '|' + speed + '[/barrage]';
+                        try {
+                            var resp = await fetch(TWIKOO_API, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    event: 'COMMENT_SUBMIT',
+                                    url: '/barrage',
+                                    nick: '弹幕',
+                                    mail: '',
+                                    comment: commentText,
+                                    ua: navigator.userAgent
+                                })
                             });
-                            // 清空输入框
-                            $(" input[ name='info' ] ").val("")
-                            $(" input[ name='href' ] ").val("")
-                            $(" input[ name='speed' ] ").val("")
-                        }).catch((err) => {
+                            var data = await resp.json();
+                            if (data.result && data.result.id) {
+                                $('body').barrager({
+                                    'img': '/medias/barrager/' + Math.floor(Math.random() * 3) + '.png',
+                                    'href': href,
+                                    'info': info,
+                                    'speed': speed
+                                });
+                                $("input[name='info']").val('');
+                                $("input[name='href']").val('');
+                                $("input[name='speed']").val('');
+                            } else {
+                                alert('留言发送失败，请检查网络或稍后再试');
+                            }
+                        } catch (err) {
                             alert('留言发送失败，请检查网络或稍后再试');
                             console.error('弹幕保存失败:', err);
-                        });
+                        }
                     }
 
-                    function  clear_barrage()
-                    {
+                    function clear_barrage() {
                         $.fn.barrager.removeAll();
                     }
-
                 </script>
             
         </div>
