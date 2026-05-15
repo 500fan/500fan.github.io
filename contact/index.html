@@ -1516,13 +1516,12 @@
                                 });
                                 var data = await resp.json();
                                 var lists = [];
-                                if (data.result && data.result.data) {
-                                    for (var i = 0; i < data.result.data.length; i++) {
-                                        var item = data.result.data[i];
-                                        if (item.url === '/barrage') {
-                                            var barrage = parseBarrageComment(item.comment);
-                                            if (barrage) lists.push(barrage);
-                                        }
+                                var comments = data.data || (data.result && data.result.data) || [];
+                                for (var i = 0; i < comments.length; i++) {
+                                    var item = comments[i];
+                                    if (item.url === '/barrage') {
+                                        var barrage = parseBarrageComment(item.comment);
+                                        if (barrage) lists.push(barrage);
                                     }
                                 }
                                 var index = 0;
@@ -1541,7 +1540,7 @@
                                     }
                                 }, 500);
                             } catch (err) {
-                                console.error('弹幕加载失败:', err);
+                                console.error('弹幕加载失败，请检查 Twikoo 服务:', TWIKOO_API, err);
                             }
                         }
                     });
@@ -1564,13 +1563,14 @@
                                     event: 'COMMENT_SUBMIT',
                                     url: '/barrage',
                                     nick: '弹幕',
-                                    mail: '',
+                                    mail: 'barrage@localhost',
                                     comment: commentText,
                                     ua: navigator.userAgent
                                 })
                             });
                             var data = await resp.json();
-                            if (data.result && data.result.id) {
+                            console.log('Twikoo 弹幕响应:', JSON.stringify(data));
+                            if (data.id) {
                                 $('body').barrager({
                                     'img': '/medias/barrager/' + Math.floor(Math.random() * 3) + '.png',
                                     'href': href,
@@ -1581,10 +1581,11 @@
                                 $("input[name='href']").val('');
                                 $("input[name='speed']").val('');
                             } else {
-                                alert('留言发送失败，请检查网络或稍后再试');
+                                var errMsg = (data.result && data.result.message) || (data.data && data.data.message) || '未知错误';
+                                alert('留言发送失败: ' + errMsg + '\n请检查 Twikoo 服务是否正常运行');
                             }
                         } catch (err) {
-                            alert('留言发送失败，请检查网络或稍后再试');
+                            alert('留言发送失败: ' + err.message + '\n请检查网络连接和 Twikoo 服务状态');
                             console.error('弹幕保存失败:', err);
                         }
                     }
