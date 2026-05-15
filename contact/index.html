@@ -39,17 +39,17 @@
 
     <title>留言板 | iniunai</title>
 
-    <link rel="stylesheet" type="text/css" href="/libs/artitalk/artitalk.min.css">
-    <link rel="icon" type="image/png" href="/medias/banner/kuanzuiyu.png">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/500fan/500fan.github.io@1.33//libs/artitalk/artitalk.min.css">
+    <link rel="icon" type="image/png" href="https://cdn.jsdelivr.net/gh/500fan/500fan.github.io@1.33//medias/banner/kuanzuiyu.png">
 
-    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
-    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
-    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
-    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
-    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
-    <link rel="stylesheet" type="text/css" href="/css/matery.css">
-    <link rel="stylesheet" type="text/css" href="/css/my.css">
-    <link rel="stylesheet" type="text/css" href="/libs/artitalk/artitalk.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/500fan/500fan.github.io@1.33//libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/500fan/500fan.github.io@1.33//libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/500fan/500fan.github.io@1.33//libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/500fan/500fan.github.io@1.33//libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/500fan/500fan.github.io@1.33//libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/500fan/500fan.github.io@1.33//css/matery.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/500fan/500fan.github.io@1.33//css/my.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/500fan/500fan.github.io@1.33//libs/artitalk/artitalk.min.css">
 <!--电脑页面站点logo，读取_config.yml中的favicon配置-->
   <link rel="icon" href="/medias/banner/kuanzuiyu.png" type="image/png">
   <link rel="shortcut icon" href="/medias/banner/kuanzuiyu.png" type="image/x-icon">
@@ -57,7 +57,7 @@
   <link rel="apple-touch-icon" href="/medias/images/shuixiahetang.png" type="image/png">
 
 
-    <script src="/libs/jquery/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/500fan/500fan.github.io@1.33//libs/jquery/jquery.min.js"></script>
     <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -681,7 +681,7 @@
                 <a href="/" class="waves-effect waves-light">
 
                     
-                    <img src="/medias/images/shuixiahetang.png" class="logo-img" alt="LOGO">
+                    <img src="https://cdn.jsdelivr.net/gh/500fan/500fan.github.io@1.33//medias/images/shuixiahetang.png" class="logo-img" alt="LOGO">
                     
                     <span class="logo-span mytitle">iniunai</span>
 
@@ -874,7 +874,7 @@
 
     <div class="mobile-head bg-color">
         
-        <img src="/medias/images/shuixiahetang.png" class="logo-img circle responsive-img">
+        <img src="https://cdn.jsdelivr.net/gh/500fan/500fan.github.io@1.33//medias/images/shuixiahetang.png" class="logo-img circle responsive-img">
         
         <div class="logo-name">iniunai</div>
         <div class="logo-desc">
@@ -1289,6 +1289,8 @@
 
     <link rel="stylesheet" type="text/css" href="/css/style.css" />
 <link rel="stylesheet" type="text/css" href="/css/barrager.css">
+<!-- av-min.js 只在这里加载一次，供弹幕和 Valine 评论共用 -->
+<script src="/libs/valine/av-min.js"></script>
 <script src="/libs/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="/js/jquery.barrager.js"></script>
 
@@ -1336,7 +1338,7 @@
 
     <!-- 主题banner设置false默认则 -->
   <script>
-      $('.bg-cover').css('background-image', 'url(/medias/banner/shuil.jpg)');
+      $('.bg-cover').css('background-image', 'url(https://cdn.jsdelivr.net/gh/500fan/500fan.github.io@1.33//medias/banner/shuil.jpg)');
   </script>
   
 
@@ -1486,137 +1488,78 @@
                 </div>
 
                 <script type="text/javascript">
-                    var TWIKOO_API = 'https://twikoo-ydp0.onrender.com';
-
-                    // 带超时和重试的 fetch 请求
-                    function fetchWithRetry(url, options, retries, delay) {
-                        retries = retries || 3;
-                        delay = delay || 2000;
-                        return new Promise(function(resolve, reject) {
-                            var attempt = function(n) {
-                                var controller = new AbortController();
-                                var timeoutId = setTimeout(function() { controller.abort(); }, 15000);
-                                var fetchOptions = Object.assign({}, options, { signal: controller.signal });
-                                fetch(url, fetchOptions).then(function(resp) {
-                                    clearTimeout(timeoutId);
-                                    resolve(resp);
-                                }).catch(function(err) {
-                                    clearTimeout(timeoutId);
-                                    if (n <= 1) return reject(err);
-                                    console.log('Twikoo 请求失败，' + delay/1000 + '秒后重试 (' + (retries - n + 1) + '/' + retries + ')...');
-                                    setTimeout(function() { attempt(n - 1); }, delay);
-                                });
-                            };
-                            attempt(retries);
-                        });
-                    }
-
-                    // 解析弹幕数据: [barrage]info|href|speed[/barrage]
-                    function parseBarrageComment(commentHtml) {
-                        var match = commentHtml.match(/\[barrage\](.*?)\[\/barrage\]/);
-                        if (!match) return null;
-                        var parts = match[1].split('|');
-                        if (parts.length < 3) return null;
-                        return {
-                            info: parts[0],
-                            href: parts[1],
-                            speed: parseInt(parts[2]) || 10
-                        };
-                    }
+                    AV.init({
+                        appId: 'v2kuiYWyAs1KnuKB5xe3LBnm-MdYXbMMI',
+                        appKey: 'VRvFkN8QgiCWgojOikjh3aDK'
+                    });
 
                     $(function() {
                         do_barrager();
                         async function do_barrager() {
-                            try {
-                                var resp = await fetchWithRetry(TWIKOO_API, {
-                                    method: 'POST',
-                                    headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify({
-                                        event: 'GET_RECENT_COMMENTS',
-                                        includeReply: false,
-                                        pageSize: 100
-                                    })
-                                }, 3, 3000);
-                                var data = await resp.json();
-                                var lists = [];
-                                var comments = data.data || (data.result && data.result.data) || [];
-                                for (var i = 0; i < comments.length; i++) {
-                                    var item = comments[i];
-                                    if (item.url === '/barrage') {
-                                        var barrage = parseBarrageComment(item.comment);
-                                        if (barrage) lists.push(barrage);
-                                    }
+                            let lists = [];
+                            //查询弹幕
+                            const query = new AV.Query('barrager');
+                            const barrager = await query.find().then((barrager) => {
+                                lists = barrager;
+                            })
+                            let length = lists.length;
+                            let index = 0;
+                            const timer = setInterval(() => {
+                                if (index === length) {
+                                    clearInterval(timer);
+                                    do_barrager()
+                                } else {
+                                    let obj = lists[index]
+                                    let jsonObject = eval('(' + JSON.stringify(obj) + ')');
+                                    $('body').barrager({
+                                        'img': '/medias/barrager/' + Math.floor(Math.random() * 3) + ".png",
+                                        'href': jsonObject.href,
+                                        'info': jsonObject.info,
+                                        'speed': jsonObject.speed
+                                    });
+                                    index++;
                                 }
-                                console.log('弹幕加载成功，共 ' + lists.length + ' 条');
-                                var index = 0;
-                                var timer = setInterval(function() {
-                                    if (index >= lists.length) {
-                                        clearInterval(timer);
-                                        do_barrager();
-                                    } else {
-                                        $('body').barrager({
-                                            'img': '/medias/barrager/' + Math.floor(Math.random() * 3) + '.png',
-                                            'href': lists[index].href,
-                                            'info': lists[index].info,
-                                            'speed': lists[index].speed
-                                        });
-                                        index++;
-                                    }
-                                }, 500);
-                            } catch (err) {
-                                console.error('弹幕加载失败:', err);
-                            }
+                            }, 500)
                         }
                     });
 
-                    // 发送弹幕
-                    async function run() {
-                        var info = $('input[name=info]').val();
-                        info = info === '' ? 'hello world' : info;
-                        var href = $('input[name=href]').val();
-                        href = href === '' ? 'https://github.500fan.io' : href;
-                        var speed = parseInt($('input[name=speed]').val());
-                        if (speed > 20 || speed < 5) speed = Math.floor(Math.random() * 10) + 5;
-
-                        var commentText = '[barrage]' + info + '|' + href + '|' + speed + '[/barrage]';
-                        try {
-                            var resp = await fetchWithRetry(TWIKOO_API, {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({
-                                    event: 'COMMENT_SUBMIT',
-                                    url: '/barrage',
-                                    nick: '弹幕',
-                                    mail: 'barrage@localhost',
-                                    comment: commentText,
-                                    ua: navigator.userAgent
-                                })
-                            }, 3, 3000);
-                            var data = await resp.json();
-                            console.log('Twikoo 弹幕响应:', JSON.stringify(data));
-                            if (data.id) {
-                                $('body').barrager({
-                                    'img': '/medias/barrager/' + Math.floor(Math.random() * 3) + '.png',
-                                    'href': href,
-                                    'info': info,
-                                    'speed': speed
-                                });
-                                $("input[name='info']").val('');
-                                $("input[name='href']").val('');
-                                $("input[name='speed']").val('');
-                            } else {
-                                var errMsg = (data.result && data.result.message) || (data.data && data.data.message) || '未知错误';
-                                alert('留言发送失败: ' + errMsg);
-                            }
-                        } catch (err) {
-                            alert('留言发送失败，Render 服务可能正在唤醒中，请等待约1分钟后重试');
+                    //发送弹幕
+                    function  run(){
+                        let info = $('input[name=info]').val();
+                        (info === '' ) ?  info='hello world' : info=info;
+                        let href = $('input[name=href]').val();
+                        (href === '' ) ?  href='https://github.500fan.io' : href=href;
+                        let speed = parseInt($('input[name=speed]').val());
+                        if(speed > 20 || speed < 5)
+                            speed = Math.floor(Math.random() * 10) + 5;
+                        const Barrager = AV.Object.extend('barrager');
+                        const barrager = new Barrager();
+                        barrager.set('href', href);
+                        barrager.set('info', info);
+                        barrager.set('speed', speed);
+                        barrager.save().then((todo) => {
+                            // 保存成功后立即在页面显示弹幕
+                            $('body').barrager({
+                                'img': '/medias/barrager/' + Math.floor(Math.random() * 3) + ".png",
+                                'href': href,
+                                'info': info,
+                                'speed': speed
+                            });
+                            // 清空输入框
+                            $(" input[ name='info' ] ").val("")
+                            $(" input[ name='href' ] ").val("")
+                            $(" input[ name='speed' ] ").val("")
+                        }).catch((err) => {
+                            alert('留言发送失败，请检查网络或稍后再试');
                             console.error('弹幕保存失败:', err);
-                        }
+                        });
                     }
 
-                    function clear_barrage() {
+                    function  clear_barrage()
+                    {
                         $.fn.barrager.removeAll();
                     }
+
                 </script>
             
         </div>
@@ -1630,8 +1573,8 @@
         <!--其他评论card-->
         <div class="card">
             
-                <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
-<link rel="stylesheet" href="/css/my-gitalk.css">
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/500fan/500fan.github.io@1.33//libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/500fan/500fan.github.io@1.33//css/my-gitalk.css">
 
 <div class="card gitalk-card" data-aos="fade-up">
     <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; padding-left: 20px; top: 15px; padding-bottom: 5px;">
@@ -1641,7 +1584,7 @@
     <div id="gitalk-container" class="card-content"></div>
 </div>
 
-<script src="/libs/gitalk/gitalk.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/500fan/500fan.github.io@1.33//libs/gitalk/gitalk.min.js"></script>
 <script>
     let gitalk = new Gitalk({
         clientID: '96728eae07a721a0dd89',
@@ -1658,8 +1601,8 @@
             
 
             
-                <link rel="stylesheet" href="/libs/gitment/gitment-default.css">
-<link rel="stylesheet" href="/css/gitment.css">
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/500fan/500fan.github.io@1.33//libs/gitment/gitment-default.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/500fan/500fan.github.io@1.33//css/gitment.css">
 
 <div class="gitment-card card" data-aos="fade-up">
     <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; padding-left: 20px; top: 15px; padding-bottom: 5px;">
@@ -1669,7 +1612,7 @@
     <div id="gitment-content" class="card-content"></div>
 </div>
 
-<script src="/libs/gitment/gitment.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/500fan/500fan.github.io@1.33//libs/gitment/gitment.js"></script>
 <script>
 var gitment = new Gitment({
     id: 'Sat Jul 20 2019 21:25:30 GMT+0800',
@@ -2017,7 +1960,7 @@ var refer = "{Permalink}".replace("http://","");
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/twikoo@1.6.42/dist/twikoo.all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/500fan/500fan.github.io@1.33/https://cdn.jsdelivr.net/npm/twikoo@1.6.42/dist/twikoo.all.min.js"></script>
 <script>
     twikoo.init({
         envId: 'https://twikoo-ydp0.onrender.com',
@@ -2306,7 +2249,7 @@ head.appendChild(script);
 </div>
 
 <!-- 删除重复的 av-min.js 加载，已在页面顶部加载过 -->
-<script src="https://unpkg.com/valine/dist/Valine.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/500fan/500fan.github.io@1.33/https://unpkg.com/valine/dist/Valine.min.js"></script>
 <script>
     new Valine({
         el: '#vcomments',
@@ -2423,7 +2366,7 @@ head.appendChild(script);
 	
             <br>
             
-                <span id="icp"><img src="/medias/icp.png"
+                <span id="icp"><img src="https://cdn.jsdelivr.net/gh/500fan/500fan.github.io@1.33//medias/icp.png"
                                     style="vertical-align: text-bottom;"/>
                 <a href="https://mp.weixin.qq.com/s?__biz=MzUzOTEyOTI1MQ==&mid=2247488419&idx=1&sn=a849b45711b5b96f8ca91296242cd7ad&chksm=facc776fcdbbfe79b8e7dcddf272a7582064c62a9e854c69261d9dfb3b9bf75338e68603d30b&token=25101842&lang=zh_CN#rd# 备案链接" target="_blank">鄂ICP备5201314号</a>
             </span>
@@ -2737,12 +2680,12 @@ color="122 103 238" opacity='0.7' zIndex="-2" count="200" src="//cdn.bootcss.com
 
 
       <script src="https://cdn.bootcdn.net/ajax/libs/aos/3.0.0-beta.6/aos.js"></script>
-        <script src="/libs/materialize/materialize.min.js"></script>
-        <script src="/libs/masonry/masonry.pkgd.min.js"></script>
-        <script src="/libs/aos/aos.js"></script>
-        <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
-        <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
-        <script src="/js/matery.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/500fan/500fan.github.io@1.33//libs/materialize/materialize.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/500fan/500fan.github.io@1.33//libs/masonry/masonry.pkgd.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/500fan/500fan.github.io@1.33//libs/aos/aos.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/500fan/500fan.github.io@1.33//libs/scrollprogress/scrollProgress.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/500fan/500fan.github.io@1.33//libs/lightGallery/js/lightgallery-all.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/500fan/500fan.github.io@1.33//js/matery.js"></script>
 
 
 
@@ -2958,10 +2901,10 @@ color="122 103 238" opacity='0.7' zIndex="-2" count="200" src="//cdn.bootcss.com
 </script>
 
     
-    <script src="/libs/others/clicklove.js" async="async"></script>
+    <script src="https://cdn.jsdelivr.net/gh/500fan/500fan.github.io@1.33//libs/others/clicklove.js" async="async"></script>
     
     
-    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    <script async src="https://cdn.jsdelivr.net/gh/500fan/500fan.github.io@1.33//libs/others/busuanzi.pure.mini.js"></script>
     
 
 
@@ -3006,11 +2949,11 @@ color="122 103 238" opacity='0.7' zIndex="-2" count="200" src="//cdn.bootcss.com
     
 
     
-    <script type="text/javascript" src="/libs/background/ribbon-dynamic.js" async="async"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/500fan/500fan.github.io@1.33//libs/background/ribbon-dynamic.js" async="async"></script>
     
 
     
-    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    <script src="https://cdn.jsdelivr.net/gh/500fan/500fan.github.io@1.33//libs/instantpage/instantpage.js" type="module"></script>
     
 
     <!--单击显示文字-->
