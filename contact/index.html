@@ -1538,17 +1538,37 @@
                         barrager.set('info', info);
                         barrager.set('speed', speed);
                         barrager.save().then((todo) => {
-                            // 保存成功后立即在页面显示弹幕
-                            $('body').barrager({
-                                'img': '/medias/barrager/' + Math.floor(Math.random() * 3) + ".png",
-                                'href': href,
-                                'info': info,
-                                'speed': speed
-                            });
+                            // 保存成功后立即在页面显示弹幕（使用CSS动画，兼容性更好）
+                            var imgSrc = '/medias/barrager/' + Math.floor(Math.random() * 3) + '.png';
+                            var thisHeight = $(window).height() * 0.35;
+                            var arr = [
+                                (thisHeight / 5) + $(window).height() * 0.5,
+                                2*(thisHeight / 5) + $(window).height() * 0.5,
+                                3*(thisHeight / 5) + $(window).height() * 0.5,
+                                4*(thisHeight / 5) + $(window).height() * 0.5,
+                                5*(thisHeight / 5) + $(window).height() * 0.5
+                            ];
+                            var bottom = arr[Math.floor(Math.random()*5)];
+                            var winWidth = $(window).width();
+                            var barrageHtml = '<div class="barrage" style="bottom:' + bottom + 'px;right:-500px;transition:right ' + speed + 's linear;">' +
+                                '<div class="barrage_box cl">' +
+                                '<a class="portrait z" href="javascript:;"><img src="' + imgSrc + '"></a>' +
+                                '<div class="z p"><a href="' + href + '" target="_blank" style="color:#fff;">' + info + '</a></div>' +
+                                '<div class="close z"></div>' +
+                                '</div></div>';
+                            var $barrage = $(barrageHtml).appendTo('body');
+                            // 触发动画
+                            setTimeout(function() {
+                                $barrage.css('right', (winWidth + 100) + 'px');
+                            }, 50);
+                            // 动画结束后移除
+                            setTimeout(function() {
+                                $barrage.remove();
+                            }, (speed + 1) * 1000);
                             // 清空输入框
-                            $(" input[ name='info' ] ").val("")
-                            $(" input[ name='href' ] ").val("")
-                            $(" input[ name='speed' ] ").val("")
+                            $("input[name='info']").val("");
+                            $("input[name='href']").val("");
+                            $("input[name='speed']").val("");
                         }).catch((err) => {
                             alert('留言发送失败，请检查网络或稍后再试');
                             console.error('弹幕保存失败:', err);
