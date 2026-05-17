@@ -1403,7 +1403,7 @@
     }
     </style>
     <div style="width: 100%; height: 100%; position: absolute; bottom: 0; left: 0;" class="particletext bubbles-bg"></div>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <!-- 移除重复的 jQuery 加载，防止覆盖 barrager 插件 -->
     <script>
       $(function(){
         if(!jQuery.rnd) {
@@ -1493,10 +1493,9 @@
                     var TWIKOO_SERVER = 'https://twikoo-ydp0.onrender.com';
                     var barrageQueue = [];
                     var barrageLoopTimer = null;
-                    var $j = jQuery.noConflict(true); // 防止多 jQuery 冲突
 
                     // 页面加载后直接获取弹幕
-                    $j(function() {
+                    jQuery(function() {
                         loadBarrages();
                     });
 
@@ -1555,7 +1554,7 @@
                                 barrageLoopTimer = setTimeout(next, 3000);
                                 return;
                             }
-                            $j('body').barrager(barrageQueue[Math.floor(Math.random() * barrageQueue.length)]);
+                            jQuery('body').barrager(barrageQueue[Math.floor(Math.random() * barrageQueue.length)]);
                             barrageLoopTimer = setTimeout(next, Math.floor(Math.random() * 2000) + 1000);
                         }
                         next();
@@ -1563,11 +1562,11 @@
 
                     // 发送弹幕
                     function run() {
-                        var info = $j('input[name=info]').val();
+                        var info = jQuery('input[name=info]').val();
                         if (info === '') info = 'hello world';
-                        var href = $j('input[name=href]').val();
+                        var href = jQuery('input[name=href]').val();
                         if (href === '') href = 'https://github.500fan.io';
-                        var speed = parseInt($j('input[name=speed]').val());
+                        var speed = parseInt(jQuery('input[name=speed]').val());
                         if (speed > 20 || speed < 5) speed = Math.floor(Math.random() * 10) + 5;
 
                         var barrageContent = '[barrage]' + info + '|' + href + '|' + speed + '[/barrage]';
@@ -1580,11 +1579,11 @@
                         }).then(function(resp) {
                             if (resp && resp.id) {
                                 var b = { img: '/medias/barrager/' + Math.floor(Math.random() * 3) + '.png', href: href, info: info, speed: speed };
-                                $j('body').barrager(b);
+                                jQuery('body').barrager(b);
                                 barrageQueue.push(b);
-                                $j("input[name='info']").val('');
-                                $j("input[name='href']").val('');
-                                $j("input[name='speed']").val('');
+                                jQuery("input[name='info']").val('');
+                                jQuery("input[name='href']").val('');
+                                jQuery("input[name='speed']").val('');
                             } else {
                                 alert('留言发送失败：' + (resp && resp.message || '未知错误'));
                             }
@@ -1595,7 +1594,7 @@
                     }
 
                     function clear_barrage() {
-                        $j.fn.barrager.removeAll();
+                        jQuery.fn.barrager.removeAll();
                         if (barrageLoopTimer) { clearTimeout(barrageLoopTimer); barrageLoopTimer = null; }
                     }
                 </script>
