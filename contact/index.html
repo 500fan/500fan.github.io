@@ -1491,18 +1491,52 @@
                 <script src="https://cdn.jsdelivr.net/npm/twikoo@1.6.42/dist/twikoo.all.min.js"></script>
                 <script type="text/javascript">
                     var twikooComment = null;
+                    var twikooReady = false;
+                    var twikooRetries = 0;
+                    var barrageQueue = [];
+                    var barrageLoopTimer = null;
 
-                    // 初始化 Twikoo 并加载历史弹幕
+                    // 初始化 Twikoo
                     $(function() {
+                        initTwikoo();
+                    });
+
+                    function initTwikoo() {
                         twikoo.init({
                             envId: 'https://twikoo-ydp0.onrender.com',
                             el: '#barrage-twikoo'
                         }).then(function(api) {
                             twikooComment = api.comment;
+                            twikooReady = true;
                             loadBarrages();
+                        }).catch(function(err) {
+                            console.error('Twikoo 初始化失败:', err);
+                            if (twikooRetries < 10) {
+                                twikooRetries++;
+                                setTimeout(initTwikoo, 5000);
+                            }
                         });
-                    });
+                    }
 
+                    // 从评论中解析弹幕
+                    function parseBarrageItem(item) {
+                        try {
+                            var raw = item.comment;
+                            var match = raw.match(/\[barrage\](.*?)\[\/barrage\]/);
+                            if (match) {
+                                var parts = match[1].split('|');
+                                return {
+                                    'img': '/medias/barrager/' + Math.floor(Math.random() * 3) + '.png',
+                                    'href': parts[1] || 'javascript:;',
+                                    'info': parts[0] || '',
+                                    'speed': parseInt(parts[2]) || 16
+                                };
+                            }
+                        } catch (e) { console.error('弹幕解析失败:', e); }
+                        return null;
+                    }
+
+                    // 加载历史弹幕并循环播放
                     function loadBarrages() {
                         twikoo.getRecentComments({
                             envId: 'https://twikoo-ydp0.onrender.com',
@@ -1510,30 +1544,33 @@
                             pageSize: 100,
                             includeReply: false
                         }).then(function(lists) {
-                            var index = 0;
-                            var timer = setInterval(function() {
-                                if (index >= lists.length) {
-                                    clearInterval(timer);
-                                } else {
-                                    try {
-                                        var raw = lists[index].comment;
-                                        var match = raw.match(/\[barrage\](.*?)\[\/barrage\]/);
-                                        if (match) {
-                                            var parts = match[1].split('|');
-                                            $('body').barrager({
-                                                'img': '/medias/barrager/' + Math.floor(Math.random() * 3) + '.png',
-                                                'href': parts[1] || 'javascript:;',
-                                                'info': parts[0] || '',
-                                                'speed': parseInt(parts[2]) || 16
-                                            });
-                                        }
-                                    } catch (e) { console.error('弹幕解析失败:', e); }
-                                    index++;
-                                }
-                            }, 500);
+                            barrageQueue = [];
+                            for (var i = 0; i < lists.length; i++) {
+                                var b = parseBarrageItem(lists[i]);
+                                if (b) barrageQueue.push(b);
+                            }
+                            if (barrageQueue.length > 0) {
+                                startBarrageLoop();
+                            }
                         }).catch(function(e) {
                             console.error('弹幕加载失败:', e);
                         });
+                    }
+
+                    // 循环从右侧飞入弹幕
+                    function startBarrageLoop() {
+                        if (barrageLoopTimer) clearTimeout(barrageLoopTimer);
+                        function next() {
+                            if (barrageQueue.length === 0) {
+                                barrageLoopTimer = setTimeout(next, 3000);
+                                return;
+                            }
+                            var b = barrageQueue[Math.floor(Math.random() * barrageQueue.length)];
+                            $('body').barrager(b);
+                            var delay = Math.floor(Math.random() * 2000) + 1000;
+                            barrageLoopTimer = setTimeout(next, delay);
+                        }
+                        next();
                     }
 
                     // 发送弹幕到 Twikoo
@@ -1548,8 +1585,9 @@
 
                         var barrageContent = '[barrage]' + info + '|' + href + '|' + speed + '[/barrage]';
 
-                        if (!twikooComment) {
-                            alert('Twikoo 尚未加载完成，请稍后再试');
+                        if (!twikooReady) {
+                            alert('Twikoo 尚未加载完成，正在重试连接...');
+                            if (!twikooReady) initTwikoo();
                             return;
                         }
 
@@ -1563,12 +1601,14 @@
                             rid: ''
                         }).then(function(resp) {
                             if (resp && resp.id) {
-                                $('body').barrager({
+                                var newBarrage = {
                                     'img': '/medias/barrager/' + Math.floor(Math.random() * 3) + '.png',
                                     'href': href,
                                     'info': info,
                                     'speed': speed
-                                });
+                                };
+                                $('body').barrager(newBarrage);
+                                barrageQueue.push(newBarrage);
                                 $("input[name='info']").val("");
                                 $("input[name='href']").val("");
                                 $("input[name='speed']").val("");
@@ -1583,6 +1623,10 @@
 
                     function clear_barrage() {
                         $.fn.barrager.removeAll();
+                        if (barrageLoopTimer) {
+                            clearTimeout(barrageLoopTimer);
+                            barrageLoopTimer = null;
+                        }
                     }
                 </script>
             
