@@ -1506,9 +1506,21 @@
                             envId: 'https://twikoo-ydp0.onrender.com',
                             el: '#barrage-twikoo'
                         }).then(function(api) {
-                            twikooComment = api.comment;
-                            twikooReady = true;
-                            loadBarrages();
+                            console.log('Twikoo api 对象:', api, 'twikoo 对象:', twikoo);
+                            // 兼容不同版本 Twikoo 的 API 结构
+                            if (api && typeof api.comment === 'function') {
+                                twikooComment = api.comment;
+                            } else if (typeof twikoo.comment === 'function') {
+                                twikooComment = twikoo.comment;
+                            } else if (typeof twikoo === 'function') {
+                                twikooComment = twikoo;
+                            }
+                            if (twikooComment) {
+                                twikooReady = true;
+                                loadBarrages();
+                            } else {
+                                console.error('Twikoo: 未找到 comment 方法, api=', api, 'twikoo=', twikoo);
+                            }
                         }).catch(function(err) {
                             console.error('Twikoo 初始化失败:', err);
                             if (twikooRetries < 10) {
@@ -1539,10 +1551,10 @@
                     // 加载历史弹幕并循环播放
                     function loadBarrages() {
                         twikoo.getRecentComments({
-                            envId: 'https://twikoo-ydp0.onrender.com',
-                            urls: ['/barrage'],
-                            pageSize: 100,
-                            includeReply: false
+                            envId: 'https://twikoo-ydp0.onrender.com', // Twikoo 环境 ID
+                            urls: ['/barrage'],                 // 弹幕页面路径
+                            pageSize: 100,                      // 拉取评论条数
+                            includeReply: true                  // 包含回复
                         }).then(function(lists) {
                             barrageQueue = [];
                             for (var i = 0; i < lists.length; i++) {
