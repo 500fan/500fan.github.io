@@ -1572,10 +1572,11 @@
                         var barrageContent = '[barrage]' + info + '|' + href + '|' + speed + '[/barrage]';
 
                         twikooPost({
-                            event: 'COMMENT_SET',
-                            nick: '弹幕', mail: '', link: href,
+                            event: 'COMMENT_SUBMIT',
+                            nick: '弹幕', mail: 'barrage@example.com', link: href,
                             comment: barrageContent, url: '/barrage',
-                            pid: '', rid: ''
+                            pid: '', rid: '',
+                            ua: navigator.userAgent
                         }).then(function(resp) {
                             if (resp && resp.id) {
                                 var b = { img: '/medias/barrager/' + Math.floor(Math.random() * 3) + '.png', href: href, info: info, speed: speed };
