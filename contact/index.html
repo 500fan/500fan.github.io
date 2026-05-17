@@ -1488,88 +1488,66 @@
                 </div>
 
                 <div id="barrage-twikoo" style="display:none;"></div>
-                <script>document.write('<script src="/libs/twikoo/twikoo.all.min.js?v=' + Date.now() + '"><\/script>')</script>
+                <!-- 不加载 Twikoo SDK，直接 HTTP 请求 Render 服务器 -->
                 <script type="text/javascript">
-                    var twikooComment = null;
-                    var twikooReady = false;
-                    var twikooRetries = 0;
+                    var TWIKOO_SERVER = 'https://twikoo-ydp0.onrender.com';
                     var barrageQueue = [];
                     var barrageLoopTimer = null;
+                    var $j = jQuery.noConflict(true); // 防止多 jQuery 冲突
 
-                    // 初始化 Twikoo
-                    $(function() {
-                        initTwikoo();
+                    // 页面加载后直接获取弹幕
+                    $j(function() {
+                        loadBarrages();
                     });
 
-                    function initTwikoo() {
-                        twikoo.init({
-                            envId: 'https://twikoo-ydp0.onrender.com',
-                            el: '#barrage-twikoo'
-                        }).then(function(api) {
-                            console.log('Twikoo api 对象:', api, 'twikoo 对象:', twikoo);
-                            // 兼容不同版本 Twikoo 的 API 结构
-                            if (api && typeof api.comment === 'function') {
-                                twikooComment = api.comment;
-                            } else if (typeof twikoo.comment === 'function') {
-                                twikooComment = twikoo.comment;
-                            } else if (typeof twikoo === 'function') {
-                                twikooComment = twikoo;
-                            }
-                            if (twikooComment) {
-                                twikooReady = true;
-                                loadBarrages();
-                            } else {
-                                console.error('Twikoo: 未找到 comment 方法, api=', api, 'twikoo=', twikoo);
-                            }
-                        }).catch(function(err) {
-                            console.error('Twikoo 初始化失败:', err);
-                            if (twikooRetries < 10) {
-                                twikooRetries++;
-                                setTimeout(initTwikoo, 5000);
-                            }
-                        });
+                    // POST 请求到 Twikoo 服务器
+                    function twikooPost(data) {
+                        return fetch(TWIKOO_SERVER, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(data)
+                        }).then(function(r) { return r.json(); });
                     }
 
-                    // 从评论中解析弹幕
+                    // 解析弹幕内容
                     function parseBarrageItem(item) {
                         try {
-                            var raw = item.comment;
-                            var match = raw.match(/\[barrage\](.*?)\[\/barrage\]/);
+                            var match = item.comment.match(/\[barrage\](.*?)\[\/barrage\]/);
                             if (match) {
                                 var parts = match[1].split('|');
                                 return {
-                                    'img': '/medias/barrager/' + Math.floor(Math.random() * 3) + '.png',
-                                    'href': parts[1] || 'javascript:;',
-                                    'info': parts[0] || '',
-                                    'speed': parseInt(parts[2]) || 16
+                                    img: '/medias/barrager/' + Math.floor(Math.random() * 3) + '.png',
+                                    href: parts[1] || 'javascript:;',
+                                    info: parts[0] || '',
+                                    speed: parseInt(parts[2]) || 16
                                 };
                             }
-                        } catch (e) { console.error('弹幕解析失败:', e); }
+                        } catch (e) {}
                         return null;
                     }
 
-                    // 加载历史弹幕并循环播放
+                    // 加载历史弹幕
                     function loadBarrages() {
-                        twikoo.getRecentComments({
-                            envId: 'https://twikoo-ydp0.onrender.com', // Twikoo 环境 ID
-                            urls: ['/barrage'],                 // 弹幕页面路径
-                            pageSize: 100,                      // 拉取评论条数
-                            includeReply: true                  // 包含回复
-                        }).then(function(lists) {
+                        twikooPost({
+                            event: 'GET_RECENT_COMMENTS',
+                            urls: ['/barrage'],
+                            pageSize: 100,
+                            includeReply: true
+                        }).then(function(resp) {
+                            var lists = resp.data || [];
                             barrageQueue = [];
                             for (var i = 0; i < lists.length; i++) {
                                 var b = parseBarrageItem(lists[i]);
                                 if (b) barrageQueue.push(b);
                             }
-                            if (barrageQueue.length > 0) {
-                                startBarrageLoop();
-                            }
+                            console.log('弹幕加载成功:', barrageQueue.length, '条');
+                            if (barrageQueue.length > 0) startBarrageLoop();
                         }).catch(function(e) {
                             console.error('弹幕加载失败:', e);
                         });
                     }
 
-                    // 循环从右侧飞入弹幕
+                    // 循环飞入弹幕
                     function startBarrageLoop() {
                         if (barrageLoopTimer) clearTimeout(barrageLoopTimer);
                         function next() {
@@ -1577,68 +1555,48 @@
                                 barrageLoopTimer = setTimeout(next, 3000);
                                 return;
                             }
-                            var b = barrageQueue[Math.floor(Math.random() * barrageQueue.length)];
-                            $('body').barrager(b);
-                            var delay = Math.floor(Math.random() * 2000) + 1000;
-                            barrageLoopTimer = setTimeout(next, delay);
+                            $j('body').barrager(barrageQueue[Math.floor(Math.random() * barrageQueue.length)]);
+                            barrageLoopTimer = setTimeout(next, Math.floor(Math.random() * 2000) + 1000);
                         }
                         next();
                     }
 
-                    // 发送弹幕到 Twikoo
+                    // 发送弹幕
                     function run() {
-                        var info = $('input[name=info]').val();
-                        (info === '') ? info='hello world' : info=info;
-                        var href = $('input[name=href]').val();
-                        (href === '') ? href='https://github.500fan.io' : href=href;
-                        var speed = parseInt($('input[name=speed]').val());
-                        if (speed > 20 || speed < 5)
-                            speed = Math.floor(Math.random() * 10) + 5;
+                        var info = $j('input[name=info]').val();
+                        if (info === '') info = 'hello world';
+                        var href = $j('input[name=href]').val();
+                        if (href === '') href = 'https://github.500fan.io';
+                        var speed = parseInt($j('input[name=speed]').val());
+                        if (speed > 20 || speed < 5) speed = Math.floor(Math.random() * 10) + 5;
 
                         var barrageContent = '[barrage]' + info + '|' + href + '|' + speed + '[/barrage]';
 
-                        if (!twikooReady) {
-                            alert('Twikoo 尚未加载完成，正在重试连接...');
-                            if (!twikooReady) initTwikoo();
-                            return;
-                        }
-
-                        twikooComment({
-                            nick: '弹幕',
-                            mail: '',
-                            link: href,
-                            comment: barrageContent,
-                            url: '/barrage',
-                            pid: '',
-                            rid: ''
+                        twikooPost({
+                            event: 'COMMENT_SET',
+                            nick: '弹幕', mail: '', link: href,
+                            comment: barrageContent, url: '/barrage',
+                            pid: '', rid: ''
                         }).then(function(resp) {
                             if (resp && resp.id) {
-                                var newBarrage = {
-                                    'img': '/medias/barrager/' + Math.floor(Math.random() * 3) + '.png',
-                                    'href': href,
-                                    'info': info,
-                                    'speed': speed
-                                };
-                                $('body').barrager(newBarrage);
-                                barrageQueue.push(newBarrage);
-                                $("input[name='info']").val("");
-                                $("input[name='href']").val("");
-                                $("input[name='speed']").val("");
+                                var b = { img: '/medias/barrager/' + Math.floor(Math.random() * 3) + '.png', href: href, info: info, speed: speed };
+                                $j('body').barrager(b);
+                                barrageQueue.push(b);
+                                $j("input[name='info']").val('');
+                                $j("input[name='href']").val('');
+                                $j("input[name='speed']").val('');
                             } else {
                                 alert('留言发送失败：' + (resp && resp.message || '未知错误'));
                             }
-                        }).catch(function(err) {
-                            alert('留言发送失败，请检查网络或稍后再试');
-                            console.error('弹幕保存失败:', err);
+                        }).catch(function(e) {
+                            alert('留言发送失败，请检查网络');
+                            console.error('弹幕发送失败:', e);
                         });
                     }
 
                     function clear_barrage() {
-                        $.fn.barrager.removeAll();
-                        if (barrageLoopTimer) {
-                            clearTimeout(barrageLoopTimer);
-                            barrageLoopTimer = null;
-                        }
+                        $j.fn.barrager.removeAll();
+                        if (barrageLoopTimer) { clearTimeout(barrageLoopTimer); barrageLoopTimer = null; }
                     }
                 </script>
             
