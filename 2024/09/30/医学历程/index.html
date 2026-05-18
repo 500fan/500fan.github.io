@@ -2138,12 +2138,59 @@ head.appendChild(script);
 
 <script type="module">
     import { init } from 'https://unpkg.com/@waline/client@v3/dist/waline.js';
+
+    // GitHub 图床上传函数
+    async function githubImageUpload(file) {
+        const token = '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';
+        const repo = '500fan/waline-render';
+        const date = new Date();
+        const path = 'images/' + date.getFullYear() + '/' + String(date.getMonth()+1).padStart(2,'0') + '/' + Date.now() + '-' + file.name;
+
+        console.log('开始上传图片到 GitHub:', path);
+
+        // 读取文件为 base64
+        const base64 = await new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => {
+                // 去掉 data:xxx;base64, 前缀
+                const base64 = reader.result.split(',')[1];
+                resolve(base64);
+            };
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
+
+        const resp = await fetch('https://api.github.com/repos/' + repo + '/contents/' + path, {
+            method: 'PUT',
+            headers: {
+                'Authorization': 'token ' + token,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                message: 'upload image: ' + file.name,
+                content: base64,
+            }),
+        });
+
+        const text = await resp.text();
+        console.log('GitHub API 响应:', resp.status, text.substring(0, 200));
+
+        if (!resp.ok) {
+            throw new Error('上传失败 (' + resp.status + ')');
+        }
+
+        const url = 'https://raw.githubusercontent.com/' + repo + '/main/' + path;
+        console.log('图片上传成功:', url);
+        return url;
+    }
+
     init({
         el: '#waline',
         serverURL: 'https://waline-render-4h1r.onrender.com',
         lang: 'en',
         pageview: true,
         comment: true,
+        imageUploader: githubImageUpload,
     });
 </script>
 
@@ -2226,18 +2273,18 @@ head.appendChild(script);
                 Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2024/06/20/%E8%AF%AD%E5%BD%95/">
+                <a href="/2024/06/20/%E6%97%A5%E8%AF%AD%E4%B8%AD%EF%BC%8C%E2%80%9COmakase%E2%80%9D/">
                     <div class="card-image">
                         
-                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="语录">
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="日语">
                         
-                        <span class="card-title">语录</span>
+                        <span class="card-title">日语</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            这是你自定义的文章摘要内容，如果这个属性有值，文章卡片摘要就显示这段文字，否则程序会自动截取文章的部分内容作为摘要
+                            音标
                         
                     </div>
                     <div class="publish-info">
@@ -2248,8 +2295,8 @@ head.appendChild(script);
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/Markdown/" class="post-category">
-                                    Markdown
+                            <a href="/categories/122/" class="post-category">
+                                    122
                                 </a>
                             
                             

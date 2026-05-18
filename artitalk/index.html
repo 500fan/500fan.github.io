@@ -1418,118 +1418,259 @@
 </div>
 
 
-<style ype="text/css">
-
+<style>
 #pubShuo {
-
   margin-right: 5px;
 }
 
-#operare_artitalk .shuoshuo_input_log {
-    outline-style: none;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    padding: 8px 16px;
-    font-size: 12px;
-    background-color: transparent;
-
-    color: #0bb7fbd6;
-    width: 70%;
-    height: 28px;
-    margin-left: 10px;
-}
-
 #artitalk_main {
-
-  margin-top: 5px ;
+  margin-top: 5px;
   margin-left: 5%;
   margin-right: 5%;
-
 }
 
-#lazy{
+#lazy {
   margin-top: 40px;
 }
-#artitalk_main .cbp_tmtimeline > li .cbp_tmlabel::after {
-  right: 100%;
-  border: solid transparent;
-  z-index: -1;
-  content: " ";
-  height: 0;
-  width: 0;
-  position: absolute;
-  pointer-events: none;
-  border-right-color:  #0bb7fbd6 ;
-  border-width: 10px;
-  top: 4px;
+
+.shuo-input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  resize: vertical;
+  min-height: 60px;
+  background: transparent;
+  color: inherit;
+  box-sizing: border-box;
+}
+
+.shuo-btn {
+  margin-top: 8px;
+  padding: 8px 24px;
+  background: linear-gradient(45deg, rgb(109, 208, 242) 15%, rgb(245, 154, 190) 85%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.shuo-btn:hover {
+  opacity: 0.85;
+}
+
+.shuo-item {
+  padding: 16px;
+  margin: 10px 0;
+  border-radius: 8px;
+  background: linear-gradient(45deg, rgb(109, 208, 242, 0.1) 15%, rgb(245, 154, 190, 0.1) 85%);
+  border-left: 4px solid rgb(109, 208, 242);
+}
+
+.shuo-time {
+  font-size: 12px;
+  color: #999;
+  margin-top: 8px;
+}
+
+.shuo-content {
+  font-size: 14px;
+  line-height: 1.8;
+  color: inherit;
+}
+
+.shuo-empty {
+  text-align: center;
+  color: #999;
+  padding: 40px;
 }
 </style>
 
+<article id="articles11" class="container chip-container">
+  <div class="row">
+    <div class="card">
+      <div class="card-content">
+        <div class="tag-title center-align">
+          <i class="fas fa-pen-alt"></i> 说说
+        </div>
 
-<script src="https://cdn.jsdelivr.net/gh/500fan/500fan.github.io@1.33//libs/artitalk/artitalk.min.js"></script>
+        <!-- 发布区域 -->
+        <div style="margin: 16px 0; padding: 0 16px;">
+          <textarea id="shuo-input" class="shuo-input" placeholder="说点什么吧..."></textarea>
+          <div style="margin-top: 8px; display: flex; align-items: center; gap: 12px;">
+            <button class="shuo-btn" onclick="postShuo()">发布</button>
+            <label class="shuo-btn" style="cursor: pointer; display: inline-block;">
+              📷 图片
+              <input type="file" id="shuo-image" accept="image/*" style="display: none;" onchange="uploadShuoImage(this)">
+            </label>
+            <span id="shuo-upload-status" style="font-size: 12px; color: #999;"></span>
+          </div>
+        </div>
 
-<article id="articles11" class="container  chip-container">
-  <div class="row ">
-
-      <div class=" card">
-        <div class="card-content" >
-          <div class="tag-title center-align">
-                <i class="fas fa-pen-alt"></i> 说说
-           </div>
-          <div id="artitalk_main"></div>
-        </div>  
+        <!-- 说说列表 -->
+        <div id="shuo-list"></div>
       </div>
-
+    </div>
   </div>
 </article>
+
 <script>
-  new Artitalk({
-        appId: "9SpXH9odSXLYjnnm5J9UG9mm-gzGzoHsz",
-        appKey: "FL69KukifEA1Rrnd9yrAwTXi",
-      
-          serverURL: "https://9spxh9od.lc-cn-n1-shared.com",
-      
-      
-          lang: "zh",
-      
-      
-          pageSize: "10",
-      
-      
-      
-          avatarPla: "https://cdn.jsdelivr.net/gh/small-rose/small-rose.github.io/medias/avatar.jpg",
-      
-      
-          motion: 1,
-      
-      
-      
-          color1: "linear-gradient(45deg, rgb(109, 208, 242) 15%, rgb(245, 154, 190) 85%)",
-      
-      
-          color2: "linear-gradient(45deg, rgb(109, 208, 242) 15%, rgb(245, 154, 190) 85%)",
-      
-      
-          color3: "black",
-      
-      
-          atEmoji: {
-              baiyan: "https://cdn.jsdelivr.net/gh/Artitalk/Artitalk-emoji/baiyan.png",
-              bishi: "https://cdn.jsdelivr.net/gh/Artitalk/Artitalk-emoji/bishi.png",
-              bizui: "https://cdn.jsdelivr.net/gh/Artitalk/Artitalk-emoji/bizui.png",
-              chan: "https://cdn.jsdelivr.net/gh/Artitalk/Artitalk-emoji/chan.png",
-              daku: "https://cdn.jsdelivr.net/gh/Artitalk/Artitalk-emoji/daku.png",
-              dalao: "https://cdn.jsdelivr.net/gh/Artitalk/Artitalk-emoji/dalao.png",
-              dalian: "https://cdn.jsdelivr.net/gh/Artitalk/Artitalk-emoji/dalian.png",
-              dianzan: "https://cdn.jsdelivr.net/gh/Artitalk/Artitalk-emoji/dianzan.png",
-              doge: "https://cdn.jsdelivr.net/gh/Artitalk/Artitalk-emoji/doge.png",
-              facai: "https://cdn.jsdelivr.net/gh/Artitalk/Artitalk-emoji/facai.png",
-              fadai: "https://cdn.jsdelivr.net/gh/Artitalk/Artitalk-emoji/fadai.png",
-              fanu: "https://cdn.jsdelivr.net/gh/Artitalk/Artitalk-emoji/fanu.png",
-           },
-     })
+(function() {
+  var REPO = '500fan/waline-render';
+  var FILE = 'shuoshuo.json';
+  var TOKEN = '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';
+  var fileSha = null;
+
+  // 上传图片到 GitHub 图床
+  window.uploadShuoImage = function(input) {
+    var file = input.files[0];
+    if (!file) return;
+    if (!TOKEN) { alert('未配置 GitHub Token'); return; }
+
+    var status = document.getElementById('shuo-upload-status');
+    status.textContent = '上传中...';
+
+    var date = new Date();
+    var path = 'images/' + date.getFullYear() + '/' + String(date.getMonth()+1).padStart(2,'0') + '/' + Date.now() + '-' + file.name;
+
+    var reader = new FileReader();
+    reader.onload = function() {
+      var base64 = reader.result.split(',')[1];
+      fetch('https://api.github.com/repos/' + REPO + '/contents/' + path, {
+        method: 'PUT',
+        headers: {
+          'Authorization': 'token ' + TOKEN,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: 'upload shuoshuo image: ' + file.name,
+          content: base64,
+        }),
+      })
+      .then(function(r) { return r.json().then(function(d) { return {ok: r.ok, data: d}; }); })
+      .then(function(result) {
+        if (result.ok) {
+          var url = 'https://raw.githubusercontent.com/' + REPO + '/main/' + path;
+          var textarea = document.getElementById('shuo-input');
+          textarea.value += '\n![](' + url + ')';
+          status.textContent = '上传成功';
+        } else {
+          status.textContent = '上传失败: ' + (result.data.message || '');
+        }
+      })
+      .catch(function(e) {
+        status.textContent = '上传失败: ' + e.message;
+      });
+    };
+    reader.readAsDataURL(file);
+    input.value = '';
+  };
+
+  // 加载说说
+  function loadShuoshuo() {
+    fetch('https://api.github.com/repos/' + REPO + '/contents/' + FILE, {
+      headers: { 'Accept': 'application/vnd.github.v3+json' }
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      fileSha = data.sha;
+      var content = atob(data.content.replace(/\n/g, ''));
+      var list = JSON.parse(content);
+      renderList(list);
+    })
+    .catch(function() {
+      document.getElementById('shuo-list').innerHTML = '<div class="shuo-empty">暂无说说</div>';
+    });
+  }
+
+  // 渲染列表
+  function renderList(list) {
+    var html = '';
+    if (list.length === 0) {
+      html = '<div class="shuo-empty">暂无说说</div>';
+    } else {
+      // 按时间倒序
+      list.sort(function(a, b) { return new Date(b.time) - new Date(a.time); });
+      for (var i = 0; i < list.length; i++) {
+        var item = list[i];
+        html += '<div class="shuo-item">';
+        html += '<div class="shuo-content">' + escapeHtml(item.content) + '</div>';
+        html += '<div class="shuo-time">' + formatTime(item.time);
+        if (item.device) html += ' · ' + escapeHtml(item.device);
+        if (item.mood) html += ' · ' + escapeHtml(item.mood);
+        html += '</div></div>';
+      }
+    }
+    document.getElementById('shuo-list').innerHTML = html;
+  }
+
+  // 发布说说
+  window.postShuo = function() {
+    var content = document.getElementById('shuo-input').value.trim();
+    if (!content) { alert('请输入内容'); return; }
+    if (!TOKEN) { alert('未配置 GitHub Token'); return; }
+
+    // 先获取当前文件
+    fetch('https://api.github.com/repos/' + REPO + '/contents/' + FILE, {
+      headers: { 'Accept': 'application/vnd.github.v3+json' }
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      var list = JSON.parse(atob(data.content.replace(/\n/g, '')));
+      list.push({
+        id: Date.now().toString(36),
+        content: content,
+        time: new Date().toISOString(),
+        mood: '',
+        device: navigator.userAgent.match(/Mobile/) ? '📱 Mobile' : '💻 PC'
+      });
+
+      return fetch('https://api.github.com/repos/' + REPO + '/contents/' + FILE, {
+        method: 'PUT',
+        headers: {
+          'Authorization': 'token ' + TOKEN,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: 'shuoshuo: ' + content.substring(0, 30),
+          content: btoa(unescape(encodeURIComponent(JSON.stringify(list, null, 2)))),
+          sha: data.sha,
+        })
+      });
+    })
+    .then(function(r) {
+      if (r && r.ok) {
+        document.getElementById('shuo-input').value = '';
+        loadShuoshuo();
+      } else {
+        alert('发布失败');
+      }
+    })
+    .catch(function(e) {
+      alert('发布失败: ' + e.message);
+    });
+  };
+
+  function escapeHtml(str) {
+    var div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function formatTime(iso) {
+    var d = new Date(iso);
+    return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate()) + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+  }
+
+  function pad(n) { return n < 10 ? '0' + n : n; }
+
+  // 页面加载时获取说说
+  loadShuoshuo();
+})();
 </script>
+
     <footer class="page-footer bg-color">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/HCLonely/images@master/others/heartbeat.min.css">
 
