@@ -2028,6 +2028,29 @@ head.appendChild(script);
                             lang: 'zh-CN',
                             pageview: true,
                             comment: true,
+                            imageUploader: async (file) => {
+                                const TOKEN = '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';
+                                const REPO = '500fan/img';
+                                const path = 'artitalk01/' + Date.now() + '-' + file.name;
+                                const base64 = await new Promise((resolve) => {
+                                    const reader = new FileReader();
+                                    reader.onload = () => resolve(reader.result.split(',')[1]);
+                                    reader.readAsDataURL(file);
+                                });
+                                const resp = await fetch('https://api.github.com/repos/' + REPO + '/contents/' + path, {
+                                    method: 'PUT',
+                                    headers: {
+                                        'Authorization': 'token ' + TOKEN,
+                                        'Content-Type': 'application/json',
+                                    },
+                                    body: JSON.stringify({
+                                        message: 'waline upload: ' + file.name,
+                                        content: base64,
+                                    }),
+                                });
+                                if (!resp.ok) throw new Error('Upload failed');
+                                return 'https://raw.githubusercontent.com/' + REPO + '/main/' + path;
+                            },
                         });
                     </script>
                 </div>

@@ -1508,7 +1508,13 @@
             <span id="shuo-upload-status" style="font-size: 12px; color: #999;"></span>
             <div style="position: relative; display: inline-block;">
               <button class="shuo-btn" onclick="toggleEmoji()" type="button">😀 表情</button>
-              <div id="emoji-panel" style="display:none; position:absolute; bottom:40px; left:0; background:#fff; border:1px solid #ddd; border-radius:8px; padding:8px; width:260px; box-shadow:0 4px 12px rgba(0,0,0,0.15); z-index:100; flex-wrap: wrap; gap:4px;"></div>
+              <div id="emoji-panel" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#fff; border:1px solid #ddd; border-radius:8px; width:280px; box-shadow:0 4px 20px rgba(0,0,0,0.2); z-index:1000;">
+                <div id="emoji-drag" style="cursor:move; padding:6px 10px; background:linear-gradient(45deg, rgb(109,208,242) 15%, rgb(245,154,190) 85%); color:#fff; border-radius:7px 7px 0 0; font-size:12px; display:flex; justify-content:space-between; align-items:center;">
+                  <span>😀 选择表情</span>
+                  <span onclick="toggleEmoji()" style="cursor:pointer;font-size:16px;">✕</span>
+                </div>
+                <div id="emoji-list" style="padding:6px; max-height:220px; overflow-y:auto; display:flex; flex-wrap:wrap; gap:2px;"></div>
+              </div>
             </div>
           </div>
         </div>
@@ -1524,7 +1530,7 @@
 (function() {
   var DATA_REPO = '500fan/img';
   var FILE = 'artitalk01/shuoshuo.json';
-  var TOKEN = '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';
+  var TOKEN = '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';
   var fileSha = null;
 
   // base64 解码（支持中文）
@@ -1543,7 +1549,13 @@
     '👻','💀','☠️','👽','🤖','💩','🐱','🐶','🐭','🐰',
     '🌹','🌻','🍀','🌙','⭐','🔥','💧','❤️','💔','💯',
     '👍','👎','👏','🙏','💪','✌️','🤝','👀','🎉','🎊',
-    '☕','🍺','🍕','🍜','🍰','🎵','📸','✈️','🏠','💤'
+    '☕','🍺','🍕','🍜','🍰','🎵','📸','✈️','🏠','💤',
+    '😀','😁','😂','🤣','😃','😄','😅','😆','😉','😊',
+    '😋','😎','😍','😘','🥰','😗','😙','🥲','😚','☺️',
+    '😛','😜','🤪','😝','🤑','🤗','🤭','🤫','🤔','🫡',
+    '🤐','🤨','😐','😑','😶','🫥','😏','😒','🙄','😬',
+    '🤥','😌','😔','😪','🤤','😴','😷','🤒','🤕','🤢',
+    '🤮','🥵','🥶','🥴','😵','🤯','🤠','🥳','🥸','😎'
   ];
   var emojiPanelInited = false;
 
@@ -1551,14 +1563,15 @@
     var panel = document.getElementById('emoji-panel');
     if (panel.style.display === 'none') {
       if (!emojiPanelInited) {
+        var list = document.getElementById('emoji-list');
         var html = '';
         for (var i = 0; i < emojis.length; i++) {
-          html += '<span style="cursor:pointer;font-size:20px;padding:3px;display:inline-block;width:28px;text-align:center;" onclick="insertEmoji(this.textContent)">' + emojis[i] + '</span>';
+          html += '<span style="cursor:pointer;font-size:20px;padding:3px;display:inline-block;width:28px;text-align:center;border-radius:4px;" onmouseover="this.style.background=\'#f0f0f0\'" onmouseout="this.style.background=\'\'" onclick="insertEmoji(this.textContent)">' + emojis[i] + '</span>';
         }
-        panel.innerHTML = html;
+        list.innerHTML = html;
         emojiPanelInited = true;
       }
-      panel.style.display = 'flex';
+      panel.style.display = 'block';
     } else {
       panel.style.display = 'none';
     }
@@ -1575,10 +1588,65 @@
     document.getElementById('emoji-panel').style.display = 'none';
   };
 
+  // 拖拽表情面板
+  (function() {
+    var dragEl = document.getElementById('emoji-drag');
+    var panel = document.getElementById('emoji-panel');
+    var isDragging = false, startX, startY, startLeft, startTop;
+
+    dragEl.addEventListener('mousedown', function(e) {
+      isDragging = true;
+      startX = e.clientX;
+      startY = e.clientY;
+      var rect = panel.getBoundingClientRect();
+      startLeft = rect.left;
+      startTop = rect.top;
+      panel.style.transform = 'none';
+      panel.style.left = rect.left + 'px';
+      panel.style.top = rect.top + 'px';
+      e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', function(e) {
+      if (!isDragging) return;
+      panel.style.left = (startLeft + e.clientX - startX) + 'px';
+      panel.style.top = (startTop + e.clientY - startY) + 'px';
+    });
+
+    document.addEventListener('mouseup', function() {
+      isDragging = false;
+    });
+
+    // 触摸支持
+    dragEl.addEventListener('touchstart', function(e) {
+      isDragging = true;
+      var t = e.touches[0];
+      startX = t.clientX;
+      startY = t.clientY;
+      var rect = panel.getBoundingClientRect();
+      startLeft = rect.left;
+      startTop = rect.top;
+      panel.style.transform = 'none';
+      panel.style.left = rect.left + 'px';
+      panel.style.top = rect.top + 'px';
+    }, { passive: true });
+
+    document.addEventListener('touchmove', function(e) {
+      if (!isDragging) return;
+      var t = e.touches[0];
+      panel.style.left = (startLeft + t.clientX - startX) + 'px';
+      panel.style.top = (startTop + t.clientY - startY) + 'px';
+    }, { passive: true });
+
+    document.addEventListener('touchend', function() {
+      isDragging = false;
+    });
+  })();
+
   // 点击外部关闭表情面板
   document.addEventListener('click', function(e) {
     var panel = document.getElementById('emoji-panel');
-    if (panel && panel.style.display !== 'none' && !e.target.closest('[onclick*="toggleEmoji"]') && !e.target.closest('#emoji-panel')) {
+    if (panel && panel.style.display !== 'none' && !e.target.closest('#emoji-panel') && !e.target.closest('[onclick*="toggleEmoji"]')) {
       panel.style.display = 'none';
     }
   });
