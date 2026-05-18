@@ -2294,58 +2294,32 @@ head.appendChild(script);
 <script type="module">
     import { init } from 'https://unpkg.com/@waline/client@v3/dist/waline.js';
 
-    // GitHub 图床上传函数
-    async function githubImageUpload(file) {
-        const token = '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';
-        const repo = '500fan/waline-render';
-        const date = new Date();
-        const path = 'images/' + date.getFullYear() + '/' + String(date.getMonth()+1).padStart(2,'0') + '/' + Date.now() + '-' + file.name;
+    const serverURL = 'https://waline-render-4h1r.onrender.com';
 
-        console.log('开始上传图片到 GitHub:', path);
+    // 图片上传函数 - 通过服务器端存储到 GitHub JSON
+    async function imageUploader(file) {
+        const formData = new FormData();
+        formData.append('file', file);
 
-        // 读取文件为 base64
-        const base64 = await new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = () => {
-                // 去掉 data:xxx;base64, 前缀
-                const base64 = reader.result.split(',')[1];
-                resolve(base64);
-            };
-            reader.onerror = reject;
-            reader.readAsDataURL(file);
+        const resp = await fetch(serverURL + '/api/upload', {
+            method: 'POST',
+            body: formData,
         });
+        const result = await resp.json();
 
-        const resp = await fetch('https://api.github.com/repos/' + repo + '/contents/' + path, {
-            method: 'PUT',
-            headers: {
-                'Authorization': 'token ' + token,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                message: 'upload image: ' + file.name,
-                content: base64,
-            }),
-        });
-
-        const text = await resp.text();
-        console.log('GitHub API 响应:', resp.status, text.substring(0, 200));
-
-        if (!resp.ok) {
-            throw new Error('上传失败 (' + resp.status + ')');
+        if (result.errno === 0) {
+            return result.data;
         }
-
-        const url = 'https://raw.githubusercontent.com/' + repo + '/main/' + path;
-        console.log('图片上传成功:', url);
-        return url;
+        throw new Error(result.errmsg || 'Upload failed');
     }
 
     init({
         el: '#waline',
-        serverURL: 'https://waline-render-4h1r.onrender.com',
+        serverURL: serverURL,
         lang: 'en',
         pageview: true,
         comment: true,
-        imageUploader: githubImageUpload,
+        imageUploader: imageUploader,
     });
 </script>
 

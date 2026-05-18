@@ -1518,7 +1518,9 @@
 
 <script>
 (function() {
-  var REPO = '500fan/waline-render';
+  var DATA_REPO = '500fan/waline-render';
+  var IMG_REPO = '500fan/img';
+  var IMG_DIR = 'artitalk01';
   var FILE = 'shuoshuo.json';
   var TOKEN = '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';
   var fileSha = null;
@@ -1533,12 +1535,12 @@
     status.textContent = '上传中...';
 
     var date = new Date();
-    var path = 'images/' + date.getFullYear() + '/' + String(date.getMonth()+1).padStart(2,'0') + '/' + Date.now() + '-' + file.name;
+    var path = IMG_DIR + '/' + Date.now() + '-' + file.name;
 
     var reader = new FileReader();
     reader.onload = function() {
       var base64 = reader.result.split(',')[1];
-      fetch('https://api.github.com/repos/' + REPO + '/contents/' + path, {
+      fetch('https://api.github.com/repos/' + IMG_REPO + '/contents/' + path, {
         method: 'PUT',
         headers: {
           'Authorization': 'token ' + TOKEN,
@@ -1552,7 +1554,7 @@
       .then(function(r) { return r.json().then(function(d) { return {ok: r.ok, data: d}; }); })
       .then(function(result) {
         if (result.ok) {
-          var url = 'https://raw.githubusercontent.com/' + REPO + '/main/' + path;
+          var url = 'https://raw.githubusercontent.com/' + IMG_REPO + '/main/' + path;
           var textarea = document.getElementById('shuo-input');
           textarea.value += '\n![](' + url + ')';
           status.textContent = '上传成功';
@@ -1570,7 +1572,7 @@
 
   // 加载说说
   function loadShuoshuo() {
-    fetch('https://api.github.com/repos/' + REPO + '/contents/' + FILE, {
+    fetch('https://api.github.com/repos/' + DATA_REPO + '/contents/' + FILE, {
       headers: { 'Accept': 'application/vnd.github.v3+json' }
     })
     .then(function(r) { return r.json(); })
@@ -1613,7 +1615,7 @@
     if (!TOKEN) { alert('未配置 GitHub Token'); return; }
 
     // 先获取当前文件
-    fetch('https://api.github.com/repos/' + REPO + '/contents/' + FILE, {
+    fetch('https://api.github.com/repos/' + DATA_REPO + '/contents/' + FILE, {
       headers: { 'Accept': 'application/vnd.github.v3+json' }
     })
     .then(function(r) { return r.json(); })
@@ -1627,7 +1629,7 @@
         device: navigator.userAgent.match(/Mobile/) ? '📱 Mobile' : '💻 PC'
       });
 
-      return fetch('https://api.github.com/repos/' + REPO + '/contents/' + FILE, {
+      return fetch('https://api.github.com/repos/' + DATA_REPO + '/contents/' + FILE, {
         method: 'PUT',
         headers: {
           'Authorization': 'token ' + TOKEN,
