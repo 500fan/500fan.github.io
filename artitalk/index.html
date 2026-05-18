@@ -1499,13 +1499,17 @@
         <!-- 发布区域 -->
         <div style="margin: 16px 0; padding: 0 16px;">
           <textarea id="shuo-input" class="shuo-input" placeholder="说点什么吧..."></textarea>
-          <div style="margin-top: 8px; display: flex; align-items: center; gap: 12px;">
+          <div style="margin-top: 8px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
             <button class="shuo-btn" onclick="postShuo()">发布</button>
             <label class="shuo-btn" style="cursor: pointer; display: inline-block;">
               📷 图片
               <input type="file" id="shuo-image" accept="image/*" style="display: none;" onchange="uploadShuoImage(this)">
             </label>
             <span id="shuo-upload-status" style="font-size: 12px; color: #999;"></span>
+            <div style="position: relative; display: inline-block;">
+              <button class="shuo-btn" onclick="toggleEmoji()" type="button">😀 表情</button>
+              <div id="emoji-panel" style="display:none; position:absolute; bottom:40px; left:0; background:#fff; border:1px solid #ddd; border-radius:8px; padding:8px; width:260px; box-shadow:0 4px 12px rgba(0,0,0,0.15); z-index:100; flex-wrap: wrap; gap:4px;"></div>
+            </div>
           </div>
         </div>
 
@@ -1518,12 +1522,66 @@
 
 <script>
 (function() {
-  var DATA_REPO = '500fan/waline-render';
-  var IMG_REPO = '500fan/img';
-  var IMG_DIR = 'artitalk01';
-  var FILE = 'shuoshuo.json';
-  var TOKEN = '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';
+  var DATA_REPO = '500fan/img';
+  var FILE = 'artitalk01/shuoshuo.json';
+  var TOKEN = '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';
   var fileSha = null;
+
+  // base64 解码（支持中文）
+  function b64Decode(str) {
+    return decodeURIComponent(escape(atob(str)));
+  }
+  // base64 编码（支持中文）
+  function b64Encode(str) {
+    return btoa(unescape(encodeURIComponent(str)));
+  }
+
+  // 表情选择器
+  var emojis = [
+    '😀','😂','🤣','😊','😍','🥰','😘','😜','🤔','😢',
+    '😭','😡','🥺','😱','🤩','😎','🤗','😴','🤮','🤡',
+    '👻','💀','☠️','👽','🤖','💩','🐱','🐶','🐭','🐰',
+    '🌹','🌻','🍀','🌙','⭐','🔥','💧','❤️','💔','💯',
+    '👍','👎','👏','🙏','💪','✌️','🤝','👀','🎉','🎊',
+    '☕','🍺','🍕','🍜','🍰','🎵','📸','✈️','🏠','💤'
+  ];
+  var emojiPanelInited = false;
+
+  window.toggleEmoji = function() {
+    var panel = document.getElementById('emoji-panel');
+    if (panel.style.display === 'none') {
+      if (!emojiPanelInited) {
+        var html = '';
+        for (var i = 0; i < emojis.length; i++) {
+          html += '<span style="cursor:pointer;font-size:20px;padding:3px;display:inline-block;width:28px;text-align:center;" onclick="insertEmoji(this.textContent)">' + emojis[i] + '</span>';
+        }
+        panel.innerHTML = html;
+        emojiPanelInited = true;
+      }
+      panel.style.display = 'flex';
+    } else {
+      panel.style.display = 'none';
+    }
+  };
+
+  window.insertEmoji = function(emoji) {
+    var textarea = document.getElementById('shuo-input');
+    var start = textarea.selectionStart;
+    var end = textarea.selectionEnd;
+    var text = textarea.value;
+    textarea.value = text.substring(0, start) + emoji + text.substring(end);
+    textarea.selectionStart = textarea.selectionEnd = start + emoji.length;
+    textarea.focus();
+    document.getElementById('emoji-panel').style.display = 'none';
+  };
+
+  // 点击外部关闭表情面板
+  document.addEventListener('click', function(e) {
+    var panel = document.getElementById('emoji-panel');
+    if (panel && panel.style.display !== 'none' && !e.target.closest('[onclick*="toggleEmoji"]') && !e.target.closest('#emoji-panel')) {
+      panel.style.display = 'none';
+    }
+  });
 
   // 上传图片到 GitHub 图床
   window.uploadShuoImage = function(input) {
@@ -1535,12 +1593,12 @@
     status.textContent = '上传中...';
 
     var date = new Date();
-    var path = IMG_DIR + '/' + Date.now() + '-' + file.name;
+    var path = 'artitalk01/' + Date.now() + '-' + file.name;
 
     var reader = new FileReader();
     reader.onload = function() {
       var base64 = reader.result.split(',')[1];
-      fetch('https://api.github.com/repos/' + IMG_REPO + '/contents/' + path, {
+      fetch('https://api.github.com/repos/' + DATA_REPO + '/contents/' + path, {
         method: 'PUT',
         headers: {
           'Authorization': 'token ' + TOKEN,
@@ -1554,7 +1612,7 @@
       .then(function(r) { return r.json().then(function(d) { return {ok: r.ok, data: d}; }); })
       .then(function(result) {
         if (result.ok) {
-          var url = 'https://raw.githubusercontent.com/' + IMG_REPO + '/main/' + path;
+          var url = 'https://raw.githubusercontent.com/' + DATA_REPO + '/main/' + path;
           var textarea = document.getElementById('shuo-input');
           textarea.value += '\n![](' + url + ')';
           status.textContent = '上传成功';
@@ -1578,12 +1636,20 @@
     .then(function(r) { return r.json(); })
     .then(function(data) {
       fileSha = data.sha;
-      var content = atob(data.content.replace(/\n/g, ''));
+      var content = b64Decode(data.content.replace(/\n/g, ''));
       var list = JSON.parse(content);
       renderList(list);
     })
     .catch(function() {
       document.getElementById('shuo-list').innerHTML = '<div class="shuo-empty">暂无说说</div>';
+    });
+  }
+
+  // 解析 markdown 图片语法
+  function renderContent(text) {
+    var safe = escapeHtml(text);
+    return safe.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, function(match, alt, url) {
+      return '<img src="' + url + '" alt="' + alt + '" style="max-width:100%;border-radius:8px;margin-top:8px;" />';
     });
   }
 
@@ -1598,7 +1664,7 @@
       for (var i = 0; i < list.length; i++) {
         var item = list[i];
         html += '<div class="shuo-item">';
-        html += '<div class="shuo-content">' + escapeHtml(item.content) + '</div>';
+        html += '<div class="shuo-content">' + renderContent(item.content) + '</div>';
         html += '<div class="shuo-time">' + formatTime(item.time);
         if (item.device) html += ' · ' + escapeHtml(item.device);
         if (item.mood) html += ' · ' + escapeHtml(item.mood);
@@ -1614,40 +1680,65 @@
     if (!content) { alert('请输入内容'); return; }
     if (!TOKEN) { alert('未配置 GitHub Token'); return; }
 
-    // 先获取当前文件
-    fetch('https://api.github.com/repos/' + DATA_REPO + '/contents/' + FILE, {
-      headers: { 'Accept': 'application/vnd.github.v3+json' }
-    })
-    .then(function(r) { return r.json(); })
-    .then(function(data) {
-      var list = JSON.parse(atob(data.content.replace(/\n/g, '')));
-      list.push({
-        id: Date.now().toString(36),
-        content: content,
-        time: new Date().toISOString(),
-        mood: '',
-        device: navigator.userAgent.match(/Mobile/) ? '📱 Mobile' : '💻 PC'
-      });
+    var newItem = {
+      id: Date.now().toString(36),
+      content: content,
+      time: new Date().toISOString(),
+      mood: '',
+      device: navigator.userAgent.match(/Mobile/) ? '📱 Mobile' : '💻 PC'
+    };
 
-      return fetch('https://api.github.com/repos/' + DATA_REPO + '/contents/' + FILE, {
-        method: 'PUT',
-        headers: {
-          'Authorization': 'token ' + TOKEN,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          message: 'shuoshuo: ' + content.substring(0, 30),
-          content: btoa(unescape(encodeURIComponent(JSON.stringify(list, null, 2)))),
-          sha: data.sha,
-        })
+    // 先获取当前文件，不存在则自动创建
+    fetch('https://api.github.com/repos/' + DATA_REPO + '/contents/' + FILE, {
+      headers: {
+        'Accept': 'application/vnd.github.v3+json',
+        'Authorization': 'token ' + TOKEN,
+      }
+    })
+    .then(function(r) {
+      if (r.status === 404) {
+        // 文件不存在，创建新文件
+        var list = [newItem];
+        return fetch('https://api.github.com/repos/' + DATA_REPO + '/contents/' + FILE, {
+          method: 'PUT',
+          headers: {
+            'Authorization': 'token ' + TOKEN,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            message: 'init shuoshuo: ' + content.substring(0, 30),
+            content: b64Encode(JSON.stringify(list, null, 2)),
+          })
+        });
+      }
+      if (!r.ok) throw new Error('读取失败: HTTP ' + r.status);
+      return r.json().then(function(data) {
+        var list = JSON.parse(b64Decode(data.content.replace(/\n/g, '')));
+        list.push(newItem);
+        return fetch('https://api.github.com/repos/' + DATA_REPO + '/contents/' + FILE, {
+          method: 'PUT',
+          headers: {
+            'Authorization': 'token ' + TOKEN,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            message: 'shuoshuo: ' + content.substring(0, 30),
+            content: b64Encode(JSON.stringify(list, null, 2)),
+            sha: data.sha,
+          })
+        });
       });
     })
     .then(function(r) {
       if (r && r.ok) {
         document.getElementById('shuo-input').value = '';
         loadShuoshuo();
-      } else {
-        alert('发布失败');
+      } else if (r) {
+        r.json().then(function(d) {
+          alert('发布失败: ' + (d.message || 'HTTP ' + r.status));
+        }).catch(function() {
+          alert('发布失败: HTTP ' + r.status);
+        });
       }
     })
     .catch(function(e) {
