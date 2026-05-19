@@ -2205,21 +2205,35 @@ head.appendChild(script);
     import { init } from 'https://unpkg.com/@waline/client@v3/dist/waline.js';
 
     const serverURL = 'https://waline-render-4h1r.onrender.com';
+    const cloudinaryCloudName = 'dwevyln8l';
+    const cloudinaryUploadPreset = 'waline01';
 
-    // 图片上传函数 - 通过服务器端存储到 GitHub JSON
+    // 图片上传:
+    // - 优先使用 Cloudinary 直连上传 (前端到 Cloudinary,不经过自己后端)
+    // - 未配置 Cloudinary 时回退到 serverURL + /api/upload (GitHub 仓库存储)
     async function imageUploader(file) {
+        if (cloudinaryCloudName && cloudinaryUploadPreset) {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_preset', cloudinaryUploadPreset);
+
+            const resp = await fetch(
+                `https://api.cloudinary.com/v1_1/${cloudinaryCloudName}/image/upload`,
+                { method: 'POST', body: formData }
+            );
+            const result = await resp.json();
+            if (result.secure_url) return result.secure_url;
+            throw new Error((result.error && result.error.message) || 'Cloudinary upload failed');
+        }
+
         const formData = new FormData();
         formData.append('file', file);
-
         const resp = await fetch(serverURL + '/api/upload', {
             method: 'POST',
             body: formData,
         });
         const result = await resp.json();
-
-        if (result.errno === 0) {
-            return result.data;
-        }
+        if (result.errno === 0) return result.data;
         throw new Error(result.errmsg || 'Upload failed');
     }
 

@@ -2029,27 +2029,22 @@ head.appendChild(script);
                             pageview: true,
                             comment: true,
                             imageUploader: async (file) => {
-                                const TOKEN = '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';
-                                const REPO = '500fan/img';
-                                const path = 'artitalk01/' + Date.now() + '-' + file.name;
-                                const base64 = await new Promise((resolve) => {
-                                    const reader = new FileReader();
-                                    reader.onload = () => resolve(reader.result.split(',')[1]);
-                                    reader.readAsDataURL(file);
+                                const CLOUD = 'dwevyln8l';
+                                const PRESET = 'waline01';
+                                if (!CLOUD || !PRESET) {
+                                    throw new Error('未配置 Cloudinary，请在 _config.yml 的 waline.cloudinary 里设置 cloudName 和 uploadPreset');
+                                }
+                                const formData = new FormData();
+                                formData.append('file', file);
+                                formData.append('upload_preset', PRESET);
+                                const resp = await fetch('https://api.cloudinary.com/v1_1/' + CLOUD + '/image/upload', {
+                                    method: 'POST',
+                                    body: formData,
                                 });
-                                const resp = await fetch('https://api.github.com/repos/' + REPO + '/contents/' + path, {
-                                    method: 'PUT',
-                                    headers: {
-                                        'Authorization': 'token ' + TOKEN,
-                                        'Content-Type': 'application/json',
-                                    },
-                                    body: JSON.stringify({
-                                        message: 'waline upload: ' + file.name,
-                                        content: base64,
-                                    }),
-                                });
-                                if (!resp.ok) throw new Error('Upload failed');
-                                return 'https://raw.githubusercontent.com/' + REPO + '/main/' + path;
+                                if (!resp.ok) throw new Error('Upload failed: ' + resp.status);
+                                const data = await resp.json();
+                                if (!data.secure_url) throw new Error('Upload failed: ' + (data.error && data.error.message || 'unknown'));
+                                return data.secure_url;
                             },
                         });
                     </script>

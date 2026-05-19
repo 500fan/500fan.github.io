@@ -2435,21 +2435,35 @@ head.appendChild(script);
     import { init } from 'https://unpkg.com/@waline/client@v3/dist/waline.js';
 
     const serverURL = 'https://waline-render-4h1r.onrender.com';
+    const cloudinaryCloudName = 'dwevyln8l';
+    const cloudinaryUploadPreset = 'waline01';
 
-    // 图片上传函数 - 通过服务器端存储到 GitHub JSON
+    // 图片上传:
+    // - 优先使用 Cloudinary 直连上传 (前端到 Cloudinary,不经过自己后端)
+    // - 未配置 Cloudinary 时回退到 serverURL + /api/upload (GitHub 仓库存储)
     async function imageUploader(file) {
+        if (cloudinaryCloudName && cloudinaryUploadPreset) {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_preset', cloudinaryUploadPreset);
+
+            const resp = await fetch(
+                `https://api.cloudinary.com/v1_1/${cloudinaryCloudName}/image/upload`,
+                { method: 'POST', body: formData }
+            );
+            const result = await resp.json();
+            if (result.secure_url) return result.secure_url;
+            throw new Error((result.error && result.error.message) || 'Cloudinary upload failed');
+        }
+
         const formData = new FormData();
         formData.append('file', file);
-
         const resp = await fetch(serverURL + '/api/upload', {
             method: 'POST',
             body: formData,
         });
         const result = await resp.json();
-
-        if (result.errno === 0) {
-            return result.data;
-        }
+        if (result.errno === 0) return result.data;
         throw new Error(result.errmsg || 'Upload failed');
     }
 
@@ -2539,13 +2553,13 @@ head.appendChild(script);
                 Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2026/05/02/Hexo%E5%8D%9A%E5%AE%A2%E4%BC%98%E5%8C%96%E6%95%99%E7%A8%8B%EF%BC%9A%E5%9B%BE%E5%BA%93%E9%98%B2%E7%9B%97%E9%93%BE%E3%80%81%E5%9B%9E%E5%88%B0%E9%A1%B6%E9%83%A8%E3%80%81%E6%82%AC%E6%8C%82%E5%96%B5%E5%8A%9F%E8%83%BD%E4%BF%AE%E5%A4%8D/">
+                <a href="/2026/05/02/Live2D%E7%9C%8B%E6%9D%BF%E5%A8%98%E9%9B%86%E6%88%90%E6%95%99%E7%A8%8B/">
                     <div class="card-image">
                         
                         
-                        <img src="https://cdn.jsdelivr.net/gh/500fan/500fan.github.io@1.33//medias/featureimages/22.jpg" class="responsive-img" alt="Hexo博客优化教程：图库防盗链、回到顶部、悬挂喵功能修复">
+                        <img src="https://cdn.jsdelivr.net/gh/500fan/500fan.github.io@1.33//medias/featureimages/6.jpg" class="responsive-img" alt="Live2D看板娘集成教程">
                         
-                        <span class="card-title">Hexo博客优化教程：图库防盗链、回到顶部、悬挂喵功能修复</span>
+                        <span class="card-title">Live2D看板娘集成教程</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -2573,32 +2587,20 @@ head.appendChild(script);
                 
                 <div class="card-action article-tags">
                     
+                    <a href="/tags/%E5%89%8D%E7%AB%AF/">
+                        <span class="chip bg-color">前端</span>
+                    </a>
+                    
                     <a href="/tags/Hexo/">
                         <span class="chip bg-color">Hexo</span>
                     </a>
                     
-                    <a href="/tags/JavaScript/">
-                        <span class="chip bg-color">JavaScript</span>
+                    <a href="/tags/Live2D/">
+                        <span class="chip bg-color">Live2D</span>
                     </a>
                     
-                    <a href="/tags/Gitee/">
-                        <span class="chip bg-color">Gitee</span>
-                    </a>
-                    
-                    <a href="/tags/%E9%98%B2%E7%9B%97%E9%93%BE/">
-                        <span class="chip bg-color">防盗链</span>
-                    </a>
-                    
-                    <a href="/tags/%E5%9B%BE%E5%BA%93/">
-                        <span class="chip bg-color">图库</span>
-                    </a>
-                    
-                    <a href="/tags/%E5%9B%9E%E5%88%B0%E9%A1%B6%E9%83%A8/">
-                        <span class="chip bg-color">回到顶部</span>
-                    </a>
-                    
-                    <a href="/tags/CSS/">
-                        <span class="chip bg-color">CSS</span>
+                    <a href="/tags/%E7%9C%8B%E6%9D%BF%E5%A8%98/">
+                        <span class="chip bg-color">看板娘</span>
                     </a>
                     
                 </div>

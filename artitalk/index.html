@@ -1498,6 +1498,7 @@
 
         <!-- 发布区域 -->
         <div style="margin: 16px 0; padding: 0 16px;">
+          <input id="shuo-nick" class="shuo-input" placeholder="昵称（可选，留空则随机匿名）" style="margin-bottom: 8px; min-height: auto; padding: 8px 12px;" />
           <textarea id="shuo-input" class="shuo-input" placeholder="说点什么吧..."></textarea>
           <div style="margin-top: 8px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
             <button class="shuo-btn" onclick="postShuo()">发布</button>
@@ -1521,6 +1522,19 @@
 
         <!-- 说说列表 -->
         <div id="shuo-list"></div>
+
+        
+        <!-- 隐藏的管理入口（hover 可见，点击进 Waline 管理后台） -->
+        <div style="text-align: center; margin-top: 40px; padding: 8px 0;">
+          <a href="https://waline-render-4h1r.onrender.com/ui"
+             target="_blank"
+             rel="noopener"
+             title="管理"
+             style="color: #999; font-size: 10px; text-decoration: none; opacity: 0.15; transition: opacity 0.3s;"
+             onmouseover="this.style.opacity=0.7"
+             onmouseout="this.style.opacity=0.15">·</a>
+        </div>
+        
       </div>
     </div>
   </div>
@@ -1528,19 +1542,10 @@
 
 <script>
 (function() {
-  var DATA_REPO = '500fan/img';
-  var FILE = 'artitalk01/shuoshuo.json';
-  var TOKEN = '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';
-  var fileSha = null;
-
-  // base64 解码（支持中文）
-  function b64Decode(str) {
-    return decodeURIComponent(escape(atob(str)));
-  }
-  // base64 编码（支持中文）
-  function b64Encode(str) {
-    return btoa(unescape(encodeURIComponent(str)));
-  }
+  var WALINE_URL = 'https://waline-render-4h1r.onrender.com';
+  var SHUO_PATH = '/artitalk';
+  var CLOUDINARY_CLOUD = 'dwevyln8l';
+  var CLOUDINARY_PRESET = 'waline01';
 
   // 表情选择器
   var emojis = [
@@ -1651,91 +1656,74 @@
     }
   });
 
-  // 上传图片到 GitHub 图床
+  // 上传图片到 Cloudinary（unsigned upload）
   window.uploadShuoImage = function(input) {
     var file = input.files[0];
     if (!file) return;
-    if (!TOKEN) { alert('未配置 GitHub Token'); return; }
+    if (!CLOUDINARY_CLOUD || !CLOUDINARY_PRESET) {
+      alert('未配置 Cloudinary，请在 _config.yml 的 waline.cloudinary 里填写 cloudName 和 uploadPreset');
+      return;
+    }
 
     var status = document.getElementById('shuo-upload-status');
     status.textContent = '上传中...';
 
-    var date = new Date();
-    var path = 'artitalk01/' + Date.now() + '-' + file.name;
+    var formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', CLOUDINARY_PRESET);
 
-    var reader = new FileReader();
-    reader.onload = function() {
-      var base64 = reader.result.split(',')[1];
-      fetch('https://api.github.com/repos/' + DATA_REPO + '/contents/' + path, {
-        method: 'PUT',
-        headers: {
-          'Authorization': 'token ' + TOKEN,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          message: 'upload shuoshuo image: ' + file.name,
-          content: base64,
-        }),
-      })
-      .then(function(r) { return r.json().then(function(d) { return {ok: r.ok, data: d}; }); })
-      .then(function(result) {
-        if (result.ok) {
-          var url = 'https://raw.githubusercontent.com/' + DATA_REPO + '/main/' + path;
-          var textarea = document.getElementById('shuo-input');
-          textarea.value += '\n![](' + url + ')';
-          status.textContent = '上传成功';
-        } else {
-          status.textContent = '上传失败: ' + (result.data.message || '');
-        }
-      })
-      .catch(function(e) {
-        status.textContent = '上传失败: ' + e.message;
-      });
-    };
-    reader.readAsDataURL(file);
+    fetch('https://api.cloudinary.com/v1_1/' + CLOUDINARY_CLOUD + '/image/upload', {
+      method: 'POST',
+      body: formData
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.secure_url) {
+        var textarea = document.getElementById('shuo-input');
+        textarea.value += (textarea.value ? '\n' : '') + '![](' + data.secure_url + ')';
+        status.textContent = '上传成功';
+      } else {
+        status.textContent = '上传失败: ' + ((data.error && data.error.message) || JSON.stringify(data));
+      }
+    })
+    .catch(function(e) {
+      status.textContent = '上传失败: ' + e.message;
+    });
     input.value = '';
   };
 
   // 加载说说
   function loadShuoshuo() {
-    fetch('https://api.github.com/repos/' + DATA_REPO + '/contents/' + FILE, {
-      headers: { 'Accept': 'application/vnd.github.v3+json' }
-    })
-    .then(function(r) { return r.json(); })
-    .then(function(data) {
-      fileSha = data.sha;
-      var content = b64Decode(data.content.replace(/\n/g, ''));
-      var list = JSON.parse(content);
-      renderList(list);
-    })
-    .catch(function() {
-      document.getElementById('shuo-list').innerHTML = '<div class="shuo-empty">暂无说说</div>';
-    });
+    if (!WALINE_URL) {
+      document.getElementById('shuo-list').innerHTML = '<div class="shuo-empty">未配置 Waline serverURL</div>';
+      return;
+    }
+    var url = WALINE_URL + '/api/comment?path=' + encodeURIComponent(SHUO_PATH) + '&page=1&pageSize=100';
+    fetch(url, { credentials: 'omit' })
+      .then(function(r) { return r.json(); })
+      .then(function(res) {
+        var list = (res && res.data) || [];
+        renderList(list);
+      })
+      .catch(function(e) {
+        document.getElementById('shuo-list').innerHTML = '<div class="shuo-empty">加载失败: ' + escapeHtml(e.message) + '</div>';
+      });
   }
 
-  // 解析 markdown 图片语法
-  function renderContent(text) {
-    var safe = escapeHtml(text);
-    return safe.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, function(match, alt, url) {
-      return '<img src="' + url + '" alt="' + alt + '" style="max-width:100%;border-radius:8px;margin-top:8px;" />';
-    });
-  }
-
-  // 渲染列表
+  // 渲染列表（Waline 已经把 markdown 渲染成 HTML 在 comment 字段，直接用即可）
   function renderList(list) {
     var html = '';
     if (list.length === 0) {
-      html = '<div class="shuo-empty">暂无说说</div>';
+      html = '<div class="shuo-empty">暂无说说，快来发布第一条吧~</div>';
     } else {
-      // 按时间倒序
-      list.sort(function(a, b) { return new Date(b.time) - new Date(a.time); });
       for (var i = 0; i < list.length; i++) {
         var item = list[i];
         html += '<div class="shuo-item">';
-        html += '<div class="shuo-content">' + renderContent(item.content) + '</div>';
+        html += '<div class="shuo-content">' + (item.comment || '') + '</div>';
         html += '<div class="shuo-time">' + formatTime(item.time);
-        if (item.device) html += ' · ' + escapeHtml(item.device);
-        if (item.mood) html += ' · ' + escapeHtml(item.mood);
+        html += ' · ' + escapeHtml(item.nick || '匿名');
+        if (item.os) html += ' · ' + escapeHtml(item.os);
+        if (item.browser) html += ' · ' + escapeHtml(item.browser);
         html += '</div></div>';
       }
     }
@@ -1746,68 +1734,34 @@
   window.postShuo = function() {
     var content = document.getElementById('shuo-input').value.trim();
     if (!content) { alert('请输入内容'); return; }
-    if (!TOKEN) { alert('未配置 GitHub Token'); return; }
+    if (!WALINE_URL) { alert('未配置 Waline serverURL'); return; }
 
-    var newItem = {
-      id: Date.now().toString(36),
-      content: content,
-      time: new Date().toISOString(),
-      mood: '',
-      device: navigator.userAgent.match(/Mobile/) ? '📱 Mobile' : '💻 PC'
+    var nickInput = (document.getElementById('shuo-nick').value || '').trim();
+    var nick = nickInput || ('匿名' + Math.floor(Math.random() * 9000 + 1000));
+
+    var body = {
+      comment: content,
+      nick: nick,
+      mail: 'anonymous-' + Date.now() + '@artitalk.local',
+      link: '',
+      ua: navigator.userAgent,
+      url: SHUO_PATH
     };
 
-    // 先获取当前文件，不存在则自动创建
-    fetch('https://api.github.com/repos/' + DATA_REPO + '/contents/' + FILE, {
-      headers: {
-        'Accept': 'application/vnd.github.v3+json',
-        'Authorization': 'token ' + TOKEN,
-      }
+    fetch(WALINE_URL + '/api/comment', {
+      method: 'POST',
+      credentials: 'omit',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
     })
-    .then(function(r) {
-      if (r.status === 404) {
-        // 文件不存在，创建新文件
-        var list = [newItem];
-        return fetch('https://api.github.com/repos/' + DATA_REPO + '/contents/' + FILE, {
-          method: 'PUT',
-          headers: {
-            'Authorization': 'token ' + TOKEN,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            message: 'init shuoshuo: ' + content.substring(0, 30),
-            content: b64Encode(JSON.stringify(list, null, 2)),
-          })
-        });
+    .then(function(r) { return r.json(); })
+    .then(function(res) {
+      if (res && res.errno) {
+        alert('发布失败: ' + (res.errmsg || JSON.stringify(res)));
+        return;
       }
-      if (!r.ok) throw new Error('读取失败: HTTP ' + r.status);
-      return r.json().then(function(data) {
-        var list = JSON.parse(b64Decode(data.content.replace(/\n/g, '')));
-        list.push(newItem);
-        return fetch('https://api.github.com/repos/' + DATA_REPO + '/contents/' + FILE, {
-          method: 'PUT',
-          headers: {
-            'Authorization': 'token ' + TOKEN,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            message: 'shuoshuo: ' + content.substring(0, 30),
-            content: b64Encode(JSON.stringify(list, null, 2)),
-            sha: data.sha,
-          })
-        });
-      });
-    })
-    .then(function(r) {
-      if (r && r.ok) {
-        document.getElementById('shuo-input').value = '';
-        loadShuoshuo();
-      } else if (r) {
-        r.json().then(function(d) {
-          alert('发布失败: ' + (d.message || 'HTTP ' + r.status));
-        }).catch(function() {
-          alert('发布失败: HTTP ' + r.status);
-        });
-      }
+      document.getElementById('shuo-input').value = '';
+      loadShuoshuo();
     })
     .catch(function(e) {
       alert('发布失败: ' + e.message);
@@ -1820,8 +1774,9 @@
     return div.innerHTML;
   }
 
-  function formatTime(iso) {
-    var d = new Date(iso);
+  function formatTime(t) {
+    var d = new Date(t);
+    if (isNaN(d.getTime())) return '';
     return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate()) + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
   }
 
