@@ -1702,7 +1702,8 @@
     fetch(url, { credentials: 'omit' })
       .then(function(r) { return r.json(); })
       .then(function(res) {
-        var list = (res && res.data) || [];
+        var data = res && res.data;
+        var list = Array.isArray(data) ? data : (data && data.data) || [];
         renderList(list);
       })
       .catch(function(e) {
