@@ -1479,6 +1479,73 @@
   font-size: 14px;
   line-height: 1.8;
   color: inherit;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.shuo-content p {
+  margin: 0 0 6px 0;
+}
+
+.shuo-content p:last-child {
+  margin-bottom: 0;
+}
+
+.shuo-content img {
+  display: block;
+  max-width: 100%;
+  max-height: 400px;
+  height: auto;
+  margin: 8px 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  cursor: zoom-in;
+  object-fit: contain;
+}
+
+.shuo-content a {
+  color: #6dd0f2;
+  text-decoration: none;
+  word-break: break-all;
+}
+
+.shuo-content a:hover {
+  text-decoration: underline;
+}
+
+.shuo-content code {
+  background: rgba(0, 0, 0, 0.06);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-family: Menlo, Monaco, Consolas, monospace;
+}
+
+.shuo-content pre {
+  background: rgba(0, 0, 0, 0.06);
+  padding: 12px;
+  border-radius: 6px;
+  overflow-x: auto;
+  margin: 8px 0;
+}
+
+.shuo-content pre code {
+  background: transparent;
+  padding: 0;
+}
+
+.shuo-content blockquote {
+  border-left: 3px solid rgb(245, 154, 190);
+  margin: 8px 0;
+  padding: 4px 12px;
+  color: #666;
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.shuo-content ul,
+.shuo-content ol {
+  margin: 6px 0;
+  padding-left: 24px;
 }
 
 .shuo-empty {
@@ -1729,6 +1796,26 @@
       }
     }
     document.getElementById('shuo-list').innerHTML = html;
+
+    // 给图片绑定点击放大
+    var imgs = document.querySelectorAll('#shuo-list .shuo-content img');
+    for (var k = 0; k < imgs.length; k++) {
+      imgs[k].addEventListener('click', function(e) {
+        showImagePreview(e.target.src);
+      });
+    }
+  }
+
+  // 图片预览（点击放大）
+  function showImagePreview(src) {
+    var mask = document.createElement('div');
+    mask.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:9999;display:flex;align-items:center;justify-content:center;cursor:zoom-out;padding:20px;';
+    var img = document.createElement('img');
+    img.src = src;
+    img.style.cssText = 'max-width:100%;max-height:100%;border-radius:6px;box-shadow:0 4px 20px rgba(0,0,0,0.5);';
+    mask.appendChild(img);
+    mask.addEventListener('click', function() { document.body.removeChild(mask); });
+    document.body.appendChild(mask);
   }
 
   // 发布说说
