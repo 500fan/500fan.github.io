@@ -1,0 +1,522 @@
+/* ============================================
+   Twikoo 赛博朋克/科技风格 - 浅色主题
+   ============================================ */
+
+/* CSS 变量定义 */
+:root {
+    --twikoo-bg-primary: #f8f9fa;
+    --twikoo-bg-card: rgba(255, 255, 255, 0.85);
+    --twikoo-bg-glass: rgba(255, 255, 255, 0.6);
+    --twikoo-color-primary: #00d4ff;
+    --twikoo-color-secondary: #7c3aed;
+    --twikoo-color-accent: #00ff88;
+    --twikoo-color-text: #1a1a2e;
+    --twikoo-color-text-light: #6b7280;
+    --twikoo-color-border: rgba(0, 212, 255, 0.3);
+    --twikoo-gradient-main: linear-gradient(135deg, #00d4ff, #7c3aed);
+    --twikoo-gradient-accent: linear-gradient(135deg, #00ff88, #00d4ff);
+    --twikoo-shadow-neon: 0 0 20px rgba(0, 212, 255, 0.15), 0 0 40px rgba(124, 58, 237, 0.1);
+    --twikoo-shadow-card: 0 8px 32px rgba(0, 0, 0, 0.08);
+    --twikoo-border-radius: 16px;
+    --twikoo-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 主容器样式 */
+.twikoo-cyber-container {
+    position: relative;
+    margin: 2rem auto;
+    max-width: 800px;
+    padding: 0 1rem;
+}
+
+/* 背景装饰 */
+.twikoo-cyber-container::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    left: -50px;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    z-index: -1;
+    animation: cyberPulse 4s ease-in-out infinite;
+}
+
+.twikoo-cyber-container::after {
+    content: '';
+    position: absolute;
+    bottom: -30px;
+    right: -30px;
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle, rgba(124, 58, 237, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    z-index: -1;
+    animation: cyberPulse 4s ease-in-out infinite 2s;
+}
+
+@keyframes cyberPulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.2); opacity: 0.8; }
+}
+
+/* 卡片主体 */
+.twikoo-cyber-card {
+    background: var(--twikoo-bg-card);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: var(--twikoo-border-radius);
+    box-shadow: var(--twikoo-shadow-card);
+    overflow: visible;
+    position: relative;
+    border: 1px solid var(--twikoo-color-border);
+    transition: var(--twikoo-transition);
+}
+
+.twikoo-cyber-card:hover {
+    box-shadow: var(--twikoo-shadow-neon);
+    transform: translateY(-2px);
+}
+
+/* 渐变边框效果 */
+.twikoo-cyber-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--twikoo-gradient-main);
+    z-index: 1;
+}
+
+/* 卡片头部 */
+.twikoo-cyber-header {
+    padding: 1.5rem 2rem;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+}
+
+.twikoo-cyber-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    background: var(--twikoo-gradient-main);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    position: relative;
+}
+
+.twikoo-cyber-title i {
+    font-size: 1.3rem;
+    background: var(--twikoo-gradient-main);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* 科技线条装饰 */
+.twikoo-cyber-title::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 60px;
+    height: 2px;
+    background: var(--twikoo-gradient-accent);
+    border-radius: 1px;
+}
+
+/* 统计面板 */
+.twikoo-stats-panel {
+    display: flex;
+    gap: 1.5rem;
+    padding: 1rem 2rem;
+    background: var(--twikoo-bg-glass);
+    border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+}
+
+.twikoo-stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.twikoo-stat-number {
+    font-size: 1.5rem;
+    font-weight: 700;
+    background: var(--twikoo-gradient-main);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.twikoo-stat-label {
+    font-size: 0.75rem;
+    color: var(--twikoo-color-text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* 控制栏 */
+.twikoo-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 2rem;
+    flex-wrap: wrap;
+}
+
+.twikoo-search-box {
+    flex: 1;
+    min-width: 200px;
+    position: relative;
+}
+
+.twikoo-search-input {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 2.5rem;
+    border: 1px solid rgba(0, 212, 255, 0.2);
+    border-radius: 8px;
+    background: var(--twikoo-bg-glass);
+    color: var(--twikoo-color-text);
+    font-size: 0.9rem;
+    transition: var(--twikoo-transition);
+    outline: none;
+}
+
+.twikoo-search-input:focus {
+    border-color: var(--twikoo-color-primary);
+    box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+}
+
+.twikoo-search-icon {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--twikoo-color-text-light);
+}
+
+.twikoo-sort-select {
+    padding: 0.75rem 1rem;
+    border: 1px solid rgba(0, 212, 255, 0.2);
+    border-radius: 8px;
+    background: var(--twikoo-bg-glass);
+    color: var(--twikoo-color-text);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: var(--twikoo-transition);
+    outline: none;
+}
+
+.twikoo-sort-select:focus {
+    border-color: var(--twikoo-color-primary);
+    box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+}
+
+/* 评论区容器 */
+.twikoo-comments-wrapper {
+    padding: 1.5rem 2rem;
+    min-height: 300px;
+}
+
+/* 头像墙 */
+.twikoo-avatar-wall {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 1rem 2rem;
+    border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+}
+
+.twikoo-avatar-wall-title {
+    width: 100%;
+    font-size: 0.875rem;
+    color: var(--twikoo-color-text-light);
+    margin-bottom: 0.5rem;
+}
+
+.twikoo-avatar-item {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    background: var(--twikoo-gradient-main);
+    padding: 2px;
+    transition: var(--twikoo-transition);
+    cursor: pointer;
+    position: relative;
+}
+
+.twikoo-avatar-item:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+}
+
+.twikoo-avatar-item img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Twikoo 内部样式 - 仅修改文字颜色，不干预组件交互 */
+#tcomments {
+    color: var(--twikoo-color-text);
+}
+
+#tcomments p {
+    font-size: 0.95rem;
+    line-height: 1.7;
+}
+
+#tcomments a {
+    color: var(--twikoo-color-primary);
+    text-decoration: none;
+}
+
+#tcomments blockquote {
+    border-left: 4px solid var(--twikoo-color-primary);
+    background: rgba(0, 212, 255, 0.05);
+    border-radius: 0 8px 8px 0;
+}
+
+#tcomments pre {
+    background: #1e1e2e;
+    border-radius: 8px;
+}
+
+#tcomments code {
+    color: var(--twikoo-color-primary);
+    background: rgba(0, 212, 255, 0.1);
+    border-radius: 4px;
+}
+
+/* 评论内容样式 */
+.twikoo-cyber-card #tcomments p {
+    margin: 0.5rem 0;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--twikoo-color-text);
+}
+
+/* 加载动画 */
+.twikoo-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+    gap: 1rem;
+}
+
+.twikoo-loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(0, 212, 255, 0.2);
+    border-top-color: var(--twikoo-color-primary);
+    border-radius: 50%;
+    animation: cyberSpin 1s linear infinite;
+}
+
+@keyframes cyberSpin {
+    to { transform: rotate(360deg); }
+}
+
+.twikoo-loading-text {
+    color: var(--twikoo-color-text-light);
+    font-size: 0.9rem;
+}
+
+/* 空状态 */
+.twikoo-empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: var(--twikoo-color-text-light);
+}
+
+.twikoo-empty-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    background: var(--twikoo-gradient-main);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* 打字机效果 */
+.typewriter {
+    overflow: hidden;
+    border-right: 2px solid var(--twikoo-color-primary);
+    white-space: nowrap;
+    animation: typing 3s steps(40, end), blink-caret .75s step-end infinite;
+}
+
+@keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+}
+
+@keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: var(--twikoo-color-primary) }
+}
+
+/* 几何装饰 */
+.cyber-decoration {
+    position: absolute;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.cyber-decoration-1 {
+    top: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    border: 2px solid rgba(0, 212, 255, 0.2);
+    transform: rotate(45deg);
+    animation: cyberFloat 6s ease-in-out infinite;
+}
+
+.cyber-decoration-2 {
+    bottom: 40px;
+    left: 30px;
+    width: 40px;
+    height: 40px;
+    border: 2px solid rgba(124, 58, 237, 0.2);
+    border-radius: 50%;
+    animation: cyberFloat 6s ease-in-out infinite 2s;
+}
+
+@keyframes cyberFloat {
+    0%, 100% { transform: translateY(0) rotate(45deg); }
+    50% { transform: translateY(-10px) rotate(45deg); }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .twikoo-cyber-container {
+        margin: 1rem auto;
+        padding: 0 0.5rem;
+    }
+
+    .twikoo-cyber-header {
+        padding: 1rem 1.5rem;
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: flex-start;
+    }
+
+    .twikoo-cyber-title {
+        font-size: 1.25rem;
+    }
+
+    .twikoo-stats-panel {
+        padding: 0.75rem 1.5rem;
+        gap: 1rem;
+        justify-content: space-around;
+    }
+
+    .twikoo-stat-number {
+        font-size: 1.25rem;
+    }
+
+    .twikoo-controls {
+        padding: 0.75rem 1.5rem;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .twikoo-search-box {
+        min-width: 100%;
+    }
+
+    .twikoo-comments-wrapper {
+        padding: 1rem 1.5rem;
+    }
+
+    .twikoo-avatar-wall {
+        padding: 0.75rem 1.5rem;
+    }
+
+    .cyber-decoration {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .twikoo-cyber-header {
+        padding: 0.75rem 1rem;
+    }
+
+    .twikoo-stats-panel {
+        padding: 0.5rem 1rem;
+        gap: 0.5rem;
+    }
+
+    .twikoo-stat-item {
+        flex: 1;
+    }
+
+    .twikoo-controls {
+        padding: 0.5rem 1rem;
+    }
+
+    .twikoo-comments-wrapper {
+        padding: 0.75rem 1rem;
+    }
+
+    .twikoo-avatar-wall {
+        padding: 0.5rem 1rem;
+    }
+}
+
+/* 滚动条样式 */
+.twikoo-cyber-card ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.twikoo-cyber-card ::-webkit-scrollbar-track {
+    background: rgba(0, 212, 255, 0.05);
+    border-radius: 4px;
+}
+
+.twikoo-cyber-card ::-webkit-scrollbar-thumb {
+    background: var(--twikoo-gradient-main);
+    border-radius: 4px;
+}
+
+.twikoo-cyber-card ::-webkit-scrollbar-thumb:hover {
+    background: var(--twikoo-color-primary);
+}
+
+/* 选中文本样式 */
+.twikoo-cyber-card ::selection {
+    background: rgba(0, 212, 255, 0.2);
+    color: var(--twikoo-color-text);
+}
+
+/* 打印样式 */
+@media print {
+    .twikoo-cyber-card {
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+
+    .twikoo-controls,
+    .twikoo-stats-panel,
+    .twikoo-avatar-wall {
+        display: none;
+    }
+}

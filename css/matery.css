@@ -3922,12 +3922,22 @@ footer .copy-right {
     .DarkMode .art-content #archives .al_mon_list span,
     .DarkMode button,
     .DarkMode .art .art-content #archives a,
-    .DarkMode textarea,
     .DarkMode strong,
     .DarkMode a,
     .DarkMode p,
     .DarkMode .label {
         color: rgba(255, 255, 255, .6);
+    }
+
+    /* DarkMode 输入框文字完全不透明 */
+    .DarkMode textarea,
+    .DarkMode input[type="text"],
+    .DarkMode input[type="email"],
+    .DarkMode input[type="url"],
+    .DarkMode input[type="password"] {
+        color: rgba(255, 255, 255, 1) !important;
+        opacity: 1 !important;
+        -webkit-text-fill-color: rgba(255, 255, 255, 1) !important;
     }
 
     .DarkMode #page,
