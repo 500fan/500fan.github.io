@@ -188,7 +188,9 @@
             .comments { padding: 0.75rem 1rem; }
         }
 
-        /* Twikoo 输入框文字黑色 */
+        /* Twikoo 输入框文字黑色 - 覆盖 currentColor */
+        .twikoo .el-input__inner,
+        .twikoo .el-textarea__inner,
         .tk-meta-input input,
         .tk-content textarea,
         .tk-meta-input input::placeholder,
@@ -196,6 +198,14 @@
             color: rgba(0, 0, 0, 1.0) !important;
             -webkit-text-fill-color: rgba(0, 0, 0, 1.0) !important;
             opacity: 1.0 !important;
+        }
+
+        /* Twikoo 评论内容黑色 */
+        .tk-content,
+        .tk-nick,
+        .tk-time,
+        .tk-actions {
+            color: rgba(0, 0, 0, 1.0) !important;
         }
     </style>
 </head>
