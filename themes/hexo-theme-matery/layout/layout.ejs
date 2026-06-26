@@ -375,8 +375,28 @@ document.addEventListener("visibilitychange", function () { document.hidden ? (d
 <!-- 回到顶部按钮已由 _partial/back-top.ejs 提供 -->
 
 <!-- 悬挂的喵 -->
-<link rel="stylesheet" type="text/css" href="https://blog-static.cnblogs.com/files/fsh001/szgotop.css" />
-<div class="back-to-top cd-top faa-float animated cd-is-visible" style="top: -999px;"></div>
+<style>
+.back-to-top {
+    cursor: pointer;
+    position: fixed;
+    right: 80px;
+    top: -999px;
+    z-index: 9999;
+    width: 70px;
+    height: 900px;
+    background: url(https://blog-static.cnblogs.com/files/fsh001/scroll.gif) no-repeat;
+    transition: all .5s ease-in-out;
+    opacity: 1;
+    display: block !important;
+    visibility: visible !important;
+}
+@media (max-width:1000px) {
+    .back-to-top {
+        display: none !important;
+    }
+}
+</style>
+<div class="back-to-top cd-top faa-float animated cd-is-visible"></div>
 <script>
 $(window).scroll(function() {
     if ($(window).scrollTop() > 500) {

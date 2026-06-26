@@ -1,7 +1,6 @@
 <link rel="stylesheet" type="text/css" href="/css/style.css" />
 <link rel="stylesheet" type="text/css" href="/css/barrager.css">
-<!-- av-min.js 只在这里加载一次，供弹幕和 Valine 评论共用 -->
-<script src="/libs/valine/av-min.js"></script>
+<!-- av-min.js 已移除（Valine 已禁用，弹幕不需要） -->
 <script src="/libs/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="/js/jquery.barrager.js"></script>
 
@@ -33,8 +32,8 @@
                 <%- page.content %>
             </div>
             <!--valine评论弹幕-->
-            <% if (theme.valine && theme.valine.enable) { %>
-                <p>
+            <% if (theme.twikoo && theme.twikoo.enable) { %>
+                <p style="color: #00ff00; opacity: 1.0; text-shadow: 0 0 10px rgba(0,255,0,0.3);">
                     <b>讨论互动</b><br>
                     <b>···</b><br>
                     <b>友链信息</b><br>
@@ -69,79 +68,117 @@
                     </section>
                 </div>
 
+                <div id="barrage-twikoo" style="display:none;"></div>
+                <!-- 不加载 Twikoo SDK，直接 HTTP 请求 Render 服务器 -->
                 <script type="text/javascript">
-                    AV.init({
-                        appId: '<%- theme.valine.appId %>',
-                        appKey: '<%- theme.valine.appKey %>'
+                    var TWIKOO_SERVER = '<%- theme.twikoo.envId %>';
+                    var barrageQueue = [];
+                    var barrageLoopTimer = null;
+
+                    // 页面加载后直接获取弹幕
+                    jQuery(function() {
+                        loadBarrages();
                     });
 
-                    $(function() {
-                        do_barrager();
-                        async function do_barrager() {
-                            let lists = [];
-                            //查询弹幕
-                            const query = new AV.Query('barrager');
-                            const barrager = await query.find().then((barrager) => {
-                                lists = barrager;
-                            })
-                            let length = lists.length;
-                            let index = 0;
-                            const timer = setInterval(() => {
-                                if (index === length) {
-                                    clearInterval(timer);
-                                    do_barrager()
-                                } else {
-                                    let obj = lists[index]
-                                    let jsonObject = eval('(' + JSON.stringify(obj) + ')');
-                                    $('body').barrager({
-                                        'img': '/medias/barrager/' + Math.floor(Math.random() * 3) + ".png",
-                                        'href': jsonObject.href,
-                                        'info': jsonObject.info,
-                                        'speed': jsonObject.speed
-                                    });
-                                    index++;
-                                }
-                            }, 500)
-                        }
-                    });
+                    // POST 请求到 Twikoo 服务器
+                    function twikooPost(data) {
+                        return fetch(TWIKOO_SERVER, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(data)
+                        }).then(function(r) { return r.json(); });
+                    }
 
-                    //发送弹幕
-                    function  run(){
-                        let info = $('input[name=info]').val();
-                        (info === '' ) ?  info='hello world' : info=info;
-                        let href = $('input[name=href]').val();
-                        (href === '' ) ?  href='https://github.500fan.io' : href=href;
-                        let speed = parseInt($('input[name=speed]').val());
-                        if(speed > 20 || speed < 5)
-                            speed = Math.floor(Math.random() * 10) + 5;
-                        const Barrager = AV.Object.extend('barrager');
-                        const barrager = new Barrager();
-                        barrager.set('href', href);
-                        barrager.set('info', info);
-                        barrager.set('speed', speed);
-                        barrager.save().then((todo) => {
-                            // 保存成功后立即在页面显示弹幕
-                            $('body').barrager({
-                                'img': '/medias/barrager/' + Math.floor(Math.random() * 3) + ".png",
-                                'href': href,
-                                'info': info,
-                                'speed': speed
-                            });
-                            // 清空输入框
-                            $(" input[ name='info' ] ").val("")
-                            $(" input[ name='href' ] ").val("")
-                            $(" input[ name='speed' ] ").val("")
-                        }).catch((err) => {
-                            alert('留言发送失败，请检查网络或稍后再试');
-                            console.error('弹幕保存失败:', err);
+                    // 解析弹幕内容
+                    function parseBarrageItem(item) {
+                        try {
+                            var match = item.comment.match(/\[barrage\](.*?)\[\/barrage\]/);
+                            if (match) {
+                                var parts = match[1].split('|');
+                                return {
+                                    img: '/medias/barrager/' + Math.floor(Math.random() * 3) + '.png',
+                                    href: parts[1] || 'javascript:;',
+                                    info: parts[0] || '',
+                                    speed: parseInt(parts[2]) || 16
+                                };
+                            }
+                        } catch (e) {}
+                        return null;
+                    }
+
+                    // 加载历史弹幕
+                    function loadBarrages() {
+                        twikooPost({
+                            event: 'GET_RECENT_COMMENTS',
+                            urls: ['/barrage'],
+                            pageSize: 100,
+                            includeReply: true
+                        }).then(function(resp) {
+                            var lists = resp.data || [];
+                            barrageQueue = [];
+                            for (var i = 0; i < lists.length; i++) {
+                                var b = parseBarrageItem(lists[i]);
+                                if (b) barrageQueue.push(b);
+                            }
+                            console.log('弹幕加载成功:', barrageQueue.length, '条');
+                            if (barrageQueue.length > 0) startBarrageLoop();
+                        }).catch(function(e) {
+                            console.error('弹幕加载失败:', e);
                         });
                     }
 
-                    function  clear_barrage()
-                    {
-                        $.fn.barrager.removeAll();
+                    // 循环飞入弹幕
+                    function startBarrageLoop() {
+                        if (barrageLoopTimer) clearTimeout(barrageLoopTimer);
+                        function next() {
+                            if (barrageQueue.length === 0) {
+                                barrageLoopTimer = setTimeout(next, 3000);
+                                return;
+                            }
+                            jQuery('body').barrager(barrageQueue[Math.floor(Math.random() * barrageQueue.length)]);
+                            barrageLoopTimer = setTimeout(next, Math.floor(Math.random() * 2000) + 1000);
+                        }
+                        next();
                     }
 
+                    // 发送弹幕
+                    function run() {
+                        var info = jQuery('input[name=info]').val();
+                        if (info === '') info = 'hello world';
+                        var href = jQuery('input[name=href]').val();
+                        if (href === '') href = 'https://fuliefu-e0f643.gitlab.io/artitalk/';
+                        var speed = parseInt(jQuery('input[name=speed]').val());
+                        if (speed > 20 || speed < 5) speed = Math.floor(Math.random() * 10) + 5;
+
+                        var barrageContent = '[barrage]' + info + '|' + href + '|' + speed + '[/barrage]';
+
+                        twikooPost({
+                            event: 'COMMENT_SUBMIT',
+                            nick: '弹幕', mail: 'barrage@example.com', link: href,
+                            comment: barrageContent, url: '/barrage',
+                            pid: '', rid: '',
+                            ua: navigator.userAgent
+                        }).then(function(resp) {
+                            if (resp && resp.id) {
+                                var b = { img: '/medias/barrager/' + Math.floor(Math.random() * 3) + '.png', href: href, info: info, speed: speed };
+                                jQuery('body').barrager(b);
+                                barrageQueue.push(b);
+                                jQuery("input[name='info']").val('');
+                                jQuery("input[name='href']").val('');
+                                jQuery("input[name='speed']").val('');
+                            } else {
+                                alert('留言发送失败：' + (resp && resp.message || '未知错误'));
+                            }
+                        }).catch(function(e) {
+                            alert('留言发送失败，请检查网络');
+                            console.error('弹幕发送失败:', e);
+                        });
+                    }
+
+                    function clear_barrage() {
+                        jQuery.fn.barrager.removeAll();
+                        if (barrageLoopTimer) { clearTimeout(barrageLoopTimer); barrageLoopTimer = null; }
+                    }
                 </script>
             <% } %>
         </div>
@@ -154,490 +191,131 @@
           
         <!--其他评论card-->
         <div class="card">
-            <% if (theme.gitalk && theme.gitalk.enable) { %>
+            <!-- 已关闭: Gitalk -->
+            <% if (false && theme.gitalk && theme.gitalk.enable) { %>
                 <%- partial('_partial/gitalk') %>
             <% } %>
 
-            <% if (theme.gitment.enable) { %>
+            <!-- 已关闭: Gitment -->
+            <% if (false && theme.gitment.enable) { %>
                 <%- partial('_partial/gitment') %>
             <% } %>
 
-            <% if (theme.disqus.enable) { %>
+            <!-- 已关闭: Disqus -->
+            <% if (false && theme.disqus.enable) { %>
                 <%- partial('_partial/disqus') %>
             <% } %>
 
-            <% if (theme.livere && theme.livere.enable) { %>
+            <!-- 已关闭: Livere -->
+            <% if (false && theme.livere && theme.livere.enable) { %>
                 <%- partial('_partial/livere') %>
             <% } %>
 
-            <% if (theme.minivaline && theme.minivaline.enable) { %>
+            <!-- 已关闭: Minivaline -->
+            <% if (false && theme.minivaline && theme.minivaline.enable) { %>
                 <%- partial('_partial/minivaline') %>
             <% } %>
 
+            <!-- 已关闭: Changyan -->
+            <% if (false && theme.changyan && theme.changyan.enable) { %>
+                <%- partial('_partial/changyan') %>
+            <% } %>
+
+            <!-- Twikoo 评论区 ✅ 保留 -->
             <% if (theme.twikoo && theme.twikoo.enable) { %>
                 <%- partial('_partial/twikoo') %>
             <% } %>
 
-            <% if (theme.changyan && theme.changyan.enable) { %>
-                <%- partial('_partial/changyan') %>
+            <!-- Waline 评论区 ✅ 保留 -->
+            <% if (theme.waline && theme.waline.enable) { %>
+            <div class="card" data-aos="fade-up">
+                <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; padding-left: 20px; top: 15px; padding-bottom: 5px;">
+                    <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
+                    <span>Waline 评论</span>
+                </div>
+                <div class="card-content">
+                    <link rel="stylesheet" href="https://unpkg.com/@waline/client@v3/dist/waline.css" />
+                    <div id="waline-contact"></div>
+                    <script type="module">
+                        import { init } from 'https://unpkg.com/@waline/client@v3/dist/waline.js';
+                        init({
+                            el: '#waline-contact',
+                            serverURL: '<%- theme.waline.serverURL %>',
+                            lang: 'zh-CN',
+                            pageview: true,
+                            comment: true,
+                            imageUploader: async (file) => {
+                                const CLOUD = '<%- (theme.waline.cloudinary && theme.waline.cloudinary.cloudName) || "" %>';
+                                const PRESET = '<%- (theme.waline.cloudinary && theme.waline.cloudinary.uploadPreset) || "" %>';
+                                if (!CLOUD || !PRESET) {
+                                    throw new Error('未配置 Cloudinary，请在 _config.yml 的 waline.cloudinary 里设置 cloudName 和 uploadPreset');
+                                }
+                                const formData = new FormData();
+                                formData.append('file', file);
+                                formData.append('upload_preset', PRESET);
+                                const resp = await fetch('https://api.cloudinary.com/v1_1/' + CLOUD + '/image/upload', {
+                                    method: 'POST',
+                                    body: formData,
+                                });
+                                if (!resp.ok) throw new Error('Upload failed: ' + resp.status);
+                                const data = await resp.json();
+                                if (!data.secure_url) throw new Error('Upload failed: ' + (data.error && data.error.message || 'unknown'));
+                                return data.secure_url;
+                            },
+                        });
+                    </script>
+                </div>
+            </div>
             <% } %>
+
+            <!-- 已关闭: Giscus -->
+            <!--
+            <div class="card" data-aos="fade-up">
+                <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; padding-left: 20px; top: 15px; padding-bottom: 5px;">
+                    <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
+                    <span>Giscus 评论</span>
+                </div>
+                <div class="card-content">
+                    <script src="https://giscus.app/client.js"
+                            data-repo="500fan/Giscusliuyan"
+                            data-repo-id="R_kgDOSVH3MA"
+                            data-category="General"
+                            data-category-id="DIC_kwDOSVH3MM4C8ZLZ"
+                            data-mapping="pathname"
+                            data-strict="0"
+                            data-reactions-enabled="1"
+                            data-emit-metadata="0"
+                            data-input-position="bottom"
+                            data-theme="preferred_color_scheme"
+                            data-lang="zh-CN"
+                            data-loading="lazy"
+                            crossorigin="anonymous"
+                            async>
+                    </script>
+                </div>
+            </div>
+            -->
+
+            <!-- 嵌入留言板 iframe ✅ 保留 -->
+            <div class="card" data-aos="fade-up">
+                <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; padding-left: 20px; top: 15px; padding-bottom: 5px;">
+                    <i class="fas fa-pen fa-fw" aria-hidden="true"></i>
+                    <span>在线留言板</span>
+                </div>
+                <div class="card-content" style="padding: 10px;">
+                    <div style="margin:20px 0;">
+                        <iframe src="https://shifuliefu.onrender.com/"
+                            style="width:100%;height:700px;border:none;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.1);"
+                            loading="lazy"
+                            allow="clipboard-write"
+                            title="留言板"></iframe>
+                    </div>
+                </div>
+            </div>
 
         </div>
     </div>
 </main>
-
-<main><style>
-    .valine-card {
-        margin: 1.5rem auto;
-    }
-
-    .valine-card .card-content {
-        padding: 20px 20px 5px 20px;
-    }
-
-    #vcomments textarea {
-        box-sizing: border-box;
-        background: url("<%- url_for(theme.valine.background) %>") 100% 100% no-repeat;
-    }
-
-    #vcomments p {
-        margin: 2px 2px 10px;
-        font-size: 1.05rem;
-        line-height: 1.78rem;
-    }
-
-    #vcomments blockquote p {
-        text-indent: 0.2rem;
-    }
-
-    #vcomments a {
-        padding: 0 2px;
-        color: #4cbf30;
-        font-weight: 500;
-        text-decoration: none;
-    }
-
-    #vcomments img {
-        max-width: 100%;
-        height: auto;
-        cursor: pointer;
-    }
-
-    #vcomments ol li {
-        list-style-type: decimal;
-    }
-
-    #vcomments ol,
-    ul {
-        display: block;
-        padding-left: 2em;
-        word-spacing: 0.05rem;
-    }
-
-    #vcomments ul li,
-    ol li {
-        display: list-item;
-        line-height: 1.8rem;
-        font-size: 1rem;
-    }
-
-    #vcomments ul li {
-        list-style-type: disc;
-    }
-
-    #vcomments ul ul li {
-        list-style-type: circle;
-    }
-
-    #vcomments table, th, td {
-        padding: 12px 13px;
-        border: 1px solid #dfe2e5;
-    }
-
-    #vcomments table, th, td {
-        border: 0;
-    }
-
-    table tr:nth-child(2n), thead {
-        background-color: #fafafa;
-    }
-
-    #vcomments table th {
-        background-color: #f2f2f2;
-        min-width: 80px;
-    }
-
-    #vcomments table td {
-        min-width: 80px;
-    }
-
-    #vcomments h1 {
-        font-size: 1.85rem;
-        font-weight: bold;
-        line-height: 2.2rem;
-    }
-
-    #vcomments h2 {
-        font-size: 1.65rem;
-        font-weight: bold;
-        line-height: 1.9rem;
-    }
-
-    #vcomments h3 {
-        font-size: 1.45rem;
-        font-weight: bold;
-        line-height: 1.7rem;
-    }
-
-    #vcomments h4 {
-        font-size: 1.25rem;
-        font-weight: bold;
-        line-height: 1.5rem;
-    }
-
-    #vcomments h5 {
-        font-size: 1.1rem;
-        font-weight: bold;
-        line-height: 1.4rem;
-    }
-
-    #vcomments h6 {
-        font-size: 1rem;
-        line-height: 1.3rem;
-    }
-
-    #vcomments p {
-        font-size: 1rem;
-        line-height: 1.5rem;
-    }
-
-    #vcomments hr {
-        margin: 12px 0;
-        border: 0;
-        border-top: 1px solid #ccc;
-    }
-
-    #vcomments blockquote {
-        margin: 15px 0;
-        border-left: 5px solid #42b983;
-        padding: 1rem 0.8rem 0.3rem 0.8rem;
-        color: #666;
-        background-color: rgba(66, 185, 131, .1);
-    }
-
-    #vcomments pre {
-        font-family: monospace, monospace;
-        padding: 1.2em;
-        margin: .5em 0;
-        background: #272822;
-        overflow: auto;
-        border-radius: 0.3em;
-        tab-size: 4;
-    }
-
-    #vcomments code {
-        font-family: monospace, monospace;
-        padding: 1px 3px;
-        font-size: 0.92rem;
-        color: #e96900;
-        background-color: #f8f8f8;
-        border-radius: 2px;
-    }
-
-    #vcomments pre code {
-        font-family: monospace, monospace;
-        padding: 0;
-        color: #e8eaf6;
-        background-color: #272822;
-    }
-
-    #vcomments pre[class*="language-"] {
-        padding: 1.2em;
-        margin: .5em 0;
-    }
-
-    #vcomments code[class*="language-"],
-    pre[class*="language-"] {
-        color: #e8eaf6;
-    }
-
-    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
-        position: inherit;
-        margin-left: -1.3rem;
-        margin-right: 0.4rem;
-        margin-top: -1px;
-        vertical-align: middle;
-        left: unset;
-        visibility: visible;
-    }
-
-    #vcomments b,
-    strong {
-        font-weight: bold;
-    }
-
-    #vcomments dfn {
-        font-style: italic;
-    }
-
-    #vcomments small {
-        font-size: 85%;
-    }
-
-    #vcomments cite {
-        font-style: normal;
-    }
-
-    #vcomments mark {
-        background-color: #fcf8e3;
-        padding: .2em;
-    }
-
-    #vcomments table, th, td {
-        padding: 12px 13px;
-        border: 1px solid #dfe2e5;
-    }
-
-    table tr:nth-child(2n), thead {
-        background-color: #fafafa;
-    }
-
-    #vcomments table th {
-        background-color: #f2f2f2;
-        min-width: 80px;
-    }
-
-    #vcomments table td {
-        min-width: 80px;
-    }
-
-    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
-        position: inherit;
-        margin-left: -1.3rem;
-        margin-right: 0.4rem;
-        margin-top: -1px;
-        vertical-align: middle;
-        left: unset;
-        visibility: visible;
-    }
-</style>
-
-<div class="card valine-card" data-aos="fade-up">
-    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; padding-left: 20px; top: 15px; padding-bottom: 5px;">
-        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
-        <span>评论</span>
-    </div>
-    <div  id="vcomments" class="card-content" style="display: grid">
-    </div>
-</div>
-
-<!-- 删除重复的 av-min.js 加载，已在页面顶部加载过 -->
-<script src="<%- theme.jsDelivr.url %><%- url_for(theme.libs.js.valine) %>"></script>
-<script>
-    new Valine({
-        el: '#vcomments',
-        appId: '<%- theme.valine.appId %>',
-        appKey: '<%- theme.valine.appKey %>',
-        notify: '<%- theme.valine.notify %>' === 'true',
-        verify: '<%- theme.valine.verify %>' === 'true',
-        visitor: '<%- theme.valine.visitor %>' === 'true',
-        avatar: '<%- theme.valine.avatar %>',
-        pageSize: '<%- theme.valine.pageSize %>',
-        lang: '<% if (config.language == "zh-CN") {  %>zh-cn<% } else { %>en<% } %>',
-        placeholder: '<%= theme.valine.placeholder %>'
-    });
-</script>
-
-<!--酷Q推送-->
-<% if (theme.valine.coolpushkey && theme.valine.coolpushkey > 1) { %>
-<script>
-    var pushLink ="https://push.xuthus.cc/send/<%- theme.valine.coolpushkey %>";
-    var siteName = "<%- config.title %>'s Blog";
-    var valineButton=document.getElementsByClassName("vsubmit vbtn")[0];
-    var title = siteName + "上又有新评论啦~!\n";
-  
-    function send_valine() {
-      //获取元素信息
-      var pagename = document.title;
-      var pageurl = document.URL;
-      var pushtime = new Date();
-      var vnick = document.getElementsByClassName("vnick vinput")[0].value;
-      var vmail = document.getElementsByClassName("vmail vinput")[0].value;
-      var vlink = document.getElementsByClassName("vlink vinput")[0].value;
-      var veditor = document.getElementsByClassName("veditor vinput")[0].value;
-      content =
-        title +
-        "昵称：" + vnick +
-        "\n邮箱：" + vmail +
-        "\n网站地址：" + vlink +
-        "\n文章标题：" + pagename +
-        "\n评论内容：" + veditor +
-        "\n文章链接：" + pageurl +
-        "\n评论时间" + pushtime.toLocaleString() + "\n";
-      var httpRequest = new XMLHttpRequest(); //第一步：创建需要的对象
-      httpRequest.open("POST", pushLink, true); //第二步：打开连接
-      httpRequest.setRequestHeader(
-        "Content-type",
-        "application/json"
-      ); //设置请求头 注：post方式必须设置请求头（在建立连接后设置请求头）
-      httpRequest.send(content); //发送请求 
-    }
-  
-    document.body.addEventListener('click', function(e) {
-    if(e.target.className.indexOf('vsubmit') === -1) {
-      return;
-    }
-    send_valine();
-  })
-</script>
-
-<script>
-//运行主函数
-circleMagic();
-            //主函数内容
-            function circleMagic(options) {
-                    let width;
-                    let height;
-                    let canvas;
-                    let ctx;
-                    let animateHeader = true;
-                    const circles = [];
-            
-                    const settings = options || {
-                        color: 'rgba(255,255,255,.5)',
-                        radius: 10,
-                        density: 0.3,
-                        clearOffset: 0.2
-                    }
-            
-            
-                    //  Main
-            
-                    const container = document.getElementById('smarts');
-                    initContainer();
-                    addListeners();
-            
-            
-                    function initContainer() {
-                        width = container.offsetWidth;
-                        height = container.offsetHeight - 120;
-            
-                        //  create canvas element
-            
-                        initCanvas();
-                        canvas = document.getElementById('homeTopCanvas');
-                        canvas.width = width;
-                        canvas.height = height;
-                        canvas.style.position = 'absolute';
-                        canvas.style.left = '0';
-                        canvas.style.bottom = '0';
-                        ctx = canvas.getContext('2d');
-            
-                        //  create circles
-                        for (let x = 0; x < width * settings.density; x++) {
-                            const c = new Circle();
-                            circles.push(c);
-                        }
-                        animate();
-                    }
-            
-                    // Init canvas element
-                    function initCanvas() {
-                        const canvasElement = document.createElement('canvas');
-                        canvasElement.id = 'homeTopCanvas';
-                        canvasElement.style.pointerEvents = 'none';
-                        container.appendChild(canvasElement);
-                        canvasElement.parentElement.style.overflow = 'hidden';
-                    }
-            
-                    // Event handling
-                    function addListeners() {
-                        window.addEventListener('scroll', scrollCheck, false);
-                        window.addEventListener('resize', resize, false);
-                    }
-            
-                    function scrollCheck() {
-                        if (document.body.scrollTop > height) {
-                            animateHeader = false;
-                        } else {
-                            animateHeader = true;
-                        }
-                    }
-            
-                    function resize() {
-                        width = container.clientWidth;
-                        height = container.clientHeight;
-                        container.height = height + 'px';
-                        canvas.width = width;
-                        canvas.height = height;
-                    }
-            
-                    function animate() {
-                        if (animateHeader) {
-                            ctx.clearRect(0, 0, width, height);
-                            for (const i in circles) {
-                                circles[i].draw();
-                            }
-                        }
-                        requestAnimationFrame(animate);
-                    }
-            
-                    function randomColor() {
-                        const r = Math.floor(Math.random() * 255);
-                        const g = Math.floor(Math.random() * 255);
-                        const b = Math.floor(Math.random() * 255);
-                        const alpha = Math.random().toPrecision(2);
-                        return 'rgba(' + r + ', ' + g + ', ' + b + ', ' + alpha + ')';
-                    }
-            
-                    //  Canvas manipulation
-            
-                    function Circle() {
-                        const that = this;
-            
-                        // constructor
-                        (function () {
-                            that.pos = {};
-                            init();
-                        })();
-            
-                        function init() {
-                            that.pos.x = Math.random() * width;
-                            that.pos.y = height + Math.random() * 100;
-                            that.alpha = 0.1 + Math.random() * settings.clearOffset;
-                            that.scale = 0.1 + Math.random() * 0.3;
-                            that.speed = Math.random();
-                            if (settings.color === 'random') {
-                                that.color = randomColor();
-                            } else {
-                                that.color = settings.color;
-                            }
-                        }
-            
-                        this.draw = function () {
-                            if (that.alpha <= 0) {
-                                init();
-                            }
-                            that.pos.y -= that.speed;
-                            that.alpha -= 0.0005;
-                            ctx.beginPath();
-                            ctx.arc(
-                                that.pos.x,
-                                that.pos.y,
-                                that.scale * settings.radius,
-                                0,
-                                2 * Math.PI,
-                                false
-                            );
-                            ctx.fillStyle = that.color;
-                            ctx.fill();
-                            ctx.closePath();
-                        }
-                    }
-                }
-
-</script>
-<% } %>
 
 <div class="aplayer" data-id="60198" data-server="netease" data-type="playlist"></div>
  

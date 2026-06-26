@@ -13,7 +13,16 @@ timezone: ''
 
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
-url: http://fuliefu.gitlab.io
+## 这是 Hexo 博客的 站点 URL 配置，用于生成所有页面的绝对路径。它的作用包括：       
+                                                                                   
+##   1. 生成链接 — 文章、分类、标签、RSS 等所有内部链接都基于这个 URL 生成            
+## 2. SEO / sitemap — 生成 sitemap.xml 和 RSS feed 时使用这个地址                
+ ##  3. 部署路径 — 当你部署到 GitLab Pages 时，这个地址就是你博客的访问域名           
+                                                                                   
+##   当前配置指向 fuliefu-e0f643.gitlab.io，说明你的博客是部署在 GitLab Pages         
+##   上的。如果你换了域名（比如绑定了自定义域名或换到 GitHub                          
+ ##  Pages），需要同步修改这个值。 
+url: https://fuliefu-e0f643.gitlab.io
 
 
 permalink: :year/:month/:day/:title/
@@ -136,8 +145,11 @@ deploy:
       #gitee: https://gitee.com/biteniunai/biteniunai.git,master
       #coding: git@e.coding.net:cloudbase-100003156849/123/769.git,master
       #github: git@github.com:gitee392637221/a567.git,master
-      #github: http://github.com/500fan/500fan.github.io.git,master
+      #github: git@github.com:500fan/500fan.github.io.git,master
+      #github: https://500fan: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@github.com/500fan/500fan.github.io.git,master
+      #github: git@github.com:500fan/500fan.github.io.git,master
       github: git@github.com:500fan/500fan.github.io.git,master
+
       #github: https://500fan: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@github.com/500fan/500fan.github.io.git,main
       gitlab: git@gitlab.com:fuliefu/fuliefu.git,master
 

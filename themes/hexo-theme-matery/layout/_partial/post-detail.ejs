@@ -194,6 +194,10 @@
         <%- partial('_partial/twikoo') %>
     <% } %>
 
+    <% if (theme.waline && theme.waline.enable) { %>
+        <%- partial('_partial/waline') %>
+    <% } %>
+
     <%- partial('_partial/prev-next') %>
 </div>
 

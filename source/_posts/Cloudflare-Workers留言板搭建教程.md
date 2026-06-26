@@ -574,6 +574,20 @@ https://message-board-api.manle.workers.dev 有哪些cdn加速
    
   目前免费计划已经够用，Cloudflare 的 CDN 是开箱即用的，不需要额外配置。        
                                                                         
+以下是 message-board-api Worker 的域名绑定情况：
+域和路由：
+类型	地址
+workers.dev 子域名	message-board-api.manle.workers.dev
+自定义域名	fuliefu.bbroot.com
+路由	无
+绑定：
+R2 存储桶：message-board-images（绑定名 IMAGES）
+KV 命名空间：MESSAGE_BOARD
+其他信息：
+最近一次部署：18 小时前（通过 Wrangler）
+24 小时请求量：267 次，3 个错误
+
+
 
                                                                         
 ### 在线地址

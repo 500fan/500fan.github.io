@@ -1,122 +1,458 @@
 <%- partial('_partial/bg-cover') %>
 
-<style ype="text/css">
-
+<style>
 #pubShuo {
-
   margin-right: 5px;
 }
 
-#operare_artitalk .shuoshuo_input_log {
-    outline-style: none;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    padding: 8px 16px;
-    font-size: 12px;
-    background-color: transparent;
-
-    color: #0bb7fbd6;
-    width: 70%;
-    height: 28px;
-    margin-left: 10px;
-}
-
 #artitalk_main {
-
-  margin-top: 5px ;
+  margin-top: 5px;
   margin-left: 5%;
   margin-right: 5%;
-
 }
 
-#lazy{
+#lazy {
   margin-top: 40px;
 }
-#artitalk_main .cbp_tmtimeline > li .cbp_tmlabel::after {
-  right: 100%;
-  border: solid transparent;
-  z-index: -1;
-  content: " ";
-  height: 0;
-  width: 0;
-  position: absolute;
-  pointer-events: none;
-  border-right-color:  #0bb7fbd6 ;
-  border-width: 10px;
-  top: 4px;
+
+.shuo-input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  resize: vertical;
+  min-height: 60px;
+  background: transparent;
+  color: inherit;
+  box-sizing: border-box;
+}
+
+.shuo-btn {
+  margin-top: 8px;
+  padding: 8px 24px;
+  background: linear-gradient(45deg, rgb(109, 208, 242) 15%, rgb(245, 154, 190) 85%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.shuo-btn:hover {
+  opacity: 0.85;
+}
+
+.shuo-item {
+  padding: 16px;
+  margin: 10px 0;
+  border-radius: 8px;
+  background: linear-gradient(45deg, rgb(109, 208, 242, 0.1) 15%, rgb(245, 154, 190, 0.1) 85%);
+  border-left: 4px solid rgb(109, 208, 242);
+}
+
+.shuo-time {
+  font-size: 12px;
+  color: #999;
+  margin-top: 8px;
+}
+
+.shuo-content {
+  font-size: 14px;
+  line-height: 1.8;
+  color: inherit;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.shuo-content p {
+  margin: 0 0 6px 0;
+}
+
+.shuo-content p:last-child {
+  margin-bottom: 0;
+}
+
+.shuo-content img {
+  display: block;
+  max-width: 100%;
+  max-height: 400px;
+  height: auto;
+  margin: 8px 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  cursor: zoom-in;
+  object-fit: contain;
+}
+
+.shuo-content a {
+  color: #6dd0f2;
+  text-decoration: none;
+  word-break: break-all;
+}
+
+.shuo-content a:hover {
+  text-decoration: underline;
+}
+
+.shuo-content code {
+  background: rgba(0, 0, 0, 0.06);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-family: Menlo, Monaco, Consolas, monospace;
+}
+
+.shuo-content pre {
+  background: rgba(0, 0, 0, 0.06);
+  padding: 12px;
+  border-radius: 6px;
+  overflow-x: auto;
+  margin: 8px 0;
+}
+
+.shuo-content pre code {
+  background: transparent;
+  padding: 0;
+}
+
+.shuo-content blockquote {
+  border-left: 3px solid rgb(245, 154, 190);
+  margin: 8px 0;
+  padding: 4px 12px;
+  color: #666;
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.shuo-content ul,
+.shuo-content ol {
+  margin: 6px 0;
+  padding-left: 24px;
+}
+
+.shuo-empty {
+  text-align: center;
+  color: #999;
+  padding: 40px;
 }
 </style>
 
+<article id="articles11" class="container chip-container">
+  <div class="row">
+    <div class="card">
+      <div class="card-content">
+        <div class="tag-title center-align">
+          <i class="fas fa-pen-alt"></i> 说说
+        </div>
 
-<script src="<%- theme.jsDelivr.url %><%- url_for(theme.libs.js.artitalk) %>"></script>
+        <!-- 发布区域 -->
+        <div style="margin: 16px 0; padding: 0 16px;">
+          <input id="shuo-nick" class="shuo-input" placeholder="昵称（可选，留空则随机匿名）" style="margin-bottom: 8px; min-height: auto; padding: 8px 12px;" />
+          <textarea id="shuo-input" class="shuo-input" placeholder="说点什么吧..."></textarea>
+          <div style="margin-top: 8px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+            <button class="shuo-btn" onclick="postShuo()">发布</button>
+            <label class="shuo-btn" style="cursor: pointer; display: inline-block;">
+              📷 图片
+              <input type="file" id="shuo-image" accept="image/*" style="display: none;" onchange="uploadShuoImage(this)">
+            </label>
+            <span id="shuo-upload-status" style="font-size: 12px; color: #999;"></span>
+            <div style="position: relative; display: inline-block;">
+              <button class="shuo-btn" onclick="toggleEmoji()" type="button">😀 表情</button>
+              <div id="emoji-panel" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#fff; border:1px solid #ddd; border-radius:8px; width:280px; box-shadow:0 4px 20px rgba(0,0,0,0.2); z-index:1000;">
+                <div id="emoji-drag" style="cursor:move; padding:6px 10px; background:linear-gradient(45deg, rgb(109,208,242) 15%, rgb(245,154,190) 85%); color:#fff; border-radius:7px 7px 0 0; font-size:12px; display:flex; justify-content:space-between; align-items:center;">
+                  <span>😀 选择表情</span>
+                  <span onclick="toggleEmoji()" style="cursor:pointer;font-size:16px;">✕</span>
+                </div>
+                <div id="emoji-list" style="padding:6px; max-height:220px; overflow-y:auto; display:flex; flex-wrap:wrap; gap:2px;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-<article id="articles11" class="container  chip-container">
-  <div class="row ">
+        <!-- 说说列表 -->
+        <div id="shuo-list"></div>
 
-      <div class=" card">
-        <div class="card-content" >
-          <div class="tag-title center-align">
-                <i class="fas fa-pen-alt"></i> 说说
-           </div>
-          <div id="artitalk_main"></div>
-        </div>  
+        <% if (theme.waline && theme.waline.serverURL) { %>
+        <!-- 隐藏的管理入口（hover 可见，点击进 Waline 管理后台） -->
+        <div style="text-align: center; margin-top: 40px; padding: 8px 0;">
+          <a href="<%- theme.waline.serverURL.replace(/\/$/, '') %>/ui"
+             target="_blank"
+             rel="noopener"
+             title="管理"
+             style="color: #999; font-size: 10px; text-decoration: none; opacity: 0.15; transition: opacity 0.3s;"
+             onmouseover="this.style.opacity=0.7"
+             onmouseout="this.style.opacity=0.15">·</a>
+        </div>
+        <% } %>
       </div>
-
+    </div>
   </div>
 </article>
+
 <script>
-  new Artitalk({
-        appId: "<%=  theme.artitalk.appId  %>",
-        appKey: "<%=  theme.artitalk.appKey  %>",
-      <% if (theme.artitalk.serverURL) { %>
-          serverURL: "<%=  theme.artitalk.serverURL  %>",
-      <% } %>
-      <% if (theme.artitalk.lang) { %>
-          lang: "<%=  theme.artitalk.lang  %>",
-      <% } %>
-      <% if (theme.artitalk.pageSize) { %>
-          pageSize: "<%=  theme.artitalk.pageSize  %>",
-      <% } %>
-      <% if (theme.artitalk.shuoPla) { %>
-          shuoPla: "<%=  theme.artitalk.shuoPla  %>",
-      <% } %>
-      <% if (theme.artitalk.avatarPla) { %>
-          avatarPla: "<%=  theme.artitalk.avatarPla  %>",
-      <% } %>
-      <% if (theme.artitalk.motion == 0) { %>
-          motion: 0,
-      <% } else { %>
-          motion: 1,
-      <% }  %>
-      <% if (theme.artitalk.bgImg) { %>
-          bgImg: "<%=  theme.artitalk.bgImg  %>",
-      <% } %>
-      <% if (theme.artitalk.color1) { %>
-          color1: "<%=  theme.artitalk.color1  %>",
-      <% } %>
-      <% if (theme.artitalk.color2) { %>
-          color2: "<%=  theme.artitalk.color2  %>",
-      <% } %>
-      <% if (theme.artitalk.color3) { %>
-          color3: "<%=  theme.artitalk.color3  %>",
-      <% } %>
-      <% if (theme.artitalk.cssUrl) { %>
-          cssUrl: "<%=  theme.artitalk.cssUrl  %>",
-      <% } %>
-          atEmoji: {
-              baiyan: "https://cdn.jsdelivr.net/gh/Artitalk/Artitalk-emoji/baiyan.png",
-              bishi: "https://cdn.jsdelivr.net/gh/Artitalk/Artitalk-emoji/bishi.png",
-              bizui: "https://cdn.jsdelivr.net/gh/Artitalk/Artitalk-emoji/bizui.png",
-              chan: "https://cdn.jsdelivr.net/gh/Artitalk/Artitalk-emoji/chan.png",
-              daku: "https://cdn.jsdelivr.net/gh/Artitalk/Artitalk-emoji/daku.png",
-              dalao: "https://cdn.jsdelivr.net/gh/Artitalk/Artitalk-emoji/dalao.png",
-              dalian: "https://cdn.jsdelivr.net/gh/Artitalk/Artitalk-emoji/dalian.png",
-              dianzan: "https://cdn.jsdelivr.net/gh/Artitalk/Artitalk-emoji/dianzan.png",
-              doge: "https://cdn.jsdelivr.net/gh/Artitalk/Artitalk-emoji/doge.png",
-              facai: "https://cdn.jsdelivr.net/gh/Artitalk/Artitalk-emoji/facai.png",
-              fadai: "https://cdn.jsdelivr.net/gh/Artitalk/Artitalk-emoji/fadai.png",
-              fanu: "https://cdn.jsdelivr.net/gh/Artitalk/Artitalk-emoji/fanu.png",
-           },
-     })
+(function() {
+  var WALINE_URL = '<%- (theme.waline && theme.waline.serverURL) ? theme.waline.serverURL.replace(/\/$/, "") : "" %>';
+  var SHUO_PATH = '/artitalk';
+  var CLOUDINARY_CLOUD = '<%- (theme.waline && theme.waline.cloudinary && theme.waline.cloudinary.cloudName) || "" %>';
+  var CLOUDINARY_PRESET = '<%- (theme.waline && theme.waline.cloudinary && theme.waline.cloudinary.uploadPreset) || "" %>';
+
+  // 表情选择器
+  var emojis = [
+    '😀','😂','🤣','😊','😍','🥰','😘','😜','🤔','😢',
+    '😭','😡','🥺','😱','🤩','😎','🤗','😴','🤮','🤡',
+    '👻','💀','☠️','👽','🤖','💩','🐱','🐶','🐭','🐰',
+    '🌹','🌻','🍀','🌙','⭐','🔥','💧','❤️','💔','💯',
+    '👍','👎','👏','🙏','💪','✌️','🤝','👀','🎉','🎊',
+    '☕','🍺','🍕','🍜','🍰','🎵','📸','✈️','🏠','💤',
+    '😀','😁','😂','🤣','😃','😄','😅','😆','😉','😊',
+    '😋','😎','😍','😘','🥰','😗','😙','🥲','😚','☺️',
+    '😛','😜','🤪','😝','🤑','🤗','🤭','🤫','🤔','🫡',
+    '🤐','🤨','😐','😑','😶','🫥','😏','😒','🙄','😬',
+    '🤥','😌','😔','😪','🤤','😴','😷','🤒','🤕','🤢',
+    '🤮','🥵','🥶','🥴','😵','🤯','🤠','🥳','🥸','😎'
+  ];
+  var emojiPanelInited = false;
+
+  window.toggleEmoji = function() {
+    var panel = document.getElementById('emoji-panel');
+    if (panel.style.display === 'none') {
+      if (!emojiPanelInited) {
+        var list = document.getElementById('emoji-list');
+        var html = '';
+        for (var i = 0; i < emojis.length; i++) {
+          html += '<span style="cursor:pointer;font-size:20px;padding:3px;display:inline-block;width:28px;text-align:center;border-radius:4px;" onmouseover="this.style.background=\'#f0f0f0\'" onmouseout="this.style.background=\'\'" onclick="insertEmoji(this.textContent)">' + emojis[i] + '</span>';
+        }
+        list.innerHTML = html;
+        emojiPanelInited = true;
+      }
+      panel.style.display = 'block';
+    } else {
+      panel.style.display = 'none';
+    }
+  };
+
+  window.insertEmoji = function(emoji) {
+    var textarea = document.getElementById('shuo-input');
+    var start = textarea.selectionStart;
+    var end = textarea.selectionEnd;
+    var text = textarea.value;
+    textarea.value = text.substring(0, start) + emoji + text.substring(end);
+    textarea.selectionStart = textarea.selectionEnd = start + emoji.length;
+    textarea.focus();
+    document.getElementById('emoji-panel').style.display = 'none';
+  };
+
+  // 拖拽表情面板
+  (function() {
+    var dragEl = document.getElementById('emoji-drag');
+    var panel = document.getElementById('emoji-panel');
+    var isDragging = false, startX, startY, startLeft, startTop;
+
+    dragEl.addEventListener('mousedown', function(e) {
+      isDragging = true;
+      startX = e.clientX;
+      startY = e.clientY;
+      var rect = panel.getBoundingClientRect();
+      startLeft = rect.left;
+      startTop = rect.top;
+      panel.style.transform = 'none';
+      panel.style.left = rect.left + 'px';
+      panel.style.top = rect.top + 'px';
+      e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', function(e) {
+      if (!isDragging) return;
+      panel.style.left = (startLeft + e.clientX - startX) + 'px';
+      panel.style.top = (startTop + e.clientY - startY) + 'px';
+    });
+
+    document.addEventListener('mouseup', function() {
+      isDragging = false;
+    });
+
+    // 触摸支持
+    dragEl.addEventListener('touchstart', function(e) {
+      isDragging = true;
+      var t = e.touches[0];
+      startX = t.clientX;
+      startY = t.clientY;
+      var rect = panel.getBoundingClientRect();
+      startLeft = rect.left;
+      startTop = rect.top;
+      panel.style.transform = 'none';
+      panel.style.left = rect.left + 'px';
+      panel.style.top = rect.top + 'px';
+    }, { passive: true });
+
+    document.addEventListener('touchmove', function(e) {
+      if (!isDragging) return;
+      var t = e.touches[0];
+      panel.style.left = (startLeft + t.clientX - startX) + 'px';
+      panel.style.top = (startTop + t.clientY - startY) + 'px';
+    }, { passive: true });
+
+    document.addEventListener('touchend', function() {
+      isDragging = false;
+    });
+  })();
+
+  // 点击外部关闭表情面板
+  document.addEventListener('click', function(e) {
+    var panel = document.getElementById('emoji-panel');
+    if (panel && panel.style.display !== 'none' && !e.target.closest('#emoji-panel') && !e.target.closest('[onclick*="toggleEmoji"]')) {
+      panel.style.display = 'none';
+    }
+  });
+
+  // 上传图片到 Cloudinary（unsigned upload）
+  window.uploadShuoImage = function(input) {
+    var file = input.files[0];
+    if (!file) return;
+    if (!CLOUDINARY_CLOUD || !CLOUDINARY_PRESET) {
+      alert('未配置 Cloudinary，请在 _config.yml 的 waline.cloudinary 里填写 cloudName 和 uploadPreset');
+      return;
+    }
+
+    var status = document.getElementById('shuo-upload-status');
+    status.textContent = '上传中...';
+
+    var formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', CLOUDINARY_PRESET);
+
+    fetch('https://api.cloudinary.com/v1_1/' + CLOUDINARY_CLOUD + '/image/upload', {
+      method: 'POST',
+      body: formData
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.secure_url) {
+        var textarea = document.getElementById('shuo-input');
+        textarea.value += (textarea.value ? '\n' : '') + '![](' + data.secure_url + ')';
+        status.textContent = '上传成功';
+      } else {
+        status.textContent = '上传失败: ' + ((data.error && data.error.message) || JSON.stringify(data));
+      }
+    })
+    .catch(function(e) {
+      status.textContent = '上传失败: ' + e.message;
+    });
+    input.value = '';
+  };
+
+  // 加载说说
+  function loadShuoshuo() {
+    if (!WALINE_URL) {
+      document.getElementById('shuo-list').innerHTML = '<div class="shuo-empty">未配置 Waline serverURL</div>';
+      return;
+    }
+    var url = WALINE_URL + '/api/comment?path=' + encodeURIComponent(SHUO_PATH) + '&page=1&pageSize=100';
+    fetch(url, { credentials: 'omit' })
+      .then(function(r) { return r.json(); })
+      .then(function(res) {
+        var data = res && res.data;
+        var list = Array.isArray(data) ? data : (data && data.data) || [];
+        renderList(list);
+      })
+      .catch(function(e) {
+        document.getElementById('shuo-list').innerHTML = '<div class="shuo-empty">加载失败: ' + escapeHtml(e.message) + '</div>';
+      });
+  }
+
+  // 渲染列表（Waline 已经把 markdown 渲染成 HTML 在 comment 字段，直接用即可）
+  function renderList(list) {
+    var html = '';
+    if (list.length === 0) {
+      html = '<div class="shuo-empty">暂无说说，快来发布第一条吧~</div>';
+    } else {
+      for (var i = 0; i < list.length; i++) {
+        var item = list[i];
+        html += '<div class="shuo-item">';
+        html += '<div class="shuo-content">' + (item.comment || '') + '</div>';
+        html += '<div class="shuo-time">' + formatTime(item.time);
+        html += ' · ' + escapeHtml(item.nick || '匿名');
+        if (item.os) html += ' · ' + escapeHtml(item.os);
+        if (item.browser) html += ' · ' + escapeHtml(item.browser);
+        html += '</div></div>';
+      }
+    }
+    document.getElementById('shuo-list').innerHTML = html;
+
+    // 给图片绑定点击放大
+    var imgs = document.querySelectorAll('#shuo-list .shuo-content img');
+    for (var k = 0; k < imgs.length; k++) {
+      imgs[k].addEventListener('click', function(e) {
+        showImagePreview(e.target.src);
+      });
+    }
+  }
+
+  // 图片预览（点击放大）
+  function showImagePreview(src) {
+    var mask = document.createElement('div');
+    mask.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:9999;display:flex;align-items:center;justify-content:center;cursor:zoom-out;padding:20px;';
+    var img = document.createElement('img');
+    img.src = src;
+    img.style.cssText = 'max-width:100%;max-height:100%;border-radius:6px;box-shadow:0 4px 20px rgba(0,0,0,0.5);';
+    mask.appendChild(img);
+    mask.addEventListener('click', function() { document.body.removeChild(mask); });
+    document.body.appendChild(mask);
+  }
+
+  // 发布说说
+  window.postShuo = function() {
+    var content = document.getElementById('shuo-input').value.trim();
+    if (!content) { alert('请输入内容'); return; }
+    if (!WALINE_URL) { alert('未配置 Waline serverURL'); return; }
+
+    var nickInput = (document.getElementById('shuo-nick').value || '').trim();
+    var nick = nickInput || ('匿名' + Math.floor(Math.random() * 9000 + 1000));
+
+    var body = {
+      comment: content,
+      nick: nick,
+      mail: 'anonymous-' + Date.now() + '@artitalk.local',
+      link: '',
+      ua: navigator.userAgent,
+      url: SHUO_PATH
+    };
+
+    fetch(WALINE_URL + '/api/comment', {
+      method: 'POST',
+      credentials: 'omit',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(res) {
+      if (res && res.errno) {
+        alert('发布失败: ' + (res.errmsg || JSON.stringify(res)));
+        return;
+      }
+      document.getElementById('shuo-input').value = '';
+      loadShuoshuo();
+    })
+    .catch(function(e) {
+      alert('发布失败: ' + e.message);
+    });
+  };
+
+  function escapeHtml(str) {
+    var div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function formatTime(t) {
+    var d = new Date(t);
+    if (isNaN(d.getTime())) return '';
+    return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate()) + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+  }
+
+  function pad(n) { return n < 10 ? '0' + n : n; }
+
+  // 页面加载时获取说说
+  loadShuoshuo();
+})();
 </script>

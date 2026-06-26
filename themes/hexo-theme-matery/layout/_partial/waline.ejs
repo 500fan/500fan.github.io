@@ -1,0 +1,75 @@
+<style>
+    .waline-card {
+        margin: 1.5rem auto;
+    }
+    .waline-card .card-content {
+        padding: 20px;
+    }
+    #waline .wl-editor,
+    #waline .wl-input,
+    #waline textarea,
+    #waline input,
+    #waline .wl-editor *,
+    #waline .wl-input * {
+        color: #000 !important;
+        opacity: 1 !important;
+        -webkit-text-fill-color: #000 !important;
+    }
+</style>
+
+<link rel="stylesheet" href="https://unpkg.com/@waline/client@v3/dist/waline.css" />
+
+<div class="card waline-card" data-aos="fade-up">
+    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; padding-left: 20px; top: 15px; padding-bottom: 5px;">
+        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
+        <span>评论</span>
+    </div>
+    <div id="waline" class="card-content">
+    </div>
+</div>
+
+<script type="module">
+    import { init } from 'https://unpkg.com/@waline/client@v3/dist/waline.js';
+
+    const serverURL = '<%- theme.waline.serverURL %>';
+    const cloudinaryCloudName = '<%- (theme.waline.cloudinary && theme.waline.cloudinary.cloudName) || "" %>';
+    const cloudinaryUploadPreset = '<%- (theme.waline.cloudinary && theme.waline.cloudinary.uploadPreset) || "" %>';
+
+    // 图片上传:
+    // - 优先使用 Cloudinary 直连上传 (前端到 Cloudinary,不经过自己后端)
+    // - 未配置 Cloudinary 时回退到 serverURL + /api/upload (GitHub 仓库存储)
+    async function imageUploader(file) {
+        if (cloudinaryCloudName && cloudinaryUploadPreset) {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_preset', cloudinaryUploadPreset);
+
+            const resp = await fetch(
+                `https://api.cloudinary.com/v1_1/${cloudinaryCloudName}/image/upload`,
+                { method: 'POST', body: formData }
+            );
+            const result = await resp.json();
+            if (result.secure_url) return result.secure_url;
+            throw new Error((result.error && result.error.message) || 'Cloudinary upload failed');
+        }
+
+        const formData = new FormData();
+        formData.append('file', file);
+        const resp = await fetch(serverURL + '/api/upload', {
+            method: 'POST',
+            body: formData,
+        });
+        const result = await resp.json();
+        if (result.errno === 0) return result.data;
+        throw new Error(result.errmsg || 'Upload failed');
+    }
+
+    init({
+        el: '#waline',
+        serverURL: serverURL,
+        lang: '<% if (config.language == "zh-CN") { %>zh-CN<% } else { %>en<% } %>',
+        pageview: true,
+        comment: true,
+        imageUploader: imageUploader,
+    });
+</script>
