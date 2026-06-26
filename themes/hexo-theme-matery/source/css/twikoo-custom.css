@@ -271,12 +271,23 @@
 
 /* Twikoo 内部样式 - 仅修改文字颜色，不干预组件交互 */
 #tcomments {
-    color: var(--twikoo-color-text);
+    color: rgba(0, 0, 0, 1.0);
 }
 
 #tcomments p {
     font-size: 0.95rem;
     line-height: 1.7;
+    color: rgba(0, 0, 0, 1.0);
+}
+
+/* Twikoo 输入框文字黑色 */
+.tk-meta-input input,
+.tk-content textarea,
+.tk-meta-input input::placeholder,
+.tk-content textarea::placeholder {
+    color: rgba(0, 0, 0, 1.0) !important;
+    -webkit-text-fill-color: rgba(0, 0, 0, 1.0) !important;
+    opacity: 1.0 !important;
 }
 
 #tcomments a {
