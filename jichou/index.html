@@ -1,0 +1,224 @@
+
+<!DOCTYPE html>{% raw %}
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>记仇表情包生成器</title>
+  <meta name="keywords" content="记仇表情包,记仇表情包生成器,记仇表情包制作,记仇表情包生成,写小本本记仇表情包,写日记表情包" />
+  <style>
+    * {
+      margin: 0 auto;
+      font-family: "PingFang SC";
+    }
+
+    .container {
+      margin: 0 auto;
+      width: 250px;
+    }
+
+    #content-box {
+      margin: 50px auto 20px auto;
+      width: 250px;
+      background-color: #fff;
+      border: 1px solid #fff;
+    }
+
+    .row {
+      position: relative;
+    }
+
+    #btn {
+      border: 0;
+      /*width: 100px;*/
+      border-radius: 5px;
+      color: #fff;
+      background-color: #000;
+      cursor: pointer;
+      padding: 10px 30px;
+      text-align: center;
+      box-sizing: border-box;
+      float: left;
+    }
+
+    .upload {
+      border: 0;
+      /*width: 100px;*/
+      border-radius: 5px;
+      color: #fff;
+      background-color: #000;
+      cursor: pointer;
+      padding: 10px 30px;
+      text-align: center;
+      box-sizing: border-box;
+      float: right;
+      cursor: pointer;
+    }
+
+    .clearfloat:after {
+      content: "";
+      height: 0;
+      clear: both;
+      visibility: hidden;
+      display: table-cell;
+    }
+
+    #imageChange {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 100px;
+      height: 42px;
+      opacity: 0;
+      z-index: 233;
+      cursor: pointer;
+    }
+
+    #screen-box {
+      margin: 20px auto;
+    }
+
+
+    #footer {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    #footer a {
+      color: rgba(200, 200, 200, .7);
+
+    }
+    a{text-decoration:none}
+  </style>
+  <script>
+  var _hmt = _hmt || [];
+  (function() {
+	var hm = document.createElement("script");
+	hm.src = "https://hm.baidu.com/hm.js?f7c2b430697f41f44c23c4f543be44e1";
+	var s = document.getElementsByTagName("script")[0]; 
+	s.parentNode.insertBefore(hm, s);
+  })();
+  </script>
+
+<script data-ad-client="ca-pub-6334612645881131" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <div id="content-box">
+      <!-- <div class="img-box"> -->
+      <img id="image" style="width:100%" src="jichou.png" alt="记仇">
+      <!-- </div> -->
+      <div contenteditable="true" class="write">
+        <span id="date">2018年5月18日</span> <span id="content">阴，群主拒绝了女装，这个仇，我先记下了</span>
+      </div>
+    </div>
+    <div>↑点文字可以修改；长按可保存↓</div>
+    <div class="row clearfloat">
+      <a id="btn">生成</a>
+      <a href="#" id="btn_random">随机文案</a>
+      <a class="upload">上传</a>
+      <input type="file" id="imageChange">
+    </div>
+
+    <div id="screen-box">
+
+    </div>
+    <div id="footer">
+      <br/>
+      <small>
+		
+		</small>
+    </div>
+	<div align='center'>
+	  <small>
+			
+	  </small>
+	</div>
+  </div>
+  <script src="https://cdn.bootcss.com/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
+  <script>
+    var btn = document.getElementById('btn');
+    var contentBox = document.getElementById('content-box');
+    var screenBox = document.getElementById('screen-box');
+    btn.onclick = function (event) {
+      html2canvas(contentBox, {
+        allowTain: true,
+        taintTest: true,
+        onrendered: function (canvas) {
+
+          canvas.id = "mycanvas";
+
+          var dataUrl = canvas.toDataURL('image/jpeg');
+          var newImg = document.createElement("img");
+          newImg.src = dataUrl;
+          //先清空子元素
+          screenBox.innerHTML = '';
+
+          screenBox.appendChild(newImg);
+        }
+      })
+    }
+    //自动生成当前日期
+    var date = new Date();
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1;
+    var day = date.getDate();
+    var date = document.getElementById('date');
+    date.innerText = `${year}年${month}月${day}日`;
+    //实现自定义上传图片
+    var image = document.getElementById('image');
+    var imageChange = document.getElementById('imageChange');
+    function readUrl(input) {
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+          image.setAttribute('src', e.target.result)
+        }
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+
+    imageChange.onchange = function () {
+      readUrl(this);
+    }
+
+    // 随机文案
+    var contents = [
+    '阴，群主拒绝了女装，这个仇，我先记下了',
+    '没人给我点赞，这个仇我先记下来了',    
+    '大太阳，今天工地的砖格外的烫手，富婆还是没有出现，我的心好累',
+    '小雨，群里没人给我据介绍富婆，这个仇先记下了',
+    '晴，开黑又没带我，这个仇我先记下了！',
+    '暴雨，发给你的信息到现在都没回，这个仇我先记下了！',
+    '晴，群友又在开车，却没有一个人发种，这个仇我记下了！',
+    '晴，今天看了我的朋友没有点赞，这个仇我先记下了！',
+    '如果明天还没有人给我介绍对象，我就举报这个群涉黄！',
+    '今天 北京 晴 温度36° 真的很热 八岁的我需要18块钱买一瓶可乐喝 别问为什么人家的可乐只要3块 我的要18块这种问题 我就是想骗你钱 傻的来 不傻的别来 我骂不过你',
+    '晴，我的心就跟破碎了一样，从昨天到今天没吃饭，又冷又饿，一直等朋友圈的人带我玩，一直等到现在都不带我！',
+    '晴，今天要热土我了，没人给我买雪糕，这个仇记下了！',
+    '今天群里好多兄弟都有男朋友了，只有我还喜欢女孩子，因为我觉得女孩子软软的想象的，我觉得我跟这群giiay玩不下去。',
+    '晴，有人要记仇表情包，这个仇，我先记下了！'
+    ];
+
+    var btn_random = document.getElementById('btn_random');
+    var content = document.getElementById('content');
+    var i = 1;
+    btn_random.onclick = function (event) {
+      if (i>=contents.length) {
+        i = 0
+      }
+
+      content.innerText = contents[i++]
+    }
+
+
+  </script>
+</body>
+
+</html>
+xx
+{% endraw %}
