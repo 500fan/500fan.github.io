@@ -1,0 +1,282 @@
+/* ============================================
+   Waline 现代简约风格
+   ============================================ */
+
+/* CSS 变量 */
+:root {
+    --waline-bg: #f8f9fa;
+    --waline-card-bg: rgba(255, 255, 255, 0.95);
+    --waline-primary: #4f46e5;
+    --waline-primary-light: #818cf8;
+    --waline-text: #1f2937;
+    --waline-text-light: #6b7280;
+    --waline-border: #e5e7eb;
+    --waline-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --waline-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --waline-radius: 12px;
+    --waline-transition: all 0.2s ease;
+}
+
+/* 主容器 */
+.waline-container {
+    max-width: 100%;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+/* 卡片 */
+.waline-card {
+    background: var(--waline-card-bg);
+    border-radius: var(--waline-radius);
+    box-shadow: var(--waline-shadow);
+    overflow: hidden;
+    border: 1px solid var(--waline-border);
+    transition: var(--waline-transition);
+}
+
+.waline-card:hover {
+    box-shadow: var(--waline-shadow-lg);
+}
+
+/* 头部 */
+.waline-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 1.5rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.waline-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.waline-title i {
+    font-size: 1.1rem;
+}
+
+/* 统计 */
+.waline-stats {
+    display: flex;
+    gap: 1rem;
+}
+
+.waline-stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.875rem;
+    opacity: 0.9;
+}
+
+.waline-stat-number {
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.waline-stat-label {
+    opacity: 0.8;
+}
+
+/* 评论区内容 */
+.waline-content {
+    padding: 1.5rem;
+}
+
+/* Waline 内部样式覆盖 */
+#waline {
+    --waline-theme-color: var(--waline-primary);
+    --waline-active-color: var(--waline-primary-light);
+}
+
+/* 输入框样式 */
+#waline .wl-editor,
+#waline .wl-input,
+#waline textarea,
+#waline input {
+    color: var(--waline-text) !important;
+    -webkit-text-fill-color: var(--waline-text) !important;
+    background: #fff !important;
+    border: 1px solid var(--waline-border) !important;
+    border-radius: 8px !important;
+    transition: var(--waline-transition) !important;
+}
+
+#waline .wl-editor:focus,
+#waline .wl-input:focus,
+#waline textarea:focus,
+#waline input:focus {
+    border-color: var(--waline-primary) !important;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1) !important;
+}
+
+/* 提交按钮 */
+#waline .wl-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    border: none !important;
+    color: white !important;
+    border-radius: 8px !important;
+    padding: 0.625rem 1.5rem !important;
+    font-weight: 600 !important;
+    transition: var(--waline-transition) !important;
+    cursor: pointer !important;
+}
+
+#waline .wl-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+/* 评论项 */
+#waline .wl-card {
+    background: #fff !important;
+    border: 1px solid var(--waline-border) !important;
+    border-radius: 10px !important;
+    padding: 1rem !important;
+    margin-bottom: 0.75rem !important;
+    transition: var(--waline-transition) !important;
+}
+
+#waline .wl-card:hover {
+    border-color: var(--waline-primary-light) !important;
+    box-shadow: 0 2px 8px rgba(79, 70, 229, 0.08) !important;
+}
+
+/* 头像 */
+#waline .wl-user {
+    border-radius: 50% !important;
+    border: 2px solid var(--waline-border) !important;
+}
+
+/* 昵称 */
+#waline .wl-nick {
+    color: var(--waline-text) !important;
+    font-weight: 600 !important;
+}
+
+/* 时间 */
+#waline .wl-time {
+    color: var(--waline-text-light) !important;
+    font-size: 0.8rem !important;
+}
+
+/* 评论内容 */
+#waline .wl-content {
+    color: var(--waline-text) !important;
+    line-height: 1.7 !important;
+}
+
+/* 点赞按钮 */
+#waline .wl-like,
+#waline .wl-reply {
+    color: var(--waline-text-light) !important;
+    transition: var(--waline-transition) !important;
+}
+
+#waline .wl-like:hover,
+#waline .wl-reply:hover {
+    color: var(--waline-primary) !important;
+}
+
+#waline .wl-like.active {
+    color: #ef4444 !important;
+}
+
+/* 表情选择器 */
+#waline .wl-emoji {
+    background: #fff !important;
+    border: 1px solid var(--waline-border) !important;
+    border-radius: 10px !important;
+    box-shadow: var(--waline-shadow-lg) !important;
+}
+
+/* 图片预览 */
+#waline .wl-image {
+    border-radius: 8px !important;
+    max-width: 100% !important;
+}
+
+/* 加载动画 */
+#waline .wl-loading {
+    color: var(--waline-primary) !important;
+}
+
+/* 滚动条 */
+#waline ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+#waline ::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#waline ::-webkit-scrollbar-thumb {
+    background: var(--waline-border);
+    border-radius: 3px;
+}
+
+#waline ::-webkit-scrollbar-thumb:hover {
+    background: var(--waline-text-light);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .waline-container {
+        margin: 1rem auto;
+        padding: 0 0.5rem;
+    }
+
+    .waline-header {
+        padding: 1rem 1.25rem;
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: flex-start;
+    }
+
+    .waline-title {
+        font-size: 1.1rem;
+    }
+
+    .waline-content {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .waline-header {
+        padding: 0.875rem 1rem;
+    }
+
+    .waline-content {
+        padding: 0.875rem;
+    }
+
+    #waline .wl-card {
+        padding: 0.75rem !important;
+    }
+}
+
+/* 打印样式 */
+@media print {
+    .waline-card {
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+
+    .waline-header {
+        background: #f3f4f6;
+        color: #1f2937;
+    }
+}
+
+/* 选中文本 */
+#waline ::selection {
+    background: rgba(79, 70, 229, 0.2);
+    color: var(--waline-text);
+}
