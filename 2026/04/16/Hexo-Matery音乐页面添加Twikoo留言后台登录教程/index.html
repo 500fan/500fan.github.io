@@ -2025,46 +2025,40 @@
     
 
     
-        <style>
-    .waline-card {
-        margin: 1.5rem auto;
-    }
-    .waline-card .card-content {
-        padding: 20px;
-    }
-    #waline .wl-editor,
-    #waline .wl-input,
-    #waline textarea,
-    #waline input,
-    #waline .wl-editor *,
-    #waline .wl-input * {
-        color: #000 !important;
-        opacity: 1 !important;
-        -webkit-text-fill-color: #000 !important;
-    }
-</style>
+        <link rel="stylesheet" href="/css/waline-custom.css">
+<link rel="stylesheet" href="https://unpkg.com/@waline/client@v2/dist/waline.css" />
 
-<link rel="stylesheet" href="https://unpkg.com/@waline/client@v3/dist/waline.css" />
+<div class="waline-container">
+    <div class="waline-card">
+        <!-- 头部 -->
+        <div class="waline-header">
+            <div class="waline-title">
+                <i class="fas fa-comments"></i>
+                <span>评论互动</span>
+            </div>
+            <div class="waline-stats" id="waline-stats">
+                <span class="waline-stat-item">
+                    <span class="waline-stat-number" id="waline-count">-</span>
+                    <span class="waline-stat-label">条评论</span>
+                </span>
+            </div>
+        </div>
 
-<div class="card waline-card" data-aos="fade-up">
-    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; padding-left: 20px; top: 15px; padding-bottom: 5px;">
-        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
-        <span>评论</span>
-    </div>
-    <div id="waline" class="card-content">
+        <!-- 评论区 -->
+        <div class="waline-content">
+            <div id="waline"></div>
+        </div>
     </div>
 </div>
 
 <script type="module">
-    import { init } from 'https://unpkg.com/@waline/client@v3/dist/waline.js';
+    import { init } from 'https://unpkg.com/@waline/client@v2/dist/waline.js';
 
     const serverURL = 'https://waline-render-4h1r.onrender.com';
     const cloudinaryCloudName = 'dwevyln8l';
-    const cloudinaryUploadPreset = 'waline01';
+    const cloudinaryUploadPreset = 'waline_unsigned';
 
-    // 图片上传:
-    // - 优先使用 Cloudinary 直连上传 (前端到 Cloudinary,不经过自己后端)
-    // - 未配置 Cloudinary 时回退到 serverURL + /api/upload (GitHub 仓库存储)
+    // 图片上传
     async function imageUploader(file) {
         if (cloudinaryCloudName && cloudinaryUploadPreset) {
             const formData = new FormData();
@@ -2091,14 +2085,39 @@
         throw new Error(result.errmsg || 'Upload failed');
     }
 
-    init({
+    // 初始化 Waline
+    const walineInstance = init({
         el: '#waline',
         serverURL: serverURL,
         lang: 'en',
         pageview: true,
         comment: true,
         imageUploader: imageUploader,
+        reaction: true,
+        meta: ['nick', 'mail', 'link'],
+        requiredMeta: ['nick'],
+        emoji: [
+            'https://unpkg.com/@waline/emojis@1.2.0/weibo',
+            'https://unpkg.com/@waline/emojis@1.2.0/bilibili',
+        ],
+        comment: true,
     });
+
+    // 加载评论统计
+    async function loadStats() {
+        try {
+            const resp = await fetch(serverURL + '/api/comment?path=' + encodeURIComponent(window.location.pathname) + '&pageSize=1');
+            const data = await resp.json();
+            if (data.data && data.data.count !== undefined) {
+                document.getElementById('waline-count').textContent = data.data.count;
+            }
+        } catch (e) {
+            console.error('[Waline] 加载统计失败:', e);
+        }
+    }
+
+    // 页面加载后获取统计
+    setTimeout(loadStats, 2000);
 </script>
 
     
@@ -3164,39 +3183,23 @@ document.addEventListener("visibilitychange", function () { document.hidden ? (d
 <!-- 回到顶部按钮已由 _partial/back-top.ejs 提供 -->
 
 <!-- 悬挂的喵 -->
-<style>
-.back-to-top {
-    cursor: pointer;
-    position: fixed;
-    right: 80px;
-    top: -999px;
-    z-index: 9999;
-    width: 70px;
-    height: 900px;
-    background: url(https://blog-static.cnblogs.com/files/fsh001/scroll.gif) no-repeat;
-    transition: all .5s ease-in-out;
-    opacity: 1;
-    display: block !important;
-    visibility: visible !important;
-}
-@media (max-width:1000px) {
-    .back-to-top {
-        display: none !important;
-    }
-}
-</style>
-<div class="back-to-top cd-top faa-float animated cd-is-visible"></div>
+<link rel="stylesheet" type="text/css" href="https://blog-static.cnblogs.com/files/fsh001/szgotop.css" />
+<div id="szg-cat" style="cursor:pointer; position:fixed; right:80px; top:-200px; z-index:9999; width:70px; height:900px; background:url(/medias/images/scroll.gif) no-repeat; transition:all .5s ease-in-out; opacity:1;"></div>
 <script>
-$(window).scroll(function() {
-    if ($(window).scrollTop() > 500) {
-        $('.back-to-top').not('#backTop').css('top','-200px');
-    } else {
-        $('.back-to-top').not('#backTop').css('top','-999px');
-    }
-});
-$('.back-to-top').not('#backTop').click(function() {
-    $('body,html').animate({scrollTop: 0}, 600);
-});
+(function(){
+    var cat = document.getElementById('szg-cat');
+    if (!cat) return;
+    window.addEventListener('scroll', function() {
+        if (window.scrollY > 300) {
+            cat.style.top = '0px';
+        } else {
+            cat.style.top = '-200px';
+        }
+    });
+    cat.addEventListener('click', function() {
+        window.scrollTo({top: 0, behavior: 'smooth'});
+    });
+})();
 </script>
 
 

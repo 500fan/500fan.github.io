@@ -1950,46 +1950,40 @@
     
 
     
-        <style>
-    .waline-card {
-        margin: 1.5rem auto;
-    }
-    .waline-card .card-content {
-        padding: 20px;
-    }
-    #waline .wl-editor,
-    #waline .wl-input,
-    #waline textarea,
-    #waline input,
-    #waline .wl-editor *,
-    #waline .wl-input * {
-        color: #000 !important;
-        opacity: 1 !important;
-        -webkit-text-fill-color: #000 !important;
-    }
-</style>
+        <link rel="stylesheet" href="/css/waline-custom.css">
+<link rel="stylesheet" href="https://unpkg.com/@waline/client@v2/dist/waline.css" />
 
-<link rel="stylesheet" href="https://unpkg.com/@waline/client@v3/dist/waline.css" />
+<div class="waline-container">
+    <div class="waline-card">
+        <!-- 头部 -->
+        <div class="waline-header">
+            <div class="waline-title">
+                <i class="fas fa-comments"></i>
+                <span>评论互动</span>
+            </div>
+            <div class="waline-stats" id="waline-stats">
+                <span class="waline-stat-item">
+                    <span class="waline-stat-number" id="waline-count">-</span>
+                    <span class="waline-stat-label">条评论</span>
+                </span>
+            </div>
+        </div>
 
-<div class="card waline-card" data-aos="fade-up">
-    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; padding-left: 20px; top: 15px; padding-bottom: 5px;">
-        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
-        <span>评论</span>
-    </div>
-    <div id="waline" class="card-content">
+        <!-- 评论区 -->
+        <div class="waline-content">
+            <div id="waline"></div>
+        </div>
     </div>
 </div>
 
 <script type="module">
-    import { init } from 'https://unpkg.com/@waline/client@v3/dist/waline.js';
+    import { init } from 'https://unpkg.com/@waline/client@v2/dist/waline.js';
 
     const serverURL = 'https://waline-render-4h1r.onrender.com';
     const cloudinaryCloudName = 'dwevyln8l';
-    const cloudinaryUploadPreset = 'waline01';
+    const cloudinaryUploadPreset = 'waline_unsigned';
 
-    // 图片上传:
-    // - 优先使用 Cloudinary 直连上传 (前端到 Cloudinary,不经过自己后端)
-    // - 未配置 Cloudinary 时回退到 serverURL + /api/upload (GitHub 仓库存储)
+    // 图片上传
     async function imageUploader(file) {
         if (cloudinaryCloudName && cloudinaryUploadPreset) {
             const formData = new FormData();
@@ -2016,14 +2010,39 @@
         throw new Error(result.errmsg || 'Upload failed');
     }
 
-    init({
+    // 初始化 Waline
+    const walineInstance = init({
         el: '#waline',
         serverURL: serverURL,
         lang: 'en',
         pageview: true,
         comment: true,
         imageUploader: imageUploader,
+        reaction: true,
+        meta: ['nick', 'mail', 'link'],
+        requiredMeta: ['nick'],
+        emoji: [
+            'https://unpkg.com/@waline/emojis@1.2.0/weibo',
+            'https://unpkg.com/@waline/emojis@1.2.0/bilibili',
+        ],
+        comment: true,
     });
+
+    // 加载评论统计
+    async function loadStats() {
+        try {
+            const resp = await fetch(serverURL + '/api/comment?path=' + encodeURIComponent(window.location.pathname) + '&pageSize=1');
+            const data = await resp.json();
+            if (data.data && data.data.count !== undefined) {
+                document.getElementById('waline-count').textContent = data.data.count;
+            }
+        } catch (e) {
+            console.error('[Waline] 加载统计失败:', e);
+        }
+    }
+
+    // 页面加载后获取统计
+    setTimeout(loadStats, 2000);
 </script>
 
     
@@ -2036,6 +2055,75 @@
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
+            <div class="card">
+                <a href="/2026/05/03/Cloudflare-Workers%E7%95%99%E8%A8%80%E6%9D%BF%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="https://cdn.jsdelivr.net/gh/500fan/500fan.github.io@1.33/medias/featureimages/21.jpg" class="responsive-img" alt="Cloudflare Workers 留言板搭建教程">
+                        
+                        <span class="card-title">Cloudflare Workers 留言板搭建教程</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            基于 Cloudflare Workers + KV + R2 从零搭建一个支持表情和图片上传的留言板应用，包含完整代码和部署流程。
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2026-05-03
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/" class="post-category">
+                                    技术教程
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Cloudflare/">
+                        <span class="chip bg-color">Cloudflare</span>
+                    </a>
+                    
+                    <a href="/tags/Workers/">
+                        <span class="chip bg-color">Workers</span>
+                    </a>
+                    
+                    <a href="/tags/KV/">
+                        <span class="chip bg-color">KV</span>
+                    </a>
+                    
+                    <a href="/tags/R2/">
+                        <span class="chip bg-color">R2</span>
+                    </a>
+                    
+                    <a href="/tags/%E7%95%99%E8%A8%80%E6%9D%BF/">
+                        <span class="chip bg-color">留言板</span>
+                    </a>
+                    
+                    <a href="/tags/%E5%89%8D%E7%AB%AF/">
+                        <span class="chip bg-color">前端</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
             <div class="card">
                 <a href="/2026/05/02/Live2D%E7%9C%8B%E6%9D%BF%E5%A8%98%E9%9B%86%E6%88%90%E6%95%99%E7%A8%8B/">
                     <div class="card-image">
@@ -2053,9 +2141,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2026-05-02
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2026-05-02
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -2085,71 +2173,6 @@
                     
                     <a href="/tags/%E7%9C%8B%E6%9D%BF%E5%A8%98/">
                         <span class="chip bg-color">看板娘</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                Next&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2026/05/02/%E5%A4%A7%E7%BA%A2%E7%81%AF%E7%AC%BC%E5%B7%A6%E5%8F%B3%E5%AF%B9%E7%A7%B0%E5%B8%83%E5%B1%80%E6%95%99%E7%A8%8B/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="https://cdn.jsdelivr.net/gh/500fan/500fan.github.io@1.33/medias/featureimages/3.jpg" class="responsive-img" alt="大红灯笼左右对称布局教程">
-                        
-                        <span class="card-title">大红灯笼左右对称布局教程</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            
-                        
-                    </div>
-                    <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2026-05-02
-                            </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/" class="post-category">
-                                    技术教程
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/Hexo/">
-                        <span class="chip bg-color">Hexo</span>
-                    </a>
-                    
-                    <a href="/tags/CSS/">
-                        <span class="chip bg-color">CSS</span>
-                    </a>
-                    
-                    <a href="/tags/%E7%81%AF%E7%AC%BC/">
-                        <span class="chip bg-color">灯笼</span>
-                    </a>
-                    
-                    <a href="/tags/%E6%98%A5%E8%8A%82%E4%B8%BB%E9%A2%98/">
-                        <span class="chip bg-color">春节主题</span>
-                    </a>
-                    
-                    <a href="/tags/%E5%B8%83%E5%B1%80/">
-                        <span class="chip bg-color">布局</span>
                     </a>
                     
                 </div>
@@ -3089,39 +3112,23 @@ document.addEventListener("visibilitychange", function () { document.hidden ? (d
 <!-- 回到顶部按钮已由 _partial/back-top.ejs 提供 -->
 
 <!-- 悬挂的喵 -->
-<style>
-.back-to-top {
-    cursor: pointer;
-    position: fixed;
-    right: 80px;
-    top: -999px;
-    z-index: 9999;
-    width: 70px;
-    height: 900px;
-    background: url(https://blog-static.cnblogs.com/files/fsh001/scroll.gif) no-repeat;
-    transition: all .5s ease-in-out;
-    opacity: 1;
-    display: block !important;
-    visibility: visible !important;
-}
-@media (max-width:1000px) {
-    .back-to-top {
-        display: none !important;
-    }
-}
-</style>
-<div class="back-to-top cd-top faa-float animated cd-is-visible"></div>
+<link rel="stylesheet" type="text/css" href="https://blog-static.cnblogs.com/files/fsh001/szgotop.css" />
+<div id="szg-cat" style="cursor:pointer; position:fixed; right:80px; top:-200px; z-index:9999; width:70px; height:900px; background:url(/medias/images/scroll.gif) no-repeat; transition:all .5s ease-in-out; opacity:1;"></div>
 <script>
-$(window).scroll(function() {
-    if ($(window).scrollTop() > 500) {
-        $('.back-to-top').not('#backTop').css('top','-200px');
-    } else {
-        $('.back-to-top').not('#backTop').css('top','-999px');
-    }
-});
-$('.back-to-top').not('#backTop').click(function() {
-    $('body,html').animate({scrollTop: 0}, 600);
-});
+(function(){
+    var cat = document.getElementById('szg-cat');
+    if (!cat) return;
+    window.addEventListener('scroll', function() {
+        if (window.scrollY > 300) {
+            cat.style.top = '0px';
+        } else {
+            cat.style.top = '-200px';
+        }
+    });
+    cat.addEventListener('click', function() {
+        window.scrollTo({top: 0, behavior: 'smooth'});
+    });
+})();
 </script>
 
 

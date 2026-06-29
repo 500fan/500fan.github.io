@@ -25,7 +25,8 @@
 .twikoo-cyber-container {
     position: relative;
     margin: 2rem auto;
-    max-width: 800px;
+    max-width: 100%;
+    width: 100%;
     padding: 0 1rem;
 }
 
@@ -269,19 +270,68 @@
     object-fit: cover;
 }
 
-/* Twikoo 内部样式 - 仅修改文字颜色，不干预组件交互 */
-#tcomments {
-    color: var(--twikoo-color-text);
+/* Twikoo 评论区文字颜色 - 覆盖 DarkMode */
+#tcomments,
+#tcomments *,
+.tk-content,
+.tk-nick,
+.tk-time,
+.tk-actions,
+.tk-comments-title,
+.tk-comments-count,
+.tk-meta-input input,
+.tk-content textarea,
+.tk-meta-input input::placeholder,
+.tk-content textarea::placeholder,
+.twikoo .el-input__inner,
+.twikoo .el-textarea__inner,
+.tk-submit button {
+    color: rgb(114, 4, 4) !important;
+    -webkit-text-fill-color: rgb(114, 4, 4) !important;
 }
 
-#tcomments p {
-    font-size: 0.95rem;
-    line-height: 1.7;
+/* DarkMode 下也要保持颜色 */
+.DarkMode #tcomments,
+.DarkMode #tcomments *,
+.DarkMode .tk-content,
+.DarkMode .tk-nick,
+.DarkMode .tk-time,
+.DarkMode .tk-actions,
+.DarkMode .tk-comments-title,
+.DarkMode .tk-comments-count,
+.DarkMode .tk-meta-input input,
+.DarkMode .tk-content textarea,
+.DarkMode .twikoo .el-input__inner,
+.DarkMode .twikoo .el-textarea__inner {
+    color: rgb(114, 4, 4) !important;
+    -webkit-text-fill-color: rgb(114, 4, 4) !important;
 }
 
 #tcomments a {
     color: var(--twikoo-color-primary);
     text-decoration: none;
+}
+
+/* 页脚文字颜色 - 覆盖 DarkMode */
+.page-footer,
+.page-footer *,
+.page-footer a,
+.page-footer span,
+.page-footer .copy-right,
+.page-footer #sitetime,
+.page-footer #year,
+.page-footer .white-color {
+    color: rgba(0, 0, 0, 1.0) !important;
+}
+
+.DarkMode .page-footer,
+.DarkMode .page-footer *,
+.DarkMode .page-footer a,
+.DarkMode .page-footer span,
+.DarkMode .page-footer .copy-right,
+.DarkMode #footer,
+.DarkMode #colophon {
+    color: rgba(0, 0, 0, 1.0) !important;
 }
 
 #tcomments blockquote {

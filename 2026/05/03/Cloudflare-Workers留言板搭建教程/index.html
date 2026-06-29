@@ -2068,46 +2068,40 @@
     
 
     
-        <style>
-    .waline-card {
-        margin: 1.5rem auto;
-    }
-    .waline-card .card-content {
-        padding: 20px;
-    }
-    #waline .wl-editor,
-    #waline .wl-input,
-    #waline textarea,
-    #waline input,
-    #waline .wl-editor *,
-    #waline .wl-input * {
-        color: #000 !important;
-        opacity: 1 !important;
-        -webkit-text-fill-color: #000 !important;
-    }
-</style>
+        <link rel="stylesheet" href="/css/waline-custom.css">
+<link rel="stylesheet" href="https://unpkg.com/@waline/client@v2/dist/waline.css" />
 
-<link rel="stylesheet" href="https://unpkg.com/@waline/client@v3/dist/waline.css" />
+<div class="waline-container">
+    <div class="waline-card">
+        <!-- 头部 -->
+        <div class="waline-header">
+            <div class="waline-title">
+                <i class="fas fa-comments"></i>
+                <span>评论互动</span>
+            </div>
+            <div class="waline-stats" id="waline-stats">
+                <span class="waline-stat-item">
+                    <span class="waline-stat-number" id="waline-count">-</span>
+                    <span class="waline-stat-label">条评论</span>
+                </span>
+            </div>
+        </div>
 
-<div class="card waline-card" data-aos="fade-up">
-    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; padding-left: 20px; top: 15px; padding-bottom: 5px;">
-        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
-        <span>评论</span>
-    </div>
-    <div id="waline" class="card-content">
+        <!-- 评论区 -->
+        <div class="waline-content">
+            <div id="waline"></div>
+        </div>
     </div>
 </div>
 
 <script type="module">
-    import { init } from 'https://unpkg.com/@waline/client@v3/dist/waline.js';
+    import { init } from 'https://unpkg.com/@waline/client@v2/dist/waline.js';
 
     const serverURL = 'https://waline-render-4h1r.onrender.com';
     const cloudinaryCloudName = 'dwevyln8l';
-    const cloudinaryUploadPreset = 'waline01';
+    const cloudinaryUploadPreset = 'waline_unsigned';
 
-    // 图片上传:
-    // - 优先使用 Cloudinary 直连上传 (前端到 Cloudinary,不经过自己后端)
-    // - 未配置 Cloudinary 时回退到 serverURL + /api/upload (GitHub 仓库存储)
+    // 图片上传
     async function imageUploader(file) {
         if (cloudinaryCloudName && cloudinaryUploadPreset) {
             const formData = new FormData();
@@ -2134,14 +2128,39 @@
         throw new Error(result.errmsg || 'Upload failed');
     }
 
-    init({
+    // 初始化 Waline
+    const walineInstance = init({
         el: '#waline',
         serverURL: serverURL,
         lang: 'en',
         pageview: true,
         comment: true,
         imageUploader: imageUploader,
+        reaction: true,
+        meta: ['nick', 'mail', 'link'],
+        requiredMeta: ['nick'],
+        emoji: [
+            'https://unpkg.com/@waline/emojis@1.2.0/weibo',
+            'https://unpkg.com/@waline/emojis@1.2.0/bilibili',
+        ],
+        comment: true,
     });
+
+    // 加载评论统计
+    async function loadStats() {
+        try {
+            const resp = await fetch(serverURL + '/api/comment?path=' + encodeURIComponent(window.location.pathname) + '&pageSize=1');
+            const data = await resp.json();
+            if (data.data && data.data.count !== undefined) {
+                document.getElementById('waline-count').textContent = data.data.count;
+            }
+        } catch (e) {
+            console.error('[Waline] 加载统计失败:', e);
+        }
+    }
+
+    // 页面加载后获取统计
+    setTimeout(loadStats, 2000);
 </script>
 
     
@@ -2220,13 +2239,13 @@
                 Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2026/05/02/Live2D%E7%9C%8B%E6%9D%BF%E5%A8%98%E9%9B%86%E6%88%90%E6%95%99%E7%A8%8B/">
+                <a href="/2026/05/02/Hexo%E5%8D%9A%E5%AE%A2%E4%BC%98%E5%8C%96%E6%95%99%E7%A8%8B%EF%BC%9A%E5%9B%BE%E5%BA%93%E9%98%B2%E7%9B%97%E9%93%BE%E3%80%81%E5%9B%9E%E5%88%B0%E9%A1%B6%E9%83%A8%E3%80%81%E6%82%AC%E6%8C%82%E5%96%B5%E5%8A%9F%E8%83%BD%E4%BF%AE%E5%A4%8D/">
                     <div class="card-image">
                         
                         
-                        <img src="https://cdn.jsdelivr.net/gh/500fan/500fan.github.io@1.33/medias/featureimages/6.jpg" class="responsive-img" alt="Live2D看板娘集成教程">
+                        <img src="https://cdn.jsdelivr.net/gh/500fan/500fan.github.io@1.33/medias/featureimages/22.jpg" class="responsive-img" alt="Hexo博客优化教程：图库防盗链、回到顶部、悬挂喵功能修复">
                         
-                        <span class="card-title">Live2D看板娘集成教程</span>
+                        <span class="card-title">Hexo博客优化教程：图库防盗链、回到顶部、悬挂喵功能修复</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -2254,20 +2273,32 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E5%89%8D%E7%AB%AF/">
-                        <span class="chip bg-color">前端</span>
-                    </a>
-                    
                     <a href="/tags/Hexo/">
                         <span class="chip bg-color">Hexo</span>
                     </a>
                     
-                    <a href="/tags/Live2D/">
-                        <span class="chip bg-color">Live2D</span>
+                    <a href="/tags/JavaScript/">
+                        <span class="chip bg-color">JavaScript</span>
                     </a>
                     
-                    <a href="/tags/%E7%9C%8B%E6%9D%BF%E5%A8%98/">
-                        <span class="chip bg-color">看板娘</span>
+                    <a href="/tags/Gitee/">
+                        <span class="chip bg-color">Gitee</span>
+                    </a>
+                    
+                    <a href="/tags/%E9%98%B2%E7%9B%97%E9%93%BE/">
+                        <span class="chip bg-color">防盗链</span>
+                    </a>
+                    
+                    <a href="/tags/%E5%9B%BE%E5%BA%93/">
+                        <span class="chip bg-color">图库</span>
+                    </a>
+                    
+                    <a href="/tags/%E5%9B%9E%E5%88%B0%E9%A1%B6%E9%83%A8/">
+                        <span class="chip bg-color">回到顶部</span>
+                    </a>
+                    
+                    <a href="/tags/CSS/">
+                        <span class="chip bg-color">CSS</span>
                     </a>
                     
                 </div>
@@ -3207,39 +3238,23 @@ document.addEventListener("visibilitychange", function () { document.hidden ? (d
 <!-- 回到顶部按钮已由 _partial/back-top.ejs 提供 -->
 
 <!-- 悬挂的喵 -->
-<style>
-.back-to-top {
-    cursor: pointer;
-    position: fixed;
-    right: 80px;
-    top: -999px;
-    z-index: 9999;
-    width: 70px;
-    height: 900px;
-    background: url(https://blog-static.cnblogs.com/files/fsh001/scroll.gif) no-repeat;
-    transition: all .5s ease-in-out;
-    opacity: 1;
-    display: block !important;
-    visibility: visible !important;
-}
-@media (max-width:1000px) {
-    .back-to-top {
-        display: none !important;
-    }
-}
-</style>
-<div class="back-to-top cd-top faa-float animated cd-is-visible"></div>
+<link rel="stylesheet" type="text/css" href="https://blog-static.cnblogs.com/files/fsh001/szgotop.css" />
+<div id="szg-cat" style="cursor:pointer; position:fixed; right:80px; top:-200px; z-index:9999; width:70px; height:900px; background:url(/medias/images/scroll.gif) no-repeat; transition:all .5s ease-in-out; opacity:1;"></div>
 <script>
-$(window).scroll(function() {
-    if ($(window).scrollTop() > 500) {
-        $('.back-to-top').not('#backTop').css('top','-200px');
-    } else {
-        $('.back-to-top').not('#backTop').css('top','-999px');
-    }
-});
-$('.back-to-top').not('#backTop').click(function() {
-    $('body,html').animate({scrollTop: 0}, 600);
-});
+(function(){
+    var cat = document.getElementById('szg-cat');
+    if (!cat) return;
+    window.addEventListener('scroll', function() {
+        if (window.scrollY > 300) {
+            cat.style.top = '0px';
+        } else {
+            cat.style.top = '-200px';
+        }
+    });
+    cat.addEventListener('click', function() {
+        window.scrollTo({top: 0, behavior: 'smooth'});
+    });
+})();
 </script>
 
 
